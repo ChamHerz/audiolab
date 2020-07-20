@@ -18,14 +18,26 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   if (isDev) {
-    // Open the DevTools.
-    //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
-    mainWindow.webContents.openDevTools();
+    // Using require
+    const {
+      default: installExtension,
+      REACT_DEVELOPER_TOOLS,
+    } = require("electron-devtools-installer");
+
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then((name) => {
+        console.log(`Added Extension:  ${name}`);
+      })
+      .catch((err) => {
+        console.log("Error ocurrido: ", err);
+      });
   }
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
-app.on("ready", createWindow);
+app.whenReady().then(createWindow);
+
+//app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -34,7 +46,10 @@ app.on("window-all-closed", () => {
 });
 
 app.on("activate", () => {
-  if (mainWindow === null) {
+  if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+  /*if (mainWindow === null) {
+    createWindow();
+  }*/
 });
