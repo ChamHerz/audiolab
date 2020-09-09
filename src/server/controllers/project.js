@@ -1,4 +1,5 @@
 const { Project } = require("../sequelize");
+let _ = require("lodash");
 
 function newProject(req, res) {
   const project = new Project();
@@ -13,7 +14,15 @@ function newProject(req, res) {
     Project.create(project.dataValues)
       .then((newProject) => res.status(200).send(newProject))
       .catch((err) => {
-        res.status(500).send({ message: "Error en la base" });
+        if (err.errors) {
+          if (_.some(err.errors, { message: "name must be unique" })) {
+            res
+              .status(500)
+              .send({ message: "Ya existe un proyecto con el mismo nombre" });
+          } else {
+            res.status(500).send({ message: "Error en la base" });
+          }
+        }
       });
   }
 }
