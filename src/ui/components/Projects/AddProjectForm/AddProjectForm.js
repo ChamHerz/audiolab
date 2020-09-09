@@ -27,8 +27,9 @@ export default function AddProjectForm(props) {
       })
         .then(() => {
           toast.success("Proyecto creado correctamente.");
-          resetForm();
+          //resetForm();
           setIsLoading(false);
+          setSelectedForm("list");
         })
         .catch((error) => {
           toast.error(error.response.data.message);

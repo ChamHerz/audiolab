@@ -27,6 +27,15 @@ function newProject(req, res) {
   }
 }
 
+function listProject(req, res) {
+  Project.findAll({ attributes: ["id", "name", "description"] })
+    .then((projects) => res.status(200).send(projects))
+    .catch((err) => {
+      res.status(500).send({ message: "Error al cargar proyectos" });
+    });
+}
+
 module.exports = {
   newProject,
+  listProject,
 };
