@@ -6,7 +6,6 @@ import "./ListProject.scss";
 
 export default function ListProject(props) {
   const { setSelectedForm } = props;
-
   return (
     <div className="list-project">
       <HeaderProject />

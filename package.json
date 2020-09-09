@@ -47,7 +47,7 @@
     "react-scripts": "^3.4.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.1.1",
-    "sequelize": "^6.3.3",
+    "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0"
   },
   "browserslist": {

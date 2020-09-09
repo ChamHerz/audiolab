@@ -1,0 +1,11 @@
+@import "../../../scss/index";
+
+.header-theme {
+  background-color: $background-dark-light;
+  padding: 5px;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+  img {
+    width: 200px;
+  }
+}

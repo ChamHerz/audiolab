@@ -6,6 +6,7 @@ const { API_VERSION } = require("./config");
 
 // Load routers
 const userRoutes = require("./routers/user");
+const themeRoutes = require("./routers/theme");
 
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -15,5 +16,6 @@ server.use(bodyParser.json());
 
 // Router Basic
 server.use(`/api/${API_VERSION}`, userRoutes);
+server.use(`/api/${API_VERSION}`, themeRoutes);
 
 module.exports = server;

@@ -1,0 +1,17 @@
+@import "../../../index.scss";
+
+.ui.form.add-theme-form{
+  .fields{
+    margin: 0 !important;
+  }
+
+  .theme-inputs{
+    display: flex;
+    justify-content: space-between;
+    flex-direction:column;
+  }
+
+  .Button{
+    padding: 10px 10px 10px 10px;
+  }
+}
