@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Project from "./pages/Projects";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import HomeLayout from "./layouts/HomeLayout";
 
 import "./index.scss";
 
 function App() {
+  const [project, setProject] = useState(null);
+
   return (
     <>
-      <Project />;
+      {!project ? <Project setProject={setProject} /> : <HomeLayout />}
       <ToastContainer
         position="top-center"
         autoClose={5000}

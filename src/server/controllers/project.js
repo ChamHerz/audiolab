@@ -31,6 +31,9 @@ function listProject(req, res) {
   Project.findAll({ attributes: ["id", "name", "description"] })
     .then((projects) => res.status(200).send(projects))
     .catch((err) => {
+      // TIRA ERROR AL NO ECONTRAR LA TABLA, ESTO NO VA A PASAR CUANDO YA NO SE AUTOCREE LA BASE
+      //console.log("Error al cargar proyectos");
+      //console.log(err);
       res.status(500).send({ message: "Error al cargar proyectos" });
     });
 }

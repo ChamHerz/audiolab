@@ -7,6 +7,7 @@ import "./Projects.scss";
 
 export default function Projects(props) {
   const [selectedForm, setSelectedForm] = useState(null);
+  const { setProject } = props;
 
   const handlerForm = () => {
     switch (selectedForm) {
@@ -19,7 +20,12 @@ export default function Projects(props) {
         );
       case "list":
       default:
-        return <ListProject setSelectedForm={setSelectedForm} />;
+        return (
+          <ListProject
+            setSelectedForm={setSelectedForm}
+            setProject={setProject}
+          />
+        );
     }
   };
 

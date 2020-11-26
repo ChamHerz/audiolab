@@ -8,13 +8,20 @@ import { toast } from "react-toastify";
 import "./ListProject.scss";
 
 export default function ListProject(props) {
-  const { setSelectedForm } = props;
+  const { setSelectedForm, setProject } = props;
   const [projects, setProjects] = useState([]);
+
+  console.log("proyectos", projects);
 
   useEffect(() => {
     listProject().then((response) => {
       if (response?.data) {
-        console.log(response.data);
+        const arrayProjects = [];
+        map(response?.data, (project) => {
+          console.log("project", project);
+          arrayProjects.push(project);
+        });
+        setProjects(response.data);
       }
     });
   }, []);
@@ -42,17 +49,36 @@ export default function ListProject(props) {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                <Table.Row>
-                  <Table.Cell collapsing>
-                    <Icon name="play circle outline" />
-                  </Table.Cell>
-                  <Table.Cell>Project Name</Table.Cell>
-                </Table.Row>
+                {map(projects, (project) => (
+                  <Project
+                    key={project.id}
+                    project={project}
+                    setProject={setProject}
+                  />
+                ))}
               </Table.Body>
             </Table>
           </Grid.Column>
         </Grid.Row>
       </Grid>
     </div>
+  );
+}
+
+function Project(props) {
+  const { project, setProject } = props;
+
+  const onProject = () => {
+    console.log("Entra al project");
+    setProject(project);
+  };
+
+  return (
+    <Table.Row onClick={onProject}>
+      <Table.Cell collapsing>
+        <Icon name="play circle outline" />
+      </Table.Cell>
+      <Table.Cell>{project.name}</Table.Cell>
+    </Table.Row>
   );
 }
