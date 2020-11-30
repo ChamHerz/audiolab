@@ -5,6 +5,10 @@ import FileList from "../FileList";
 import "./ExplorerTab.scss";
 
 export default function ExplorerTab(props) {
+  const { project } = props;
+
+  console.log("project in explorerTab", project);
+
   return (
     <Grid className="explorer-tab" stretched>
       <Grid.Row className="top-bar">

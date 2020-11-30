@@ -26,84 +26,82 @@ let tab = {
   closable: true,
 };
 
-let layout = {
-  dockbox: {
-    mode: "horizontal",
-    children: [
-      {
-        mode: "vertical",
-        size: 200,
-        children: [
-          {
-            tabs: [
-              { ...tab, id: "t1", title: "Tab 1" },
-              { ...tab, id: "t2", title: "Tab 2" },
-            ],
-          },
-          {
-            tabs: [
-              {
-                ...tab,
-                id: "explorerTab",
-                title: "Project:",
-                closable: false,
-                content: <ExplorerTab />,
-                minWidth: 400,
-                minHeight: 300,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        size: 1000,
-        tabs: [
-          {
-            ...tab,
-            id: "t5",
-            title: "basic demo",
-            content: (
-              <div>
-                This panel won't be removed from layout even when last Tab is
-                closed
-              </div>
-            ),
-          },
-          jsxTab,
-          htmlTab,
-        ],
-        panelLock: { panelStyle: "main" },
-      },
-      {
-        size: 200,
-        tabs: [{ ...tab, id: "t8", title: "Tab 8" }],
-      },
-    ],
-  },
-  floatbox: {
-    mode: "float",
-    children: [
-      {
-        tabs: [
-          { ...tab, id: "t9", title: "Tab 9", content: <div>Float</div> },
-          { ...tab, id: "t10", title: "Tab 10" },
-        ],
-        x: 300,
-        y: 150,
-        w: 400,
-        h: 300,
-      },
-    ],
-  },
-};
-if (window.innerWidth < 600) {
-  // remove a column for mobile
-  layout.dockbox.children.pop();
-}
-
-let count = 0;
-
 export default function HomeLayout(props) {
+  const { project } = props;
+
+  console.log(project);
+
+  let layout = {
+    dockbox: {
+      mode: "horizontal",
+      children: [
+        {
+          mode: "vertical",
+          size: 200,
+          children: [
+            {
+              tabs: [
+                { ...tab, id: "t1", title: "Tab 1" },
+                { ...tab, id: "t2", title: "Tab 2" },
+              ],
+            },
+            {
+              tabs: [
+                {
+                  ...tab,
+                  id: "explorerTab",
+                  title: "Project:",
+                  closable: false,
+                  content: <ExplorerTab project={project} />,
+                  minWidth: 400,
+                  minHeight: 300,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          size: 1000,
+          tabs: [
+            {
+              ...tab,
+              id: "t5",
+              title: "basic demo",
+              content: (
+                <div>
+                  This panel won't be removed from layout even when last Tab is
+                  closed
+                </div>
+              ),
+            },
+            jsxTab,
+            htmlTab,
+          ],
+          panelLock: { panelStyle: "main" },
+        },
+        {
+          size: 200,
+          tabs: [{ ...tab, id: "t8", title: "Tab 8" }],
+        },
+      ],
+    },
+    floatbox: {
+      mode: "float",
+      children: [
+        {
+          tabs: [
+            { ...tab, id: "t9", title: "Tab 9", content: <div>Float</div> },
+            { ...tab, id: "t10", title: "Tab 10" },
+          ],
+          x: 300,
+          y: 150,
+          w: 400,
+          h: 300,
+        },
+      ],
+    },
+  };
+
   /*const onDragNewTab = (e) => {
     let content = `New Tab ${count++}`;
     DragStore.dragStart(

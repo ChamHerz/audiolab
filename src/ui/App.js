@@ -11,7 +11,11 @@ function App() {
 
   return (
     <>
-      {!project ? <Project setProject={setProject} /> : <HomeLayout />}
+      {!project ? (
+        <Project setProject={setProject} />
+      ) : (
+        <HomeLayout project={project} />
+      )}
       <ToastContainer
         position="top-center"
         autoClose={5000}
