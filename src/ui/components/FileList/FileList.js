@@ -3,7 +3,7 @@ import { Form, Input } from "semantic-ui-react";
 import { Grid } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { map } from "lodash";
-import { listAudio, newAudio } from "../../api/audio";
+import { listAudioByProject, newAudio } from "../../api/audio";
 import { toast } from "react-toastify";
 
 import "./FileList.scss";
@@ -16,7 +16,7 @@ export default function FileList(props) {
   console.log("audios", audios);
 
   useEffect(() => {
-    listAudio().then((response) => {
+    listAudioByProject(project.id).then((response) => {
       if (response?.data) setAudios(response.data);
       console.log("audios", audios);
     });

@@ -12,7 +12,7 @@ async function newAudio(req, res) {
     return;
   }
 
-  project = await projectService.findOne(projectId);
+  const project = await projectService.findOne(projectId);
 
   console.log("projecto encontrado", project);
 
@@ -52,7 +52,21 @@ function listAudio(req, res) {
     });
 }
 
+function listAudioByProjectId(req, res) {
+  const { projectId } = req.params;
+  Audio.findAll({
+    where: {
+      id: projectId,
+    },
+  })
+    .then((audios) => res.status(200).send(audios))
+    .catch((err) => {
+      res.status(500).send({ message: "Error al cargar audios" });
+    });
+}
+
 module.exports = {
   newAudio,
   listAudio,
+  listAudioByProjectId,
 };

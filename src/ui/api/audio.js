@@ -8,3 +8,9 @@ export function newAudio(data) {
 export function listAudio() {
   return axios.get(`${basePath}/${apiVersion}/audio/list-audio`);
 }
+
+export function listAudioByProject(projectId) {
+  return axios.get(
+    `${basePath}/${apiVersion}/audio/list-audio-by-project/${projectId}`
+  );
+}
