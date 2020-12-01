@@ -1,12 +1,29 @@
 const { Audio } = require("../sequelize");
 let _ = require("lodash");
+const { projectService } = require("../services/project");
 
-function newAudio(req, res) {
+async function newAudio(req, res) {
   const audio = new Audio();
 
-  const { name, size } = req.body;
+  const { projectId, name, size } = req.body;
+
+  if (!projectId) {
+    res.status(404).send({ message: "projectId no puede ser vacio" });
+    return;
+  }
+
+  project = await projectService.findOne(projectId);
+
+  console.log("projecto encontrado", project);
+
+  if (!project) {
+    res.status(404).send({ message: "projectId no encontrado" });
+    return;
+  }
+
   audio.name = name;
   audio.size = size;
+  audio.id_project = project.id;
 
   if (!name) {
     res.status(404).send({ message: "El nombre es obligatorio" });

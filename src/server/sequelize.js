@@ -12,10 +12,14 @@ const User = UserModel(sequelize, Sequelize);
 const Project = ProjectModel(sequelize, Sequelize);
 const Audio = AudioModel(sequelize, Sequelize);
 
+// ASSOCIATIONS
+Audio.belongsTo(Project, { foreignKey: "id_project" });
+Project.hasMany(Audio, { foreignKey: "id_project" });
+
 // COMENTAR ESTO PARA BORRAR LA BASE AL INICIAR
-/*sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   console.log(`Database & tables created!`);
-});*/
+});
 
 module.exports = {
   User,

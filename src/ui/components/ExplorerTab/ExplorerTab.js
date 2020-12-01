@@ -16,7 +16,7 @@ export default function ExplorerTab(props) {
       </Grid.Row>
       <Grid.Row className="bottom-bar">
         <Grid.Column width={16}>
-          <FileList />
+          <FileList project={project} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

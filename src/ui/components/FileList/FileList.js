@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import "./FileList.scss";
 
 export default function FileList(props) {
+  const { project } = props;
   const [file, setFile] = useState(null);
   const [audios, setAudios] = useState([]);
 
@@ -31,6 +32,7 @@ export default function FileList(props) {
       // setFile(file);
       console.log(file);
       newAudio({
+        projectId: project.id,
         name: file.name,
         size: file.size,
       })
