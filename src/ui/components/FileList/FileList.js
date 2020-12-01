@@ -34,7 +34,10 @@ export default function FileList(props) {
       newAudio({
         projectId: project.id,
         name: file.name,
+        path: file.path,
         size: file.size,
+        type: file.type,
+        lastModifiedDate: file.lastModifiedDate,
       })
         .then((response) => {
           toast.success("Audio agregado correctamente.");

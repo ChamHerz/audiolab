@@ -5,7 +5,7 @@ const { projectService } = require("../services/project");
 async function newAudio(req, res) {
   const audio = new Audio();
 
-  const { projectId, name, size } = req.body;
+  const { projectId, name, path, size, type, lastModifiedDate } = req.body;
 
   if (!projectId) {
     res.status(404).send({ message: "projectId no puede ser vacio" });
@@ -22,7 +22,10 @@ async function newAudio(req, res) {
   }
 
   audio.name = name;
+  audio.path = path;
   audio.size = size;
+  audio.type = type;
+  audio.lastModifiedDate = lastModifiedDate;
   audio.id_project = project.id;
 
   if (!name) {

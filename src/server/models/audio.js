@@ -7,9 +7,23 @@ module.exports = (sequelize, type) => {
     },
     name: {
       type: type.STRING,
+      allowNull: false,
+    },
+    path: {
+      type: type.STRING,
+      allowNull: false,
     },
     size: {
       type: type.INTEGER,
+      allowNull: false,
+    },
+    type: {
+      type: type.STRING,
+      allowNull: false,
+    },
+    lastModifiedDate: {
+      type: type.DATE,
+      allowNull: false,
     },
   });
 };
