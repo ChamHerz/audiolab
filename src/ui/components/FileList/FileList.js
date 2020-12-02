@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Form, Input } from "semantic-ui-react";
-import { Grid } from "semantic-ui-react";
+import { Grid, Card } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { map } from "lodash";
 import { listAudioByProject, newAudio } from "../../api/audio";
@@ -15,11 +15,9 @@ export default function FileList(props) {
 
   useEffect(() => {
     listAudioByProject(project.id).then((response) => {
-      console.log("responseAudios", response);
       if (response?.data) {
         const arrayAudios = [];
         map(response?.data, (audio) => {
-          console.log("un audio", audio);
           arrayAudios.push(audio);
         });
         setAudios(arrayAudios);
@@ -46,7 +44,6 @@ export default function FileList(props) {
       })
         .then((response) => {
           toast.success("Audio agregado correctamente.");
-          console.log("response", response);
         })
         .catch((error) => {
           toast.error(error.response.data.message);
@@ -57,24 +54,21 @@ export default function FileList(props) {
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: "audio/*",
+    noClick: true,
     noKeyboard: true,
     onDrop,
   });
 
   return (
     <div {...getRootProps()}>
-      <Grid className="file-list">
+      <Card.Group className="file-list" stackable={true} doubling={true}>
         <input {...getInputProps()} />
-        {map(audios, (audio) => {
-          if (audio !== undefined) {
-            return (
-              <Grid.Column key={audio.id} width={3}>
-                <AudioFile audio={audio} />
-              </Grid.Column>
-            );
-          }
-        })}
-      </Grid>
+        {map(audios, (audio) => (
+          <Card key={audio.id} className="fluid audio-card">
+            <AudioFile audio={audio} />
+          </Card>
+        ))}
+      </Card.Group>
     </div>
   );
 }
@@ -82,7 +76,17 @@ export default function FileList(props) {
 function AudioFile(props) {
   const { audio } = props;
 
-  console.log("audioFile", audio);
+  const onAudioFile = (e) => {
+    if (e.ctrlKey) {
+      console.log("tecla shift");
+    } else {
+      console.log("solo click");
+    }
+  };
 
-  return <div className="audio-file">{audio?.name}</div>;
+  return (
+    <div className="audio-file" onClick={onAudioFile}>
+      {audio.name}
+    </div>
+  );
 }

@@ -1,7 +1,12 @@
 @import "../../scss/index";
 
 .file-list {
-  .audio-file {
-    background-color: indianred;
+  padding-left: 10px;
+  .audio-card {
+    max-width: 185px !important;
+    .audio-file {
+      min-height: 147px !important;
+      background-color: indianred;
+    }
   }
 }
