@@ -75,17 +75,22 @@ export default function FileList(props) {
 
 function AudioFile(props) {
   const { audio } = props;
+  const [selected, setSelected] = useState(false);
 
   const onAudioFile = (e) => {
     if (e.ctrlKey) {
-      console.log("tecla shift");
+      console.log("tecla cntrol");
+      setSelected(!selected);
     } else {
       console.log("solo click");
     }
   };
 
   return (
-    <div className="audio-file" onClick={onAudioFile}>
+    <div
+      className={"audio-file " + (selected ? "selected" : "noSelected")}
+      onClick={onAudioFile}
+    >
       {audio.name}
     </div>
   );

@@ -2,11 +2,18 @@
 
 .file-list {
   padding-left: 10px;
+  overflow: scroll;
   .audio-card {
     max-width: 185px !important;
     .audio-file {
       min-height: 147px !important;
+    }
+    .noSelected {
       background-color: indianred;
+    }
+
+    .selected {
+      background-color: yellow;
     }
   }
 }
