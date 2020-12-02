@@ -69,7 +69,6 @@ function Project(props) {
   const { project, setProject } = props;
 
   const onProject = () => {
-    console.log("Entra al project");
     setProject(project);
   };
 

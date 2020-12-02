@@ -9,7 +9,6 @@ async function findOneService(projectId) {
     },
   })
     .then((project) => {
-      console.log("encontre", project[0]);
       oneProject = project[0];
       /*console.log("encontre", project[0].dataValues);
       return project[0].dataValues;*/

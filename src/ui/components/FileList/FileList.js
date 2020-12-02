@@ -13,12 +13,17 @@ export default function FileList(props) {
   const [file, setFile] = useState(null);
   const [audios, setAudios] = useState([]);
 
-  console.log("audios", audios);
-
   useEffect(() => {
     listAudioByProject(project.id).then((response) => {
-      if (response?.data) setAudios(response.data);
-      console.log("audios", audios);
+      console.log("responseAudios", response);
+      if (response?.data) {
+        const arrayAudios = [];
+        map(response?.data, (audio) => {
+          console.log("un audio", audio);
+          arrayAudios.push(audio);
+        });
+        setAudios(arrayAudios);
+      }
     });
   }, []);
 
@@ -59,15 +64,25 @@ export default function FileList(props) {
   return (
     <div {...getRootProps()}>
       <Grid className="file-list">
-        <Grid.Column width={16}>
-          <input {...getInputProps()} />
-          <AudioFile />
-        </Grid.Column>
+        <input {...getInputProps()} />
+        {map(audios, (audio) => {
+          if (audio !== undefined) {
+            return (
+              <Grid.Column key={audio.id} width={3}>
+                <AudioFile audio={audio} />
+              </Grid.Column>
+            );
+          }
+        })}
       </Grid>
     </div>
   );
+}
 
-  function AudioFile(props) {
-    return <div>Alla</div>;
-  }
+function AudioFile(props) {
+  const { audio } = props;
+
+  console.log("audioFile", audio);
+
+  return <div className="audio-file">{audio?.name}</div>;
 }

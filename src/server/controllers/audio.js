@@ -14,8 +14,6 @@ async function newAudio(req, res) {
 
   const project = await projectService.findOne(projectId);
 
-  console.log("projecto encontrado", project);
-
   if (!project) {
     res.status(404).send({ message: "projectId no encontrado" });
     return;
@@ -37,7 +35,6 @@ async function newAudio(req, res) {
       .then((newAudio) => res.status(200).send(newAudio))
       .catch((err) => {
         if (err.errors) {
-          console.log(err);
           res.status(500).send({ message: "Error en la base" });
         }
       });
@@ -56,7 +53,7 @@ function listAudioByProjectId(req, res) {
   const { projectId } = req.params;
   Audio.findAll({
     where: {
-      id: projectId,
+      id_project: projectId,
     },
   })
     .then((audios) => res.status(200).send(audios))

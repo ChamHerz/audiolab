@@ -29,8 +29,6 @@ let tab = {
 export default function HomeLayout(props) {
   const { project } = props;
 
-  console.log(project);
-
   let layout = {
     dockbox: {
       mode: "horizontal",
