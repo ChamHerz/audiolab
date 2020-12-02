@@ -51,7 +51,7 @@ export default function HomeLayout(props) {
                   title: "Project:",
                   closable: false,
                   content: <ExplorerTab project={project} />,
-                  minWidth: 400,
+                  minWidth: 410,
                   minHeight: 300,
                 },
               ],
