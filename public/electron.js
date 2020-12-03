@@ -1,12 +1,12 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu } = require("electron");
+const { app, BrowserWindow, Menu, MenuItem } = require("electron");
 const path = require("path");
 
 const isDev = require("electron-is-dev");
 const isMac = process.platform === "darwin";
 let mainWindow;
 
-let menuTemplate = [
+const menuTemplate = [
   {
     label: "Archivo",
     submenu: [
@@ -46,8 +46,22 @@ function createWindow() {
     },
   });
 
-  let mainMenu = Menu.buildFromTemplate(menuTemplate);
+  const mainMenu = Menu.buildFromTemplate(menuTemplate);
   mainWindow.setMenu(mainMenu);
+
+  const contextMenu = new Menu();
+  contextMenu.append(
+    new MenuItem({
+      label: "Hola",
+      click: function () {
+        console.log("context menu");
+      },
+    })
+  );
+
+  mainWindow.webContents.on("context-menu", function (e, params) {
+    contextMenu.popup(mainWindow, params.x, params.y);
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(

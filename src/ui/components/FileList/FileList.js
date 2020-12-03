@@ -86,10 +86,16 @@ function AudioFile(props) {
     }
   };
 
+  const captureMenu = (e, menu) => {
+    console.log("capturado", e);
+    console.log("menu", menu);
+  };
+
   return (
     <div
       className={"audio-file " + (selected ? "selected" : "noSelected")}
       onClick={onAudioFile}
+      onContextMenu={(e) => e.preventDefault()}
     >
       {audio.name}
     </div>
