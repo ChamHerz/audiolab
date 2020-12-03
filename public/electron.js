@@ -49,7 +49,7 @@ function createWindow() {
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   mainWindow.setMenu(mainMenu);
 
-  const contextMenu = new Menu();
+  /*const contextMenu = new Menu();
   contextMenu.append(
     new MenuItem({
       label: "Hola",
@@ -57,11 +57,11 @@ function createWindow() {
         console.log("context menu");
       },
     })
-  );
+  );*/
 
-  mainWindow.webContents.on("context-menu", function (e, params) {
+  /*mainWindow.webContents.on("context-menu", function (e, params) {
     contextMenu.popup(mainWindow, params.x, params.y);
-  });
+  });*/
 
   // and load the index.html of the app.
   mainWindow.loadURL(
