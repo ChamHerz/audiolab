@@ -1,9 +1,39 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 
 const isDev = require("electron-is-dev");
+const isMac = process.platform === "darwin";
 let mainWindow;
+
+let menuTemplate = [
+  {
+    label: "Archivo",
+    submenu: [
+      {
+        label: "Agregar producto",
+        click() {
+          onCreateFileMenu();
+        },
+      },
+      {
+        label: "Eliminar productos",
+        click() {
+          mainWindow.webContents.send("productos:eliminar");
+        },
+      },
+      {
+        label: "Salir",
+        accelerator: isMac ? "Command+Q" : "Ctrl+Q",
+        click() {
+          app.quit();
+        },
+      },
+    ],
+  },
+];
+
+function onCreateFileMenu() {}
 
 function createWindow() {
   // Create the browser window.
@@ -15,6 +45,9 @@ function createWindow() {
       webSecurity: false,
     },
   });
+
+  let mainMenu = Menu.buildFromTemplate(menuTemplate);
+  mainWindow.setMenu(mainMenu);
 
   // and load the index.html of the app.
   mainWindow.loadURL(
