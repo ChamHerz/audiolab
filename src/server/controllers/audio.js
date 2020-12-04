@@ -23,6 +23,7 @@ async function newAudio(req, res) {
   audio.path = path;
   audio.size = size;
   audio.type = type;
+  audio.deleted = false;
   audio.lastModifiedDate = lastModifiedDate;
   audio.id_project = project.id;
 
@@ -34,6 +35,7 @@ async function newAudio(req, res) {
     Audio.create(audio.dataValues)
       .then((newAudio) => res.status(200).send(newAudio))
       .catch((err) => {
+        console.log(err);
         if (err.errors) {
           res.status(500).send({ message: "Error en la base" });
         }
@@ -54,6 +56,7 @@ function listAudioByProjectId(req, res) {
   Audio.findAll({
     where: {
       id_project: projectId,
+      deleted: false,
     },
   })
     .then((audios) => res.status(200).send(audios))

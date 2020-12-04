@@ -25,5 +25,10 @@ module.exports = (sequelize, type) => {
       type: type.DATE,
       allowNull: false,
     },
+    deleted: {
+      type: type.BOOLEAN,
+      allowNull: false,
+      default: false,
+    },
   });
 };

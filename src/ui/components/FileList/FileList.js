@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Form, Input } from "semantic-ui-react";
-import { Grid, Card } from "semantic-ui-react";
+import { Form, Icon, Input, Table, Loader } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
-import { map } from "lodash";
+import { map, filter } from "lodash";
 import { listAudioByProject, newAudio } from "../../api/audio";
 import { toast } from "react-toastify";
+import ContextMenu from "semantic-ui-react-context-menu";
 
 import "./FileList.scss";
 
@@ -12,17 +12,24 @@ export default function FileList(props) {
   const { project } = props;
   const [file, setFile] = useState(null);
   const [audios, setAudios] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const loadAudios = () => {
     listAudioByProject(project.id).then((response) => {
       if (response?.data) {
         const arrayAudios = [];
         map(response?.data, (audio) => {
+          audio.selected = false;
           arrayAudios.push(audio);
         });
         setAudios(arrayAudios);
+        console.log("audios Cargados");
       }
     });
+  };
+
+  useEffect(() => {
+    loadAudios();
   }, []);
 
   const onAudioFile = () => {
@@ -44,6 +51,7 @@ export default function FileList(props) {
       })
         .then((response) => {
           toast.success("Audio agregado correctamente.");
+          loadAudios();
         })
         .catch((error) => {
           toast.error(error.response.data.message);
@@ -52,52 +60,78 @@ export default function FileList(props) {
     //console.log(URL.createObjectURL(file));
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
     accept: "audio/*",
     noClick: true,
     noKeyboard: true,
     onDrop,
   });
 
+  const openBrowser = () => {
+    console.log("doble click");
+    open();
+  };
+
+  /*if (loading) {
+    return <Loader active>Cargando...</Loader>;
+  }*/
+
   return (
-    <div {...getRootProps()}>
-      <Card.Group className="file-list" stackable={true} doubling={true}>
-        <input {...getInputProps()} />
-        {map(audios, (audio) => (
-          <Card key={audio.id} className="fluid audio-card">
-            <AudioFile audio={audio} />
-          </Card>
-        ))}
-      </Card.Group>
+    <div {...getRootProps()} onDoubleClick={() => openBrowser()}>
+      <input {...getInputProps()} />
+      <Table inverted className="file-list">
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell />
+            <Table.HeaderCell>Nombre</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {map(audios, (audio) => (
+            <AudioFile key={audio.id} audio={audio} audios={audios} />
+          ))}
+        </Table.Body>
+      </Table>
     </div>
   );
 }
 
 function AudioFile(props) {
-  const { audio } = props;
+  const { audio, audios, dropped, setDropped } = props;
   const [selected, setSelected] = useState(false);
 
-  const onAudioFile = (e) => {
+  const onAudioFile = (e, audioId) => {
     if (e.ctrlKey) {
-      console.log("tecla cntrol");
-      setSelected(!selected);
+      audio.selected = !audio.selected;
+      setSelected(audio.selected);
     } else {
       console.log("solo click");
     }
   };
 
-  const captureMenu = (e, menu) => {
-    console.log("capturado", e);
-    console.log("menu", menu);
+  const onDeleteAudio = (e, item) => {
+    console.log("borrado");
+    const audiosToDelete = filter(audios, (a) => a.selected);
+    console.log(audiosToDelete);
+    //setDropped(!dropped);
   };
 
   return (
-    <div
-      className={"audio-file " + (selected ? "selected" : "noSelected")}
-      onClick={onAudioFile}
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      {audio.name}
-    </div>
+    <ContextMenu
+      trigger={
+        <Table.Row
+          className={"audio-file " + (selected ? "selected" : "noSelected")}
+          onClick={(e) => onAudioFile(e, audio.id)}
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          <Table.Cell collapsing>
+            <Icon name="play circle outline" />
+          </Table.Cell>
+          <Table.Cell>{audio.name}</Table.Cell>
+        </Table.Row>
+      }
+      items={[{ key: "btnDelete" + audio.id, content: "Borrar" }]}
+      onClick={onDeleteAudio}
+    />
   );
 }

@@ -12,17 +12,11 @@ export default function ExplorerTab(props) {
     <Grid className="explorer-tab" stretched>
       <Grid.Row className="top-bar">
         <Grid.Column width={16}>
-          <ContextMenu
-            trigger={<div>MenuUp f</div>}
-            items={[{ content: "Borrar" }]}
-            onClick={(_, item) => {
-              console.log(item); // { content: 'Remove' }
-            }}
-          />
+          <div>MenuUp f</div>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row className="bottom-bar">
-        <Grid.Column width={16}>
+      <Grid.Row className="middle-bar">
+        <Grid.Column className="content" width={16}>
           <FileList project={project} />
         </Grid.Column>
       </Grid.Row>

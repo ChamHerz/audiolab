@@ -1,7 +1,28 @@
 @import "../../scss/index";
 
-.file-list {
-  padding-left: 10px;
+.ui.table.inverted.file-list {
+  background-color: transparent;
+
+  th {
+    background-color: transparent;
+  }
+
+  .selected {
+    background-color: blanchedalmond;
+  }
+
+  tr {
+    &:hover {
+      cursor: pointer;
+      background-color: whitesmoke;
+    }
+
+    td {
+      color: $background-light-dark;
+    }
+  }
+
+  /*padding-left: 10px;
   .audio-card {
     max-width: 185px !important;
     .audio-file {
@@ -14,5 +35,5 @@
     .selected {
       background-color: yellow;
     }
-  }
+  }*/
 }

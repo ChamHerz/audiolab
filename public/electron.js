@@ -46,8 +46,8 @@ function createWindow() {
     },
   });
 
-  const mainMenu = Menu.buildFromTemplate(menuTemplate);
-  mainWindow.setMenu(mainMenu);
+  /*const mainMenu = Menu.buildFromTemplate(menuTemplate);
+  mainWindow.setMenu(mainMenu);*/
 
   /*const contextMenu = new Menu();
   contextMenu.append(
