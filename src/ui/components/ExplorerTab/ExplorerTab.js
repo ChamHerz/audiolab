@@ -14,7 +14,7 @@ export default function ExplorerTab(props) {
         <Grid.Column width={16}>
           <ContextMenu
             trigger={<div>MenuUp f</div>}
-            items={[{ content: "Remove" }]}
+            items={[{ content: "Borrar" }]}
             onClick={(_, item) => {
               console.log(item); // { content: 'Remove' }
             }}
