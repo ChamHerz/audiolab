@@ -9,5 +9,6 @@ api.get(
   "/list-audio-by-project/:projectId",
   AudioController.listAudioByProjectId
 );
+api.put("/delete-audio-by-id/:audioId", AudioController.deleteAudio);
 
 module.exports = api;

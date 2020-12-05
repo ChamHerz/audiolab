@@ -65,8 +65,28 @@ function listAudioByProjectId(req, res) {
     });
 }
 
+function deleteAudio(req, res) {
+  const { audioId } = req.params;
+  Audio.find({
+    where: {
+      id: audioId,
+    },
+  }).then("success", (audio) => {
+    if (audio) {
+      Audio.update({
+        deleted: true,
+      })
+        .then((audio) => res.status(200).send(audio))
+        .catch((err) => {
+          res.status(500).send({ message: "Erro al borrar audios" });
+        });
+    }
+  });
+}
+
 module.exports = {
   newAudio,
   listAudio,
   listAudioByProjectId,
+  deleteAudio,
 };

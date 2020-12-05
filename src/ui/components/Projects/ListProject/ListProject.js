@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Button, Grid, Table, Icon } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Button, Grid, Icon, Table } from "semantic-ui-react";
 import HeaderProject from "../HeaderProject";
 import { listProject } from "../../../api/project";
 import { map } from "lodash";
-import { toast } from "react-toastify";
 
 import "./ListProject.scss";
 

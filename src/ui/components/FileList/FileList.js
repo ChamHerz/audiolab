@@ -72,10 +72,6 @@ export default function FileList(props) {
     open();
   };
 
-  /*if (loading) {
-    return <Loader active>Cargando...</Loader>;
-  }*/
-
   return (
     <div {...getRootProps()} onDoubleClick={() => openBrowser()}>
       <input {...getInputProps()} />
