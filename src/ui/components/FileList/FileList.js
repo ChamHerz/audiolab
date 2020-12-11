@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Form, Icon, Input, Table, Loader } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { map, filter } from "lodash";
-import { listAudioByProject, newAudio } from "../../api/audio";
+import { listAudioByProject, newAudio, deleteAudioById } from "../../api/audio";
 import { toast } from "react-toastify";
 import ContextMenu from "semantic-ui-react-context-menu";
 
@@ -84,7 +84,12 @@ export default function FileList(props) {
         </Table.Header>
         <Table.Body>
           {map(audios, (audio) => (
-            <AudioFile key={audio.id} audio={audio} audios={audios} />
+            <AudioFile
+              key={audio.id}
+              audio={audio}
+              audios={audios}
+              loadAudios={loadAudios}
+            />
           ))}
         </Table.Body>
       </Table>
@@ -93,7 +98,7 @@ export default function FileList(props) {
 }
 
 function AudioFile(props) {
-  const { audio, audios, dropped, setDropped } = props;
+  const { audio, audios, loadAudios, dropped, setDropped } = props;
   const [selected, setSelected] = useState(false);
 
   const onAudioFile = (e, audioId) => {
@@ -109,6 +114,16 @@ function AudioFile(props) {
     console.log("borrado");
     const audiosToDelete = filter(audios, (a) => a.selected);
     console.log(audiosToDelete);
+    map(audiosToDelete, (audio) => {
+      deleteAudioById(audio.id)
+        .then((response) => {
+          toast.success(`El audio ${audio.name} fue borrado`);
+          loadAudios();
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    });
     //setDropped(!dropped);
   };
 

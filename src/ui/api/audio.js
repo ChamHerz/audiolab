@@ -14,3 +14,9 @@ export function listAudioByProject(projectId) {
     `${basePath}/${apiVersion}/audio/list-audio-by-project/${projectId}`
   );
 }
+
+export function deleteAudioById(audioId) {
+  return axios.put(
+    `${basePath}/${apiVersion}/audio/delete-audio-by-id/${audioId}`
+  );
+}
