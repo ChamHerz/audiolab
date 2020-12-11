@@ -9,7 +9,7 @@ import ContextMenu from "semantic-ui-react-context-menu";
 import "./FileList.scss";
 
 export default function FileList(props) {
-  const { project } = props;
+  const { project, onDoubleClickAudioFile } = props;
   const [file, setFile] = useState(null);
   const [audios, setAudios] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -67,13 +67,16 @@ export default function FileList(props) {
     onDrop,
   });
 
-  const openBrowser = () => {
-    console.log("doble click");
-    open();
+  const openBrowser = (e) => {
+    const { target } = e;
+    // evitar el doble click en un audio
+    if (target.tagName === "DIV") {
+      open();
+    }
   };
 
   return (
-    <div {...getRootProps()} onDoubleClick={() => openBrowser()}>
+    <div {...getRootProps()} onDoubleClick={(e) => openBrowser(e)}>
       <input {...getInputProps()} />
       <Table inverted className="file-list">
         <Table.Header>
@@ -89,6 +92,7 @@ export default function FileList(props) {
               audio={audio}
               audios={audios}
               loadAudios={loadAudios}
+              onDoubleClickAudioFile={onDoubleClickAudioFile}
             />
           ))}
         </Table.Body>
@@ -98,7 +102,7 @@ export default function FileList(props) {
 }
 
 function AudioFile(props) {
-  const { audio, audios, loadAudios, dropped, setDropped } = props;
+  const { audio, audios, loadAudios, onDoubleClickAudioFile } = props;
   const [selected, setSelected] = useState(false);
 
   const onAudioFile = (e, audioId) => {
@@ -136,6 +140,7 @@ function AudioFile(props) {
         <Table.Row
           className={"audio-file " + (selected ? "selected" : "noSelected")}
           onClick={(e) => onAudioFile(e, audio.id)}
+          onDoubleClick={(e) => onDoubleClickAudioFile(e, audio)}
           onContextMenu={(e) => e.preventDefault()}
         >
           <Table.Cell collapsing>

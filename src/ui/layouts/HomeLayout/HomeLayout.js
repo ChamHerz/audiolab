@@ -1,8 +1,9 @@
 import React from "react";
-import { DockLayout, DockContextType } from "rc-dock";
+import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
 
 import "./HomeLayout.scss";
+import WaveTab from "../../components/WaveTab";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -28,8 +29,26 @@ let tab = {
 
 export default function HomeLayout(props) {
   const { project } = props;
+  let dockLayout;
 
-  let layout = {
+  const onDoubleClickAudioFile = (e, oneAudio) => {
+    e.preventDefault();
+
+    dockLayout.updateTab("waveTab", {
+      size: 1000,
+      tabs: [
+        {
+          ...tab,
+          id: "waveTab",
+          title: "Audio: ",
+          content: <WaveTab audio={oneAudio} />,
+        },
+      ],
+      panelLock: { panelStyle: "main" },
+    });
+  };
+
+  let defaultLayout = {
     dockbox: {
       mode: "horizontal",
       children: [
@@ -50,7 +69,12 @@ export default function HomeLayout(props) {
                   id: "explorerTab",
                   title: "Project:",
                   closable: false,
-                  content: <ExplorerTab project={project} />,
+                  content: (
+                    <ExplorerTab
+                      project={project}
+                      onDoubleClickAudioFile={onDoubleClickAudioFile}
+                    />
+                  ),
                   minWidth: 410,
                   minHeight: 300,
                 },
@@ -63,17 +87,10 @@ export default function HomeLayout(props) {
           tabs: [
             {
               ...tab,
-              id: "t5",
-              title: "basic demo",
-              content: (
-                <div>
-                  This panel won't be removed from layout even when last Tab is
-                  closed
-                </div>
-              ),
+              id: "waveTab",
+              title: "Audio: ",
+              content: <WaveTab />,
             },
-            jsxTab,
-            htmlTab,
           ],
           panelLock: { panelStyle: "main" },
         },
@@ -100,6 +117,10 @@ export default function HomeLayout(props) {
     },
   };
 
+  const getRef = (r) => {
+    dockLayout = r;
+  };
+
   /*const onDragNewTab = (e) => {
     let content = `New Tab ${count++}`;
     DragStore.dragStart(
@@ -118,7 +139,8 @@ export default function HomeLayout(props) {
 
   return (
     <DockLayout
-      defaultLayout={layout}
+      ref={getRef}
+      defaultLayout={defaultLayout}
       style={{ position: "absolute", left: 10, top: 10, right: 10, bottom: 10 }}
     />
   );

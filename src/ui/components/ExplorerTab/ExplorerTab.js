@@ -1,12 +1,11 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
 import FileList from "../FileList";
-import ContextMenu from "semantic-ui-react-context-menu";
 
 import "./ExplorerTab.scss";
 
 export default function ExplorerTab(props) {
-  const { project } = props;
+  const { project, onDoubleClickAudioFile } = props;
 
   return (
     <Grid className="explorer-tab" stretched>
@@ -17,7 +16,10 @@ export default function ExplorerTab(props) {
       </Grid.Row>
       <Grid.Row className="middle-bar">
         <Grid.Column className="content" width={16}>
-          <FileList project={project} />
+          <FileList
+            project={project}
+            onDoubleClickAudioFile={onDoubleClickAudioFile}
+          />
         </Grid.Column>
       </Grid.Row>
     </Grid>
