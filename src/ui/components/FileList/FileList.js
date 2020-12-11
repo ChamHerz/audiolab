@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Form, Icon, Input, Table, Loader } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
-import { map, filter } from "lodash";
+import { map, filter, union } from "lodash";
 import { listAudioByProject, newAudio, deleteAudioById } from "../../api/audio";
 import { toast } from "react-toastify";
 import ContextMenu from "semantic-ui-react-context-menu";
@@ -111,8 +111,11 @@ function AudioFile(props) {
   };
 
   const onDeleteAudio = (e, item) => {
-    console.log("borrado");
-    const audiosToDelete = filter(audios, (a) => a.selected);
+    console.log("borrado", item.selected);
+    const audiosToDelete = union(
+      [item.selected],
+      filter(audios, (a) => a.selected)
+    );
     console.log(audiosToDelete);
     map(audiosToDelete, (audio) => {
       deleteAudioById(audio.id)
@@ -141,7 +144,9 @@ function AudioFile(props) {
           <Table.Cell>{audio.name}</Table.Cell>
         </Table.Row>
       }
-      items={[{ key: "btnDelete" + audio.id, content: "Borrar" }]}
+      items={[
+        { key: "btnDelete" + audio.id, content: "Borrar", selected: audio },
+      ]}
       onClick={onDeleteAudio}
     />
   );

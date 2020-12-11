@@ -68,22 +68,18 @@ function listAudioByProjectId(req, res) {
 function deleteAudio(req, res) {
   const { audioId } = req.params;
   const audioIdInt = parseInt(audioId);
-
-  Audio.findByPk(audioIdInt).then((audios) => {
-    console.log("audio encontrado", audios.dataValues);
-    Audio.update(
-      {
-        deleted: true,
-      },
-      {
-        where: { id: audioIdInt },
-      }
-    )
-      .then((audio) => res.status(200).send(audio))
-      .catch((err) => {
-        res.status(500).send({ message: "Erro al borrar audios" });
-      });
-  });
+  Audio.update(
+    {
+      deleted: true,
+    },
+    {
+      where: { id: audioIdInt },
+    }
+  )
+    .then((audio) => res.status(200).send(audio))
+    .catch((err) => {
+      res.status(500).send({ message: "Erro al borrar audios" });
+    });
 }
 
 module.exports = {
