@@ -1,99 +1,62 @@
 import React, { useEffect, useRef } from "react";
-import WaveformData from "waveform-data";
+import Peaks from "peaks.js";
 
 import "./WaveTab.scss";
+import soundMp3 from "./TOL_6min_720p_download.mp3";
+import soundOgg from "./TOL_6min_720p_download.ogg";
 
 export default function WaveTab(props) {
   const { audio } = props;
-  const audioContext = new AudioContext();
-  const canvas = useRef(null);
-  let waveformData = null;
+  let zoomviewContainer = useRef(null);
+  let overviewContainer = useRef(null);
+  let audioContainer = useRef(null);
 
   console.log("onda", audio);
 
   useEffect(() => {
     console.log("cambio el audio");
 
-    fetch("https://mimp3.info/mp3descargar/mqahbJ+j2ZCfm6OjaJykmKY/beky-g")
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        const options = {
-          audio_context: audioContext,
-          array_buffer: buffer,
-          scale: 128,
-        };
+    Peaks.init(options, function (err, peaks) {
+      console.log("tag Audio", audioContainer);
 
-        return new Promise((resolve, reject) => {
-          WaveformData.createFromAudio(options, (err, waveform) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(waveform);
-            }
-          });
-        });
-      })
-      .then((waveform) => {
-        console.log(`Waveform has ${waveform.channels} channels`);
-        console.log(`Waveform has length ${waveform.length} points`);
-
-        drawWaveform(canvas, waveform);
-
-        waveformData = waveform;
-      });
+      if (err) {
+        console.error(err.message);
+      }
+    });
   }, [audio]);
-
-  const drawWaveform = (canvas, waveform) => {
-    const ctx = canvas.current.getContext("2d");
-
-    const scaleY = (amplitude, height) => {
-      const range = 256;
-      const offset = 128;
-
-      return height - ((amplitude + offset) * height) / range;
-    };
-
-    ctx.beginPath();
-
-    const channel = waveform.channel(0);
-
-    // Loop forwards, drawing the upper half of the waveform
-    let startY = 20;
-    let endY = 20;
-    for (let x = 0; x < waveform.length; x++) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      endY = channel.max_sample(x);
-      ctx.lineTo(x, endY);
-      ctx.stroke();
-
-      //const val = channel.max_sample(x);
-      //ctx.lineTo(x + 0.5, scaleY(val, canvas.height) + 0.5);
-    }
-
-    // Loop backwards, drawing the lower half of the waveform
-    for (let x = waveform.length - 1; x >= 0; x--) {
-      const val = channel.min_sample(x);
-
-      ctx.lineTo(x + 0.5, scaleY(val, canvas.height) + 0.5);
-    }
-
-    //ctx.closePath();
-    ctx.stroke();
-    //ctx.fill();
-  };
 
   const onClick = () => {
     console.log("ok");
-    drawWaveform(canvas, waveformData);
+  };
+
+  const options = {
+    containers: {
+      zoomview: zoomviewContainer.current,
+      overview: overviewContainer.current,
+    },
+    mediaElement: audioContainer.current,
+    dataUri: {
+      arraybuffer: "TOL_6min_720p_download.dat",
+      json: "TOL_6min_720p_download.json",
+    },
+    keyboard: true,
+    pointMarkerColor: "#006eb0",
+    showPlayheadTime: true,
   };
 
   return (
     <div className="wave-tab">
       <h1>{audio?.name}</h1>
-      <div id="waveform-container">
-        <canvas id="canvas" width="600" height="250" ref={canvas} />
-        <input type="button" onClick={() => onClick()} value="Accion" />
+      <div id="peaks-container">
+        <div id="zoomview-container" ref={zoomviewContainer}></div>
+        <div id="overview-container" ref={overviewContainer}></div>
+      </div>
+
+      <div id="demo-controls">
+        <audio id="audio" controls="controls" ref={audioContainer}>
+          <source src={soundMp3} type="audio/mpeg" />
+          <source src={soundOgg} type="audio/ogg" />
+        </audio>
       </div>
     </div>
   );

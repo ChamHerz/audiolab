@@ -41,6 +41,7 @@
     "lodash": "^4.17.20",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
+    "peaks.js": "^0.23.1",
     "rc-dock": "^2.6.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -52,8 +53,7 @@
     "semantic-ui-react": "^1.1.1",
     "semantic-ui-react-context-menu": "^1.1.0",
     "sequelize": "^6.3.3",
-    "sqlite3": "^5.0.0",
-    "waveform-data": "^3.3.4"
+    "sqlite3": "^5.0.0"
   },
   "browserslist": {
     "production": [
