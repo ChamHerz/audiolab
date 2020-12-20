@@ -43,6 +43,7 @@ function createWindow() {
     title: "AudioLab",
     webPreferences: {
       webSecurity: false,
+      nodeIntegration: true,
     },
   });
 

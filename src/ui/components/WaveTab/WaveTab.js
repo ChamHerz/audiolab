@@ -4,6 +4,7 @@ import Peaks from "peaks.js";
 import "./WaveTab.scss";
 import soundMp3 from "./TOL_6min_720p_download.mp3";
 import soundOgg from "./TOL_6min_720p_download.ogg";
+import sound2Mp3 from "./Power_Shutoff.mp3";
 
 export default function WaveTab(props) {
   const { audio } = props;
@@ -36,8 +37,8 @@ export default function WaveTab(props) {
     },
     mediaElement: audioContainer.current,
     dataUri: {
-      arraybuffer: "TOL_6min_720p_download.dat",
-      json: "TOL_6min_720p_download.json",
+      arraybuffer: "Power_Shutoff.dat",
+      json: "Power_Shutoff.json",
     },
     keyboard: true,
     pointMarkerColor: "#006eb0",
@@ -54,8 +55,8 @@ export default function WaveTab(props) {
 
       <div id="demo-controls">
         <audio id="audio" controls="controls" ref={audioContainer}>
-          <source src={soundMp3} type="audio/mpeg" />
-          <source src={soundOgg} type="audio/ogg" />
+          <source src={sound2Mp3} type="audio/mpeg" />
+          {/*<source src={soundOgg} type="audio/ogg" />*/}
         </audio>
       </div>
     </div>

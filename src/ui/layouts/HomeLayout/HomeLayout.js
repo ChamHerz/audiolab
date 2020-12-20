@@ -1,9 +1,10 @@
 import React from "react";
 import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
-
 import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
+
+import { cli } from "../../utils/cli";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -33,6 +34,10 @@ export default function HomeLayout(props) {
 
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
+
+    console.log("click en cancion");
+
+    cli();
 
     dockLayout.updateTab("waveTab", {
       size: 1000,
