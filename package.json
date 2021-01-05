@@ -34,6 +34,7 @@
     "wait-on": "^5.1.0"
   },
   "dependencies": {
+    "async": "^3.2.0",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "electron-is-dev": "^1.2.0",

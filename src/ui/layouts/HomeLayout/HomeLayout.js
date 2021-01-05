@@ -4,7 +4,8 @@ import ExplorerTab from "../../components/ExplorerTab";
 import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
 
-import { cli } from "../../utils/cli";
+import { runner } from "../../utils/runner";
+import async from "async";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -32,12 +33,14 @@ export default function HomeLayout(props) {
   const { project } = props;
   let dockLayout;
 
-  const onDoubleClickAudioFile = (e, oneAudio) => {
+  const onDoubleClickAudioFile = async (e, oneAudio) => {
     e.preventDefault();
 
     console.log("click en cancion");
+    console.log(oneAudio);
 
-    cli();
+    await runner(oneAudio);
+    console.log("ya se proceso el audio");
 
     dockLayout.updateTab("waveTab", {
       size: 1000,

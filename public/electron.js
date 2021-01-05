@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu, MenuItem } = require("electron");
+const { app, BrowserWindow, Menu, MenuItem, protocol } = require("electron");
 const path = require("path");
 
 const isDev = require("electron-is-dev");
@@ -99,6 +99,11 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  protocol.registerFileProtocol("file", (request, callback) => {
+    const pathname = decodeURI(request.url.replace("file:///", ""));
+    callback(pathname);
+  });
+
   createWindow();
 
   app.on("activate", function () {
