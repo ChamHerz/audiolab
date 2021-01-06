@@ -39,8 +39,10 @@ export default function HomeLayout(props) {
     console.log("click en cancion");
     console.log(oneAudio);
 
-    await runner(oneAudio);
-    console.log("ya se proceso el audio");
+    if (!oneAudio.hasData) {
+      await runner(oneAudio);
+      console.log("ya se proceso el audio");
+    }
 
     dockLayout.updateTab("waveTab", {
       size: 1000,

@@ -10,5 +10,6 @@ api.get(
   AudioController.listAudioByProjectId
 );
 api.put("/delete-audio-by-id/:audioId", AudioController.deleteAudio);
+api.put("/create-data-audio-by-id/:audioId", AudioController.createDataAudio);
 
 module.exports = api;

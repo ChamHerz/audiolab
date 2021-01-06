@@ -1,3 +1,5 @@
+import { createDataAudioById } from "../api/audio.js";
+
 export const runner = (oneAudio) => {
   return new Promise((resolve, reject) => {
     try {
@@ -29,11 +31,18 @@ export const runner = (oneAudio) => {
 
       child.on("exit", function (data) {
         console.log(`Terminado: ${data}`);
-        resolve(`Éxito!`);
+        createDataAudioById(oneAudio.id)
+          .then((response) => {
+            resolve(`data audio creado!`);
+          })
+          .catch((error) => {
+            reject(`Fallo en base: ${error}`);
+          });
       });
     } catch (error) {
+      console.log("Se produjo un error");
       console.log(error);
-      reject(`Fallo!`);
+      reject(`Fallo en creacion .data`);
     }
   });
 };

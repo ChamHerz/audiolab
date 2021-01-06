@@ -20,3 +20,9 @@ export function deleteAudioById(audioId) {
     `${basePath}/${apiVersion}/audio/delete-audio-by-id/${audioId}`
   );
 }
+
+export function createDataAudioById(audioId) {
+  return axios.put(
+    `${basePath}/${apiVersion}/audio/create-data-audio-by-id/${audioId}`
+  );
+}

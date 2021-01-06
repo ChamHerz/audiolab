@@ -24,6 +24,7 @@ async function newAudio(req, res) {
   audio.size = size;
   audio.type = type;
   audio.deleted = false;
+  audio.hasData = false;
   audio.lastModifiedDate = lastModifiedDate;
   audio.id_project = project.id;
 
@@ -82,9 +83,27 @@ function deleteAudio(req, res) {
     });
 }
 
+function createDataAudio(req, res) {
+  const { audioId } = req.params;
+  const audioIdInt = parseInt(audioId);
+  Audio.update(
+    {
+      hasData: true,
+    },
+    {
+      where: { id: audioIdInt },
+    }
+  )
+    .then((audio) => res.status(200).send(audio))
+    .catch((err) => {
+      res.status(500).send({ message: "Erro al setear hasData" });
+    });
+}
+
 module.exports = {
   newAudio,
   listAudio,
   listAudioByProjectId,
   deleteAudio,
+  createDataAudio,
 };

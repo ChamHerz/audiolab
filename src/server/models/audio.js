@@ -30,5 +30,10 @@ module.exports = (sequelize, type) => {
       allowNull: false,
       default: false,
     },
+    hasData: {
+      type: type.BOOLEAN,
+      allowNull: false,
+      default: false,
+    },
   });
 };
