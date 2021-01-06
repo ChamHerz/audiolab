@@ -2,9 +2,15 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Form, Icon, Input, Table, Loader } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { map, filter, union } from "lodash";
-import { listAudioByProject, newAudio, deleteAudioById } from "../../api/audio";
+import {
+  listAudioByProject,
+  newAudio,
+  deleteAudioById,
+  createDataAudioById,
+} from "../../api/audio";
 import { toast } from "react-toastify";
 import ContextMenu from "semantic-ui-react-context-menu";
+import { runner } from "../../utils/runner";
 
 import "./FileList.scss";
 
@@ -50,6 +56,17 @@ export default function FileList(props) {
         lastModifiedDate: file.lastModifiedDate,
       })
         .then((response) => {
+          runner(response.data).then((audio) => {
+            createDataAudioById(audio.id)
+              .then((response) => {
+                audio.hasData = true;
+                console.log("data creada");
+              })
+              .catch((error) => {
+                console.log("error en boolear el data", error);
+              });
+          });
+
           toast.success("Audio agregado correctamente.");
           loadAudios();
         })

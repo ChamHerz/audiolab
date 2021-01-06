@@ -33,16 +33,16 @@ export default function HomeLayout(props) {
   const { project } = props;
   let dockLayout;
 
-  const onDoubleClickAudioFile = async (e, oneAudio) => {
+  const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
 
     console.log("click en cancion");
     console.log(oneAudio);
 
-    if (!oneAudio.hasData) {
+    /*if (!oneAudio.hasData) {
       await runner(oneAudio);
       console.log("ya se proceso el audio");
-    }
+    }*/
 
     dockLayout.updateTab("waveTab", {
       size: 1000,
