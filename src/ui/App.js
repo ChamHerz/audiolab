@@ -1,29 +1,32 @@
-import React from "react";
-import { signUpApi } from "./api/user";
+import React, { useState } from "react";
+import Project from "./pages/Projects";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import HomeLayout from "./layouts/HomeLayout";
+
+import "./index.scss";
 
 function App() {
-  const createUser = () => {
-    const data = {
-      email: "Adriel",
-      password: "123456",
-      repeatPassword: "123456",
-    };
-    signUpApi(data)
-      .then(function (response) {
-        console.log("resultado del endpoint,", response.data);
-      })
-      .catch(function (error) {
-        if (error.response) {
-          console.log("error,", error.response.data);
-        }
-      });
-  };
+  const [project, setProject] = useState(null);
 
   return (
-    <div>
-      <h1>Hola Mundo</h1>
-      <button onClick={() => createUser()}>Crear usuario</button>
-    </div>
+    <>
+      {!project ? (
+        <Project setProject={setProject} />
+      ) : (
+        <HomeLayout project={project} />
+      )}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover={true}
+      />
+    </>
   );
 }
 

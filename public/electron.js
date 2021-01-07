@@ -1,9 +1,39 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, Menu, MenuItem, protocol } = require("electron");
 const path = require("path");
 
 const isDev = require("electron-is-dev");
+const isMac = process.platform === "darwin";
 let mainWindow;
+
+const menuTemplate = [
+  {
+    label: "Archivo",
+    submenu: [
+      {
+        label: "Agregar producto",
+        click() {
+          onCreateFileMenu();
+        },
+      },
+      {
+        label: "Eliminar productos",
+        click() {
+          mainWindow.webContents.send("productos:eliminar");
+        },
+      },
+      {
+        label: "Salir",
+        accelerator: isMac ? "Command+Q" : "Ctrl+Q",
+        click() {
+          app.quit();
+        },
+      },
+    ],
+  },
+];
+
+function onCreateFileMenu() {}
 
 function createWindow() {
   // Create the browser window.
@@ -13,8 +43,26 @@ function createWindow() {
     title: "AudioLab",
     webPreferences: {
       webSecurity: false,
+      nodeIntegration: true,
     },
   });
+
+  /*const mainMenu = Menu.buildFromTemplate(menuTemplate);
+  mainWindow.setMenu(mainMenu);*/
+
+  /*const contextMenu = new Menu();
+  contextMenu.append(
+    new MenuItem({
+      label: "Hola",
+      click: function () {
+        console.log("context menu");
+      },
+    })
+  );*/
+
+  /*mainWindow.webContents.on("context-menu", function (e, params) {
+    contextMenu.popup(mainWindow, params.x, params.y);
+  });*/
 
   // and load the index.html of the app.
   mainWindow.loadURL(
@@ -51,6 +99,11 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  protocol.registerFileProtocol("file", (request, callback) => {
+    const pathname = decodeURI(request.url.replace("file:///", ""));
+    callback(pathname);
+  });
+
   createWindow();
 
   app.on("activate", function () {

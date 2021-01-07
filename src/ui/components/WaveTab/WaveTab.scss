@@ -1,0 +1,15 @@
+@import "../../scss/index";
+
+.wave-tab {
+  canvas {
+    border: 1px solid black;
+  }
+}
+
+#zoomview-container {
+  height: 200px;
+}
+
+#overview-container {
+  height: 85px;
+}
