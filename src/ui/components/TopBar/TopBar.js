@@ -36,7 +36,7 @@ export default function TopBar(props) {
                   onOpen={() => setOpen(true)}
                   open={open}
                   trigger={
-                    <Button className="setting-button">Show Modal</Button>
+                    <Button className="setting-button">Configuración</Button>
                   }
                 >
                   <Modal.Header>Select a Photo</Modal.Header>

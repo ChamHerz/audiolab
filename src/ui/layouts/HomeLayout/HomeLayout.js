@@ -102,7 +102,7 @@ export default function HomeLayout(props) {
         },
       ],
     },
-    floatbox: {
+    /*floatbox: {
       mode: "float",
       children: [
         {
@@ -118,7 +118,7 @@ export default function HomeLayout(props) {
           h: 300,
         },
       ],
-    },
+    },*/
   };
 
   const getRef = (r) => {
@@ -142,13 +142,19 @@ export default function HomeLayout(props) {
   };*/
 
   return (
-      <>
+    <>
       <TopBar></TopBar>
-  <DockLayout
-      ref={getRef}
-      defaultLayout={defaultLayout}
-      style={{ position: "absolute", left: 10, top: 50, right: 10, bottom: 10 }}
-    />
-  </>
+      <DockLayout
+        ref={getRef}
+        defaultLayout={defaultLayout}
+        style={{
+          position: "absolute",
+          left: 10,
+          top: 50,
+          right: 10,
+          bottom: 10,
+        }}
+      />
+    </>
   );
 }
