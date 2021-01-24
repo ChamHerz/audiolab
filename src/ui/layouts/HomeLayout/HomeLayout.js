@@ -110,7 +110,7 @@ export default function HomeLayout(props) {
         },
       ],
     },
-    floatbox: {
+    /*floatbox: {
       mode: "float",
       children: [
         {
@@ -121,7 +121,7 @@ export default function HomeLayout(props) {
           h: 300,
         },
       ],
-    },
+    },*/
   };
 
   const getRef = (r) => {

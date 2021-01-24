@@ -1,6 +1,6 @@
 @import "../../scss/index";
 
-.ui.grid.top-bar {
+.top-bar {
   > .row {
     &:first-of-type {
       margin-top: 10px;
@@ -10,5 +10,14 @@
 
   .setting-icon:hover {
     cursor: pointer;
+  }
+
+  .setting-button {
+    background-color: $background-dark;
+    color: $font-light;
+    margin-bottom: 30px;
+    border-radius: 50px;
+    padding: 20px 0;
+    font-size: 17px;
   }
 }
