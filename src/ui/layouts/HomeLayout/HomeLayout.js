@@ -1,11 +1,13 @@
 import React from "react";
 import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
+import TopBar from "../../components/TopBar";
+import SettingTap from "../../components/SettingTap";
+
 import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
 
 import { runner } from "../../utils/runner";
-import async from "async";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -112,10 +114,7 @@ export default function HomeLayout(props) {
       mode: "float",
       children: [
         {
-          tabs: [
-            { ...tab, id: "t9", title: "Tab 9", content: <div>Float</div> },
-            { ...tab, id: "t10", title: "Tab 10" },
-          ],
+          tabs: [{ ...tab, id: "t9", title: "Tab 9", content: <SettingTap /> }],
           x: 300,
           y: 150,
           w: 400,
@@ -146,10 +145,19 @@ export default function HomeLayout(props) {
   };*/
 
   return (
-    <DockLayout
-      ref={getRef}
-      defaultLayout={defaultLayout}
-      style={{ position: "absolute", left: 10, top: 10, right: 10, bottom: 10 }}
-    />
+    <>
+      <TopBar></TopBar>
+      <DockLayout
+        ref={getRef}
+        defaultLayout={defaultLayout}
+        style={{
+          position: "absolute",
+          left: 10,
+          top: 50,
+          right: 10,
+          bottom: 10,
+        }}
+      />
+    </>
   );
 }

@@ -1,0 +1,14 @@
+@import "../../scss/index";
+
+.ui.grid.top-bar {
+  > .row {
+    &:first-of-type {
+      margin-top: 10px;
+      color: $font-dark;
+    }
+  }
+
+  .setting-icon:hover {
+    cursor: pointer;
+  }
+}
