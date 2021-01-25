@@ -2,7 +2,6 @@ import React from "react";
 import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
 import TopBar from "../../components/TopBar";
-import SettingTap from "../../components/SettingTap";
 
 import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
@@ -34,17 +33,29 @@ let tab = {
 export default function HomeLayout(props) {
   const { project } = props;
   let dockLayout;
+  let count = 0;
 
   const onDoubleClickAudioFile = async (e, oneAudio) => {
     e.preventDefault();
 
+    const newTab = () => {
+      return {
+        id: `newtab${++count}`,
+        title: `${oneAudio.name}`,
+        closable: true,
+        content: <WaveTab audio={oneAudio} />,
+      };
+    };
+
     console.log("click en cancion");
     console.log(oneAudio);
 
-    await runner(oneAudio);
+    //await runner(oneAudio);
     console.log("ya se proceso el audio");
 
-    dockLayout.updateTab("waveTab", {
+    dockLayout.dockMove(newTab(), "wavePanel", "middle");
+
+    /*dockLayout.updateTab("waveTab", {
       size: 1000,
       tabs: [
         {
@@ -55,7 +66,7 @@ export default function HomeLayout(props) {
         },
       ],
       panelLock: { panelStyle: "main" },
-    });
+    });*/
   };
 
   let defaultLayout = {
@@ -93,15 +104,9 @@ export default function HomeLayout(props) {
           ],
         },
         {
+          id: "wavePanel",
           size: 1000,
-          tabs: [
-            {
-              ...tab,
-              id: "waveTab",
-              title: "Audio: ",
-              content: <WaveTab />,
-            },
-          ],
+          tabs: [],
           panelLock: { panelStyle: "main" },
         },
         {
