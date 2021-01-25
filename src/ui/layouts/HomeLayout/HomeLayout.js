@@ -1,11 +1,12 @@
 import React from "react";
 import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
+import TopBar from "../../components/TopBar";
+
 import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
 
 import { runner } from "../../utils/runner";
-import async from "async";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -32,9 +33,19 @@ let tab = {
 export default function HomeLayout(props) {
   const { project } = props;
   let dockLayout;
+  let count = 0;
 
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
+
+    const newTab = () => {
+      return {
+        id: `${oneAudio.name}`,
+        title: `${oneAudio.name}`,
+        closable: true,
+        content: <WaveTab audio={oneAudio} />,
+      };
+    };
 
     console.log("click en cancion");
     console.log(oneAudio);
@@ -44,7 +55,14 @@ export default function HomeLayout(props) {
       console.log("ya se proceso el audio");
     }*/
 
-    dockLayout.updateTab("waveTab", {
+    if (!dockLayout.find(`${oneAudio.name}`)) {
+      //El audio no esta abierto
+      dockLayout.dockMove(newTab(), "wavePanel", "middle");
+    }
+
+    console.log("taps", dockLayout.find(`${oneAudio.name}`));
+
+    /*dockLayout.updateTab("waveTab", {
       size: 1000,
       tabs: [
         {
@@ -55,7 +73,7 @@ export default function HomeLayout(props) {
         },
       ],
       panelLock: { panelStyle: "main" },
-    });
+    });*/
   };
 
   let defaultLayout = {
@@ -93,15 +111,9 @@ export default function HomeLayout(props) {
           ],
         },
         {
+          id: "wavePanel",
           size: 1000,
-          tabs: [
-            {
-              ...tab,
-              id: "waveTab",
-              title: "Audio: ",
-              content: <WaveTab />,
-            },
-          ],
+          tabs: [],
           panelLock: { panelStyle: "main" },
         },
         {
@@ -110,21 +122,18 @@ export default function HomeLayout(props) {
         },
       ],
     },
-    floatbox: {
+    /*floatbox: {
       mode: "float",
       children: [
         {
-          tabs: [
-            { ...tab, id: "t9", title: "Tab 9", content: <div>Float</div> },
-            { ...tab, id: "t10", title: "Tab 10" },
-          ],
+          tabs: [{ ...tab, id: "t9", title: "Tab 9", content: <SettingTap /> }],
           x: 300,
           y: 150,
           w: 400,
           h: 300,
         },
       ],
-    },
+    },*/
   };
 
   const getRef = (r) => {
@@ -148,10 +157,19 @@ export default function HomeLayout(props) {
   };*/
 
   return (
-    <DockLayout
-      ref={getRef}
-      defaultLayout={defaultLayout}
-      style={{ position: "absolute", left: 10, top: 10, right: 10, bottom: 10 }}
-    />
+    <>
+      <TopBar></TopBar>
+      <DockLayout
+        ref={getRef}
+        defaultLayout={defaultLayout}
+        style={{
+          position: "absolute",
+          left: 10,
+          top: 50,
+          right: 10,
+          bottom: 10,
+        }}
+      />
+    </>
   );
 }
