@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       {!project ? (
-        <Project setProject={setProject} />
+       <Project setProject={setProject} />
       ) : (
         <HomeLayout project={project} />
       )}

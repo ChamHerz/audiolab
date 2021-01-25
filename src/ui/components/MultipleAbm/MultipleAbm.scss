@@ -1,0 +1,26 @@
+@import "../../scss/index.scss";
+
+.multiple-abm {
+
+  h1{
+    color: #91d5ff;
+  }
+  .ui.table.inverted.table-songs {
+    background-color: transparent;
+
+    th {
+      background-color: transparent;
+    }
+
+    tr {
+      &:hover {
+        cursor: pointer;
+
+        td {
+          color: $background-light-dark;
+        }
+      }
+    }
+  }
+}
+
