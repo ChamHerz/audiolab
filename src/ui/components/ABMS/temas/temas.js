@@ -50,7 +50,7 @@ export default function Temas(){
                             setFormData({...formData, observaciones: e.target.value})}
                         />
                 </Form.Field>
-                <Button type="submit" className="ui button primary" loading={isLoading}>Crear Tema</Button>
+                <Button type="submit" className="ui button" loading={isLoading}>Crear Tema</Button>
             </Form>
         </>)
 }
