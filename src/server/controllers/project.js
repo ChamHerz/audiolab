@@ -9,7 +9,7 @@ function newProject(req, res) {
   project.description = description;
 
   if (!name) {
-    res.status(404).send({ message: "El nombre es obrigatorio" });
+    res.status(404).send({ message: "El nombre es obligatorio" });
   } else {
     Project.create(project.dataValues)
       .then((newProject) => res.status(200).send(newProject))

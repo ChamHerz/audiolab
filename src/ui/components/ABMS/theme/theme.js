@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Icon, Input, Table, Loader, Button } from "semantic-ui-react";
+import { newTheme} from "../../../api/theme";
 import { toast } from "react-toastify";
 
-export default function Temas(){
+export default function Theme(){
     const [formData, setFormData] = useState(initialValueForm());
     const [isLoading, setIsLoading] = useState(false);
 
@@ -12,23 +13,23 @@ export default function Temas(){
 
     const onSubmit = () => {
         console.log("onSubmit");
-        if(!formData.descripcion) {
-            toast.warning("Completar la descripcion del tema");
+        if(!formData.name) {
+            toast.warning("Completar el nombre del tema");
         } else {
             setIsLoading(true);
-          /*  newTheme({
-                descripcion: formData.descripcion,
-                observaciones: formData.observaciones
+            newTheme({
+                name: formData.name,
+                description: formData.description
             })
                 .then(() => {
                     toast.success("Tema creado correctamente.");
                     //resetForm();
                     setIsLoading(false);
                 })
-                .catch((error =>{
+                .catch((error) =>{
                     toast.error(error.response.data.message);
                     setIsLoading(false);
-                } )*/
+                });
         }
     }
 
@@ -38,16 +39,16 @@ export default function Temas(){
                 <h4 className="ui dividing header">Temas</h4>
                 <Form.Field>
                     <Input
-                        placeholder="Descripcion del tema"
-                        onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+                        placeholder="Nombre del tema"
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         />
                 </Form.Field>
 
                 <Form.Field>
                     <Input
-                        placeholder="Observaciones"
+                        placeholder="Descripcion"
                         onChange={(e) =>
-                            setFormData({...formData, observaciones: e.target.value})}
+                            setFormData({...formData, description: e.target.value})}
                         />
                 </Form.Field>
                 <Button type="submit" className="ui button" loading={isLoading}>Crear Tema</Button>
@@ -57,7 +58,7 @@ export default function Temas(){
 
 function initialValueForm() {
     return {
-        descripcion: "",
-        observaciones: ""
+        name: "",
+        description: ""
     };
 }

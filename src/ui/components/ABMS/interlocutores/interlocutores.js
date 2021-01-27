@@ -42,7 +42,7 @@ return(
             <Form.Field>
                 <Input
                     placeholder="DNI"
-                    onChage={(e) => setFormData({...formData, DNI: e.target.value})}
+                    onChange={(e) => setFormData({...formData, DNI: e.target.value})}
                 />
             </Form.Field>
             <Button type ="submit" className="ui button" loading={isLoading}>Crear Interlocutor</Button>

@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const UserModel = require("./models/user");
 const ProjectModel = require("./models/project");
 const AudioModel = require("./models/audio.js");
+const ThemeModel = require("./models/theme");
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -11,8 +12,9 @@ const sequelize = new Sequelize({
 const User = UserModel(sequelize, Sequelize);
 const Project = ProjectModel(sequelize, Sequelize);
 const Audio = AudioModel(sequelize, Sequelize);
+const Theme = ThemeModel(sequelize, Sequelize);
 
-// ASSOCIATIONS
+// ASSOCIATIONS OJO CORDOBA QUE ACA UN AUDIO PUEDE PERTENER A VARIOS PROYECTOS.
 Audio.belongsTo(Project, { foreignKey: "id_project" });
 Project.hasMany(Audio, { foreignKey: "id_project" });
 
@@ -25,4 +27,5 @@ module.exports = {
   User,
   Project,
   Audio,
+  Theme
 };
