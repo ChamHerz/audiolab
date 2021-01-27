@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Icon, Input, Table, Loader, Button } from "semantic-ui-react";
-import { newTheme} from "../../../api/theme";
+import { newTheme }  from "../../../api/theme";
 import { toast } from "react-toastify";
 
-export default function Theme(){
+export default function Theme(props){
     const [formData, setFormData] = useState(initialValueForm());
     const [isLoading, setIsLoading] = useState(false);
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Icon, Input, Table, Loader, Button } from "semantic-ui-react";
 import { toast } from "react-toastify";
 
-export default function Interlocutes(){
+export default function Interlocutores(){
     const [formData, setFormData] = useState(initialValueForm());
     const [isLoading, setIsLoading] = useState(false);
 

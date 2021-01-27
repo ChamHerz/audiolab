@@ -1,4 +1,4 @@
-const { Theme } = require(".../sequelize");
+const { Theme } = require("../sequelize");
 
 async function findOneService( themeId ) {
     let oneTheme = null;
