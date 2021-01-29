@@ -13,6 +13,7 @@ const User = UserModel(sequelize, Sequelize);
 const Project = ProjectModel(sequelize, Sequelize);
 const Audio = AudioModel(sequelize, Sequelize);
 const Theme = ThemeModel(sequelize, Sequelize);
+const Company = CompanyModel(sequelize, Sequelize);
 
 // ASSOCIATIONS OJO CORDOBA QUE ACA UN AUDIO PUEDE PERTENER A VARIOS PROYECTOS.
 Audio.belongsTo(Project, { foreignKey: "id_project" });
@@ -27,5 +28,6 @@ module.exports = {
   User,
   Project,
   Audio,
-  Theme
+  Theme,
+  Company
 };

@@ -31,7 +31,7 @@ function listTheme( req, res ) {
     Theme.findAll( { attributes: [ "id", "name", "description"] })
         .then((themes) => res.status(200).send(themes))
         .catch((err) => {
-            res.status(500).send({ message:"Error al cargar theme."})
+            res.status(500).send({ message:"Error al cargar tema."})
         });
 }
 

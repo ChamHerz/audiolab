@@ -9,7 +9,7 @@ export default function MultiABM( props ) {
     const panes = [
         { menuItem: 'Interlocutores', render: () => <Tab.Pane inverted ={true} attached={false}><Interlocutores/></Tab.Pane> },
         { menuItem: 'Temas', render: () => <Tab.Pane inverted ={true} attached={false}><Theme/></Tab.Pane> },
-        { menuItem: 'Tab 3', render: () => <Tab.Pane inverted ={true} attached={false}>Tab 3 Content</Tab.Pane> },
+        { menuItem: 'Empresas', render: () => <Tab.Pane inverted ={true} attached={false}>Empresas</Tab.Pane> },
     ]
 
     const Multi = () => <Tab menu={{ attached: false, pointing: true , inverted:true }} panes={panes} />
