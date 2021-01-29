@@ -60,8 +60,6 @@ export default function HomeLayout(props) {
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
     }
 
-    console.log("taps", dockLayout.find(`${oneAudio.name}`));
-
     /*dockLayout.updateTab("waveTab", {
       size: 1000,
       tabs: [
@@ -165,7 +163,7 @@ export default function HomeLayout(props) {
         style={{
           position: "absolute",
           left: 10,
-          top: 50,
+          top: 60,
           right: 10,
           bottom: 10,
         }}
