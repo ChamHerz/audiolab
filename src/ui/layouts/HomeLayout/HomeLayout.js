@@ -109,14 +109,29 @@ export default function HomeLayout(props) {
           ],
         },
         {
-          id: "wavePanel",
+          mode: "vertical",
           size: 1000,
-          tabs: [],
+          children: [
+            {
+              id: "wavePanel",
+              tabs: [],
+              panelLock: { panelStyle: "main" },
+            },
+            {
+              mode: "horizontal",
+              children: [
+                {
+                  id: "segmentPanel",
+                  tabs: [{ ...tab, id: "segmentTab", title: "Segmentos" }],
+                },
+                {
+                  id: "labelTab",
+                  tabs: [{ ...tab, id: "labelTab", title: "Etiquetas" }],
+                },
+              ],
+            },
+          ],
           panelLock: { panelStyle: "main" },
-        },
-        {
-          size: 200,
-          tabs: [{ ...tab, id: "t8", title: "Tab 8" }],
         },
       ],
     },
