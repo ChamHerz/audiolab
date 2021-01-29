@@ -30,6 +30,8 @@ export default function ListTheme(props) {
                         <Table.Row>
                             <Table.HeaderCell>Nombre</Table.HeaderCell>
                             <Table.HeaderCell>Descripcion</Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
 
@@ -50,6 +52,9 @@ export default function ListTheme(props) {
     );
 }
 
+function DeleteTheme(themeId){
+    console.log("Borrando theme con id:", themeId);
+}
 function Theme(props) {
     const { theme, setTheme } = props;
 
@@ -61,6 +66,16 @@ function Theme(props) {
         <Table.Row>
             <Table.Cell>{theme.name}</Table.Cell>
             <Table.Cell>{theme.description}</Table.Cell>
+            <Table.Cell collapsing>
+                <Button icon>
+                    <Icon name="edit"></Icon>
+                </Button>
+            </Table.Cell>
+            <Table.Cell collapsing>
+                <Button icon onClick={DeleteTheme(theme.id)}>
+                    <Icon name='trash' />
+                </Button>
+            </Table.Cell>
         </Table.Row>)
         ;
 }

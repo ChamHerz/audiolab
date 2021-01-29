@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Icon, Input, Table, Loader, Button } from "semantic-ui-react";
+import { Form, Icon, Input, Table, Loader, Button, Grid } from "semantic-ui-react";
 import { newTheme }  from "../../../api/theme";
 import { toast } from "react-toastify";
 import ListTheme from "../../Themes/ListTheme";
@@ -8,6 +8,10 @@ export default function Theme(props){
     const [formData, setFormData] = useState(initialValueForm());
     const [isLoading, setIsLoading] = useState(false);
     const [isNewTheme, setIsNewTheme] = useState(false);
+
+    const handlerIsNewTheme = () => {
+        setIsNewTheme(!isNewTheme);
+    }
 
     const resetForm = () => {
         setFormData(initialValueForm());
@@ -26,7 +30,7 @@ export default function Theme(props){
                     toast.success("Tema creado correctamente.");
                     resetForm();
                     setIsLoading(false);
-                    setIsNewTheme(false);
+                    handlerIsNewTheme();
                 })
                 .catch((error) =>{
                     toast.error(error.response.data.message);
@@ -54,12 +58,22 @@ export default function Theme(props){
                                 setFormData({...formData, description: e.target.value})}
                         />
                     </Form.Field>
-                    <Button type="submit" className="ui button" loading={isLoading}>Crear Tema</Button>
+                    <Grid>
+                        <Grid.Column textAlign="left">
+                            <Button type="submit" className="ui button" loading={isLoading} >Crear Tema</Button>
+                            <Button className="ui button" onClick={handlerIsNewTheme}>Cancelar</Button>
+                        </Grid.Column>
+                    </Grid>
                 </Form> :
-                <>
+                <div className="listTheme">
+
                     <ListTheme/>
-                    <Button>Nuevo Tema</Button>
-                </>
+                    <Grid>
+                        <Grid.Column textAlign="left">
+                            <Button className="ui common button" onClick={handlerIsNewTheme}>Nuevo Tema</Button>
+                        </Grid.Column>
+                    </Grid>
+                </div>
             }
         </>)
 }

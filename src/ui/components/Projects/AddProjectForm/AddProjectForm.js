@@ -61,7 +61,7 @@ export default function AddProjectForm(props) {
         </Form.Field>
         <Grid>
           <Grid.Column textAlign="right">
-            <Button typo="submit" loading={isLoading}>
+            <Button type="submit" loading={isLoading}>
               Crear Proyecto
             </Button>
             <Button type="button" onClick={() => setSelectedForm("list")}>
