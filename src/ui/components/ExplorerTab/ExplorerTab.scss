@@ -1,7 +1,7 @@
 @import "../../scss/index";
 
 .ui.grid.explorer-tab {
-  background-color: $background-dark;
+  background-color: $background-dark-second;
   //min-height: 100vh;
   margin: 0;
 
@@ -17,7 +17,7 @@
     }
 
     > .column {
-      padding: 0;
+      padding: 5px;
     }
   }
 

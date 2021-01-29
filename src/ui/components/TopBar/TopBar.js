@@ -19,62 +19,67 @@ export default function TopBar(props) {
 
   return (
     <>
-      <Menu className="top-bar">
-        <Dropdown
-          item
-          simple
-          text="Left menu"
-          direction="right"
-          options={options}
-        />
-        <Menu.Menu position="right">
-          <Dropdown item simple icon="setting" direction="right">
-            <Dropdown.Menu>
-              <Dropdown.Item>
-                <Modal
-                  onClose={() => setOpen(false)}
-                  onOpen={() => setOpen(true)}
-                  open={open}
-                  trigger={
-                    <Button className="setting-button">Configuración</Button>
-                  }
-                >
-                  <Modal.Header>Select a Photo</Modal.Header>
-                  <Modal.Content image>
-                    <Image
-                      size="medium"
-                      src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
-                      wrapped
-                    />
-                    <Modal.Description>
-                      <Header>Default Profile Image</Header>
-                      <p>
-                        We've found the following gravatar image associated with
-                        your e-mail address.
-                      </p>
-                      <p>Is it okay to use this photo?</p>
-                    </Modal.Description>
-                  </Modal.Content>
-                  <Modal.Actions>
-                    <Button color="black" onClick={() => setOpen(false)}>
-                      Nope
-                    </Button>
-                    <Button
-                      content="Yep, that's me"
-                      labelPosition="right"
-                      icon="checkmark"
-                      onClick={() => setOpen(false)}
-                      positive
-                    />
-                  </Modal.Actions>
-                </Modal>
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item text="Soporte" />
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Menu>
-      </Menu>
+      <div className="top-bar-container">
+        <Menu className="top-bar-general">
+          <Button className="audio-lab-button">
+            <b>AUDIO</b>
+            <b>LAB</b>
+          </Button>
+          <Menu.Menu position="right">
+            <Dropdown
+              item
+              simple
+              icon="setting"
+              direction="right"
+              className="dropdown-setting"
+            >
+              <Dropdown.Menu>
+                <Dropdown.Item>
+                  <Modal
+                    onClose={() => setOpen(false)}
+                    onOpen={() => setOpen(true)}
+                    open={open}
+                    trigger={
+                      <Button className="setting-button">Configuración</Button>
+                    }
+                  >
+                    <Modal.Header>Select a Photo</Modal.Header>
+                    <Modal.Content image>
+                      <Image
+                        size="medium"
+                        src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
+                        wrapped
+                      />
+                      <Modal.Description>
+                        <Header>Default Profile Image</Header>
+                        <p>
+                          We've found the following gravatar image associated
+                          with your e-mail address.
+                        </p>
+                        <p>Is it okay to use this photo?</p>
+                      </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                      <Button color="black" onClick={() => setOpen(false)}>
+                        Nope
+                      </Button>
+                      <Button
+                        content="Yep, that's me"
+                        labelPosition="right"
+                        icon="checkmark"
+                        onClick={() => setOpen(false)}
+                        positive
+                      />
+                    </Modal.Actions>
+                  </Modal>
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item text="Soporte" />
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Menu>
+        </Menu>
+      </div>
     </>
   );
 }

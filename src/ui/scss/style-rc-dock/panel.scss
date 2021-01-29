@@ -1,3 +1,4 @@
+@import "../index.scss";
 
 body.dock-dragging {
   user-select: none;
@@ -11,8 +12,8 @@ body.dock-dragging {
 .dock-panel {
   box-sizing: border-box;
   position: relative;
-  background: #fff;
-  border: 1px solid #ddd;
+  background: $background-dark-second;
+  border: 1px solid $background-dark-second;
 
   &.dragging {
     opacity: 0.3;
@@ -67,7 +68,6 @@ body.dock-dragging {
   & > *:nth-child(odd) {
     flex: 1 1 auto;
   }
-
 }
 
 .dock-divider {
@@ -210,7 +210,7 @@ body.dock-dragging {
     z-index: 300;
     width: 32px;
     height: 32px;
-    font-family: 'Fredoka One', sans-serif;
+    font-family: "Fredoka One", sans-serif;
     color: #ccc;
     background: white;
     border: 1px solid transparent;
@@ -235,7 +235,6 @@ body.dock-dragging {
   }
 
   .dock-drop-tabs {
-
   }
 
   .dock-drop-float {
@@ -257,7 +256,7 @@ body.dock-dragging {
     }
 
     &::before {
-      content: '>';
+      content: ">";
       transform: rotate(180deg);
     }
   }
@@ -271,7 +270,7 @@ body.dock-dragging {
     }
 
     &::before {
-      content: '>';
+      content: ">";
     }
   }
 
@@ -288,7 +287,7 @@ body.dock-dragging {
     }
 
     &::before {
-      content: '>';
+      content: ">";
       transform: rotate(270deg);
     }
   }
@@ -306,7 +305,7 @@ body.dock-dragging {
     }
 
     &::before {
-      content: '>';
+      content: ">";
       transform: rotate(90deg);
     }
   }
@@ -324,7 +323,7 @@ body.dock-dragging {
 .dock-panel-max-btn {
   height: 15px;
   width: 15px;
-  font-family: 'Fredoka One', sans-serif;
+  font-family: "Fredoka One", sans-serif;
   margin: 2px 2px 2px 0;
   padding: 6px 4px 4px 2px;
   opacity: 0.2;
@@ -341,7 +340,8 @@ body.dock-dragging {
     height: 9px;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     opacity: 1;
     color: #999;
 
@@ -364,7 +364,8 @@ body.dock-dragging {
     line-height: 4px;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     &:before {
       color: #999;
     }

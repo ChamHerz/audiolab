@@ -60,8 +60,6 @@ export default function HomeLayout(props) {
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
     }
 
-    console.log("taps", dockLayout.find(`${oneAudio.name}`));
-
     /*dockLayout.updateTab("waveTab", {
       size: 1000,
       tabs: [
@@ -86,12 +84,6 @@ export default function HomeLayout(props) {
           children: [
             {
               tabs: [
-                { ...tab, id: "t1", title: "Tab 1" },
-                { ...tab, id: "t2", title: "Tab 2" },
-              ],
-            },
-            {
-              tabs: [
                 {
                   ...tab,
                   id: "explorerTab",
@@ -106,6 +98,12 @@ export default function HomeLayout(props) {
                   minWidth: 410,
                   minHeight: 300,
                 },
+              ],
+            },
+            {
+              tabs: [
+                { ...tab, id: "t1", title: "Tab 1" },
+                { ...tab, id: "t2", title: "Tab 2" },
               ],
             },
           ],
@@ -163,9 +161,10 @@ export default function HomeLayout(props) {
         ref={getRef}
         defaultLayout={defaultLayout}
         style={{
+          "background-color": "#070707",
           position: "absolute",
           left: 10,
-          top: 50,
+          top: 60,
           right: 10,
           bottom: 10,
         }}
