@@ -1,5 +1,6 @@
 const { Segment } = require("../sequelize");
 const { audioService } = require("../services/audio");
+const { segmentService } = require("../services/segment");
 
 async function newSegment(req, res) {
   const segment = new Segment();
@@ -44,6 +45,17 @@ async function newSegment(req, res) {
   }
 }
 
+async function getMaxId(req, res) {
+  console.log("call getMaxId");
+  const newId = await segmentService.getMaxId();
+  if (newId) {
+    res.status(200).send(newId);
+  } else {
+    res.status(500).send({ message: "Erro al obtener el id Segmentos" });
+  }
+}
+
 module.exports = {
   newSegment,
+  getMaxId,
 };

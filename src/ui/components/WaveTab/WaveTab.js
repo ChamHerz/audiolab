@@ -3,6 +3,7 @@ import Peaks from "peaks.js";
 
 import "./WaveTab.scss";
 import { Button } from "semantic-ui-react";
+import { getMaxId } from "../../api/segment";
 
 export default function WaveTab(props) {
   const { audio, onAddSegment } = props;
@@ -11,6 +12,34 @@ export default function WaveTab(props) {
   let audioContainer = useRef(null);
   let filename = "";
   let peaksInstance;
+
+  const segmentClick = (segment) => {
+    console.log("segment click", segment);
+  };
+
+  const mouseEnter = (segment) => {
+    console.log("SegmentEnter", segment);
+  };
+
+  const mouseLeave = (segment) => {
+    console.log("SegmentLeave", segment);
+  };
+
+  const overviewDblClick = (time) => {
+    console.log("overviewDblClick", time);
+  };
+
+  const zoomviewDblClick = (time) => {
+    console.log("zoomviewDblClick", time);
+  };
+
+  const playerSeeked = (time) => {
+    console.log("playerSeeked", time);
+  };
+
+  const timeUpdate = (time) => {
+    console.log("timeUpdate", time);
+  };
 
   useEffect(() => {
     console.log("cambio el audio");
@@ -42,21 +71,48 @@ export default function WaveTab(props) {
         }
 
         peaksInstance = peaks;
+
+        peaksInstance.on("segments.click", segmentClick);
+        peaksInstance.on("overview.dblclick", overviewDblClick);
+        peaksInstance.on("zoomview.dblclick", zoomviewDblClick);
+        peaksInstance.on("player.seeked", playerSeeked);
+        peaksInstance.on("player.timeupdate", playerSeeked);
+        peaksInstance.on("segments.mouseenter", mouseEnter);
+        peaksInstance.on("segments.mouseleave", mouseLeave);
       });
     }
   }, [audio]);
 
   const addSegment = () => {
     console.log("Add segment");
+
     peaksInstance.segments.add({
+      id: "seg253",
       startTime: peaksInstance.player.getCurrentTime(),
-      endTime: peaksInstance.player.getCurrentTime() + 10,
+      endTime: peaksInstance.player.getCurrentTime() + 5,
       labelText: "Test segment ",
-      editable: true,
-      id: "seg01",
+      editable: false,
     });
 
-    onAddSegment(peaksInstance.segments.getSegment("seg01"));
+    onAddSegment(peaksInstance.segments.getSegment("seg253"));
+
+    /*getMaxId()
+      .then((newId) => {
+        console.log("newId", newId);
+
+        peaksInstance.segments.add({
+          id: newId + 1,
+          startTime: peaksInstance.player.getCurrentTime(),
+          endTime: peaksInstance.player.getCurrentTime() + 10,
+          labelText: "Test segment ",
+          editable: true,
+        });
+
+        onAddSegment(peaksInstance.segments.getSegment(newId + 1));
+      })
+      .catch((err) => {
+        console.log("error en segmento", err);
+      });*/
   };
 
   return audio ? (
