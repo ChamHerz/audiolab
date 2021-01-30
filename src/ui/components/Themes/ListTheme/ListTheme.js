@@ -72,7 +72,7 @@ function Theme(props) {
                 </Button>
             </Table.Cell>
             <Table.Cell collapsing>
-                <Button icon onClick={DeleteTheme(theme.id)}>
+                <Button icon onClick={() => DeleteTheme(theme.id)}>
                     <Icon name='trash' />
                 </Button>
             </Table.Cell>
