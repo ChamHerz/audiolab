@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
 import TopBar from "../../components/TopBar";
@@ -6,7 +6,7 @@ import TopBar from "../../components/TopBar";
 import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
 
-import { runner } from "../../utils/runner";
+import SegmentTab from "../../components/SegmentTab";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -18,13 +18,6 @@ export const jsxTab = {
   content: <iframe src={`./${name}.jsx.html`} />,
 };
 
-export const htmlTab = {
-  id: "htmlTab",
-  title: "html",
-  closable: true,
-  content: <iframe src={`./${name}.html.html`} />,
-};
-
 let tab = {
   content: <div>Tab Content</div>,
   closable: true,
@@ -33,7 +26,6 @@ let tab = {
 export default function HomeLayout(props) {
   const { project } = props;
   let dockLayout;
-  let count = 0;
 
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
@@ -43,35 +35,26 @@ export default function HomeLayout(props) {
         id: `${oneAudio.name}`,
         title: `${oneAudio.name}`,
         closable: true,
-        content: <WaveTab audio={oneAudio} />,
+        content: <WaveTab audio={oneAudio} onAddSegment={onAddSegment} />,
       };
     };
 
     console.log("click en cancion");
     console.log(oneAudio);
 
-    /*if (!oneAudio.hasData) {
-      await runner(oneAudio);
-      console.log("ya se proceso el audio");
-    }*/
-
     if (!dockLayout.find(`${oneAudio.name}`)) {
       //El audio no esta abierto
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
     }
+  };
 
-    /*dockLayout.updateTab("waveTab", {
-      size: 1000,
-      tabs: [
-        {
-          ...tab,
-          id: "waveTab",
-          title: "Audio: ",
-          content: <WaveTab audio={oneAudio} />,
-        },
-      ],
-      panelLock: { panelStyle: "main" },
-    });*/
+  const onAddSegment = (segment) => {
+    console.log("onAddSegment", segment);
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: <SegmentTab newSegment={segment} />,
+    });
   };
 
   let defaultLayout = {
@@ -122,7 +105,13 @@ export default function HomeLayout(props) {
               children: [
                 {
                   id: "segmentPanel",
-                  tabs: [{ ...tab, id: "segmentTab", title: "Segmentos" }],
+                  tabs: [
+                    {
+                      id: "segmentTab",
+                      title: "Segmentos",
+                      content: <SegmentTab />,
+                    },
+                  ],
                 },
                 {
                   id: "labelTab",

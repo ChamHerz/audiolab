@@ -2,13 +2,15 @@ import React, { useEffect, useRef } from "react";
 import Peaks from "peaks.js";
 
 import "./WaveTab.scss";
+import { Button } from "semantic-ui-react";
 
 export default function WaveTab(props) {
-  const { audio } = props;
+  const { audio, onAddSegment } = props;
   let zoomviewContainer = useRef(null);
   let overviewContainer = useRef(null);
   let audioContainer = useRef(null);
   let filename = "";
+  let peaksInstance;
 
   useEffect(() => {
     console.log("cambio el audio");
@@ -38,12 +40,23 @@ export default function WaveTab(props) {
         if (err) {
           console.error(err.message);
         }
+
+        peaksInstance = peaks;
       });
     }
   }, [audio]);
 
-  const onClick = () => {
-    console.log("ok");
+  const addSegment = () => {
+    console.log("Add segment");
+    peaksInstance.segments.add({
+      startTime: peaksInstance.player.getCurrentTime(),
+      endTime: peaksInstance.player.getCurrentTime() + 10,
+      labelText: "Test segment ",
+      editable: true,
+      id: "seg01",
+    });
+
+    onAddSegment(peaksInstance.segments.getSegment("seg01"));
   };
 
   return audio ? (
@@ -59,6 +72,7 @@ export default function WaveTab(props) {
           <source src={audio.path} type={audio.type} />
           {/*<source src={soundOgg} type="audio/ogg" />*/}
         </audio>
+        <Button onClick={() => addSegment()}>Agregar Segmento</Button>
       </div>
     </div>
   ) : (

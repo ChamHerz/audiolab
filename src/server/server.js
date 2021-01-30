@@ -7,7 +7,8 @@ const { API_VERSION } = require("./config");
 // Load routers
 const userRoutes = require("./routers/user");
 const projectRoutes = require("./routers/project");
-const audioRoutes = require("./routers/audio.js");
+const audioRoutes = require("./routers/audio");
+const segmentRoutes = require("./routers/segment");
 
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -19,5 +20,6 @@ server.use(bodyParser.json());
 server.use(`/api/${API_VERSION}/user`, userRoutes);
 server.use(`/api/${API_VERSION}/project`, projectRoutes);
 server.use(`/api/${API_VERSION}/audio`, audioRoutes);
+server.use(`/api/${API_VERSION}/segment`, segmentRoutes);
 
 module.exports = server;
