@@ -26,6 +26,7 @@ let tab = {
 export default function HomeLayout(props) {
   const { project } = props;
   let dockLayout;
+  let currentAudio;
 
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
@@ -46,6 +47,8 @@ export default function HomeLayout(props) {
       //El audio no esta abierto
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
     }
+
+    currentAudio = oneAudio;
   };
 
   const onAddSegment = (segment) => {
@@ -53,7 +56,9 @@ export default function HomeLayout(props) {
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
-      content: <SegmentTab newSegment={segment} />,
+      content: (
+        <SegmentTab newSegmentToAdd={segment} currentAudio={currentAudio} />
+      ),
     });
   };
 

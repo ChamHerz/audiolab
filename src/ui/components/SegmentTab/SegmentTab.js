@@ -5,14 +5,28 @@ import { newSegment } from "../../api/segment";
 import "./SegmentTab.scss";
 
 export default function SegmentTab(props) {
-  const { newSegment } = props;
+  const { newSegmentToAdd, currentAudio } = props;
 
   useEffect(() => {
-    if (newSegment) {
-      console.log("efefcto segmneto,", newSegment);
-      //console.log("audio", audio);
+    if (newSegmentToAdd) {
+      console.log("efefcto segmneto,", newSegmentToAdd);
+      console.log("audio", currentAudio);
+
+      newSegment({
+        audioId: currentAudio.id,
+        labelText: newSegmentToAdd.labelText,
+        startTime: newSegmentToAdd.startTime,
+        endTime: newSegmentToAdd.endTime,
+        color: newSegmentToAdd.color,
+      })
+        .then((response) => {
+          console.log("Segmento creado", response);
+        })
+        .catch((error) => {
+          console.log("error en segmento", error);
+        });
     }
-  }, [newSegment]);
+  }, [newSegmentToAdd]);
 
   return (
     <div className="segment-tab">
