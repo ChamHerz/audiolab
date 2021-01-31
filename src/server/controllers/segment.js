@@ -47,11 +47,15 @@ async function newSegment(req, res) {
 
 async function getMaxId(req, res) {
   console.log("call getMaxId");
-  const newId = await segmentService.getMaxId();
-  if (newId) {
-    res.status(200).send(newId);
+
+  const segment = await segmentService.getMaxId();
+
+  console.log("segmentoEnocntrad", segment);
+
+  if (segment) {
+    res.status(200).send({ segmentId: segment });
   } else {
-    res.status(500).send({ message: "Erro al obtener el id Segmentos" });
+    res.status(200).send(0);
   }
 }
 

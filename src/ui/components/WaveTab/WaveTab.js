@@ -25,10 +25,6 @@ export default function WaveTab(props) {
     console.log("SegmentLeave", segment);
   };
 
-  const overviewDblClick = (time) => {
-    console.log("overviewDblClick", time);
-  };
-
   const zoomviewDblClick = (time) => {
     console.log("zoomviewDblClick", time);
   };
@@ -72,47 +68,40 @@ export default function WaveTab(props) {
 
         peaksInstance = peaks;
 
-        peaksInstance.on("segments.click", segmentClick);
-        peaksInstance.on("overview.dblclick", overviewDblClick);
-        peaksInstance.on("zoomview.dblclick", zoomviewDblClick);
+        peaksInstance.on("zoomview.dblclick", addSegment);
+
+        /*peaksInstance.on("segments.click", segmentClick);
+        peaksInstance.on("overview.dblclick", addSegment);
         peaksInstance.on("player.seeked", playerSeeked);
         peaksInstance.on("player.timeupdate", playerSeeked);
         peaksInstance.on("segments.mouseenter", mouseEnter);
-        peaksInstance.on("segments.mouseleave", mouseLeave);
+        peaksInstance.on("segments.mouseleave", mouseLeave);*/
       });
     }
   }, [audio]);
 
-  const addSegment = () => {
+  const addSegment = (currentTime) => {
     console.log("Add segment");
 
-    peaksInstance.segments.add({
-      id: "seg253",
-      startTime: peaksInstance.player.getCurrentTime(),
-      endTime: peaksInstance.player.getCurrentTime() + 5,
-      labelText: "Test segment ",
-      editable: false,
-    });
+    getMaxId()
+      .then((response) => {
+        console.log("newId", response);
 
-    onAddSegment(peaksInstance.segments.getSegment("seg253"));
-
-    /*getMaxId()
-      .then((newId) => {
-        console.log("newId", newId);
+        const newIdToAdd = response.data.segmentId + 1;
 
         peaksInstance.segments.add({
-          id: newId + 1,
+          id: newIdToAdd,
           startTime: peaksInstance.player.getCurrentTime(),
-          endTime: peaksInstance.player.getCurrentTime() + 10,
+          endTime: peaksInstance.player.getCurrentTime() + 5,
           labelText: "Test segment ",
           editable: true,
         });
 
-        onAddSegment(peaksInstance.segments.getSegment(newId + 1));
+        onAddSegment(peaksInstance.segments.getSegment(newIdToAdd));
       })
       .catch((err) => {
         console.log("error en segmento", err);
-      });*/
+      });
   };
 
   return audio ? (

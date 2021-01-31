@@ -1,16 +1,17 @@
 const { Segment } = require("../sequelize");
-const Sequelize = require("sequelize");
 
 async function getMaxIdService() {
-  let id = 0;
+  let oneSegment = null;
   await Segment.max("id")
     .then((segment) => {
-      id = segment.id;
+      console.log("SegmentoFind", segment);
+      oneSegment = segment;
     })
     .catch((err) => {
       console.log("error", err);
+      oneSegment = null;
     });
-  return id;
+  return oneSegment;
 }
 
 const segmentService = {
