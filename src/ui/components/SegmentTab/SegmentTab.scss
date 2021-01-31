@@ -1,0 +1,9 @@
+@import "../../scss/index.scss";
+
+.dock-tabpane > div.segment-tab {
+  margin: 5px;
+
+  .ui.table.inverted {
+    background-color: $background-dark;
+  }
+}

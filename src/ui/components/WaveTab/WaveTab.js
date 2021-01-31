@@ -2,13 +2,40 @@ import React, { useEffect, useRef } from "react";
 import Peaks from "peaks.js";
 
 import "./WaveTab.scss";
+import { Button } from "semantic-ui-react";
+import { getMaxId } from "../../api/segment";
 
 export default function WaveTab(props) {
-  const { audio } = props;
+  const { audio, onAddSegment } = props;
   let zoomviewContainer = useRef(null);
   let overviewContainer = useRef(null);
   let audioContainer = useRef(null);
   let filename = "";
+  let peaksInstance;
+
+  const segmentClick = (segment) => {
+    console.log("segment click", segment);
+  };
+
+  const mouseEnter = (segment) => {
+    console.log("SegmentEnter", segment);
+  };
+
+  const mouseLeave = (segment) => {
+    console.log("SegmentLeave", segment);
+  };
+
+  const zoomviewDblClick = (time) => {
+    console.log("zoomviewDblClick", time);
+  };
+
+  const playerSeeked = (time) => {
+    console.log("playerSeeked", time);
+  };
+
+  const timeUpdate = (time) => {
+    console.log("timeUpdate", time);
+  };
 
   useEffect(() => {
     console.log("cambio el audio");
@@ -38,12 +65,43 @@ export default function WaveTab(props) {
         if (err) {
           console.error(err.message);
         }
+
+        peaksInstance = peaks;
+
+        peaksInstance.on("zoomview.dblclick", addSegment);
+
+        /*peaksInstance.on("segments.click", segmentClick);
+        peaksInstance.on("overview.dblclick", addSegment);
+        peaksInstance.on("player.seeked", playerSeeked);
+        peaksInstance.on("player.timeupdate", playerSeeked);
+        peaksInstance.on("segments.mouseenter", mouseEnter);
+        peaksInstance.on("segments.mouseleave", mouseLeave);*/
       });
     }
   }, [audio]);
 
-  const onClick = () => {
-    console.log("ok");
+  const addSegment = (currentTime) => {
+    console.log("Add segment");
+
+    getMaxId()
+      .then((response) => {
+        console.log("newId", response);
+
+        const newIdToAdd = response.data.segmentId + 1;
+
+        peaksInstance.segments.add({
+          id: newIdToAdd,
+          startTime: peaksInstance.player.getCurrentTime(),
+          endTime: peaksInstance.player.getCurrentTime() + 5,
+          labelText: "Test segment ",
+          editable: true,
+        });
+
+        onAddSegment(peaksInstance.segments.getSegment(newIdToAdd));
+      })
+      .catch((err) => {
+        console.log("error en segmento", err);
+      });
   };
 
   return audio ? (
@@ -59,6 +117,7 @@ export default function WaveTab(props) {
           <source src={audio.path} type={audio.type} />
           {/*<source src={soundOgg} type="audio/ogg" />*/}
         </audio>
+        <Button onClick={() => addSegment()}>Agregar Segmento</Button>
       </div>
     </div>
   ) : (

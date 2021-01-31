@@ -38,7 +38,7 @@ async function newAudio(req, res) {
       .catch((err) => {
         console.log(err);
         if (err.errors) {
-          res.status(500).send({ message: "Error en la base" });
+          res.status(500).send({ message: "Error en la tabla audio" });
         }
       });
   }
