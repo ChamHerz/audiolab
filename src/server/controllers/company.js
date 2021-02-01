@@ -1,13 +1,13 @@
-const { Theme } = require(".../sequelize");
+const { Company } = require("../sequelize");
 let _ = require("lodash");
 
 function newCompany( req, res ) {
     const company = new Company();
 
-    const { fantasyName, companyName, cuit, description } = req.body;
+    const { fantasyName, companyName, CUIT, description } = req.body;
     company.fantasyName = fantasyName;
     company.companyName = companyName;
-    company.cuit = cuit;
+    company.CUIT = CUIT;
     company.description = description;
 
     //Solamente vamos a pedir como obligatorio el campo de nombre de fantasia.fantasyName
@@ -18,7 +18,7 @@ function newCompany( req, res ) {
     //CUIT:  30-67881435-7
 
     if(!fantasyName) {
-        res.status(404).send({ message:"El nombre de fantasia es obligatorio"}):
+        res.status(404).send({ message:"El nombre de fantasia es obligatorio"});
     } else {
         Company.create( company.dataValues)
             .then((newCompany) => res.status(200).send(newCompany))

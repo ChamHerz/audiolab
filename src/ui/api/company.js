@@ -1,4 +1,4 @@
-import { basePath, apiVersion} from "./config";
+import { basePath, apiVersion } from "./config";
 const axios = require("axios").default;
 
 export function newCompany(data) {
@@ -6,5 +6,5 @@ export function newCompany(data) {
 }
 
 export function listCompany() {
-    return axios.post(`${basePath}/${apiVersion}/company/list-company`, data);
+    return axios.get(`${basePath}/${apiVersion}/company/list-company`);
 }

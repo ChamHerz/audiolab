@@ -1,8 +1,8 @@
-module.exports = {sequelize, type} => {
+module.exports = (sequelize, type) => {
     return sequelize.define("company", {
         id: {
             type: type.INTEGER,
-            primaryKey: true;
+            primaryKey: true,
             autoIncrement: true,
         },
 

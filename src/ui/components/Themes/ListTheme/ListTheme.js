@@ -26,24 +26,24 @@ export default function ListTheme(props) {
             <Grid className="list-theme">
                 <Grid.Row>
                     <Table inverted className="table-themes">
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Nombre</Table.HeaderCell>
-                            <Table.HeaderCell>Descripcion</Table.HeaderCell>
-                            <Table.HeaderCell></Table.HeaderCell>
-                            <Table.HeaderCell></Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Nombre</Table.HeaderCell>
+                                <Table.HeaderCell>Descripcion</Table.HeaderCell>
+                                <Table.HeaderCell></Table.HeaderCell>
+                                <Table.HeaderCell></Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
 
-                    <Table.Body>
-                        {map(themes, (theme) => (
-                            <Theme
-                                key={theme.id}
-                                theme={theme}
-                                setTheme={setTheme}
-                            />
-                        ))}
-                    </Table.Body>
+                        <Table.Body>
+                            {map(themes, (theme) => (
+                                <Theme
+                                    key={theme.id}
+                                    theme={theme}
+                                    setTheme={setTheme}
+                                />
+                            ))}
+                        </Table.Body>
                 </Table>
 
                 </Grid.Row>
@@ -76,6 +76,6 @@ function Theme(props) {
                     <Icon name='trash' />
                 </Button>
             </Table.Cell>
-        </Table.Row>)
-        ;
+        </Table.Row>
+    );
 }
