@@ -6,6 +6,5 @@ export function newCourt(data) {
 }
 
 export function listCourt() {
-        return axios.get(`${basePath}/${apiVersion}/court/list-court`);
-
+    return axios.get(`${basePath}/${apiVersion}/court/list-court`);
 }

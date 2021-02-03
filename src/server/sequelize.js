@@ -4,7 +4,7 @@ const ProjectModel = require("./models/project");
 const AudioModel = require("./models/audio.js");
 const ThemeModel = require("./models/theme");
 const CompanyModel = require("./models/company");
-const CourtModel = require("./models/company")
+const CourtModel = require("./models/court")
 
 const sequelize = new Sequelize({
   dialect: "sqlite",

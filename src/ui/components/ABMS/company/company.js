@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Form, Icon, Input, Table, Loader, Button, Grid } from "semantic-ui-react";
 import { newCompany } from "../../../api/company";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ export default function Company(props){
 
     const resetForm = () => {
         setFormData(initialValueForm());
-    }
+    };
 
     const onSubmit = () => {
         if(!formData.fantasyName){
@@ -41,7 +41,10 @@ export default function Company(props){
            }
         }
     return(
-        <>
+    <>
+
+
+
             {isNewCompany ?
                 <Form className="ui-form" onSubmit={onSubmit}>
                     <h4 className="ui dividing header">Empresas</h4>
@@ -91,7 +94,7 @@ export default function Company(props){
                     </Grid>
                 </div>
             }
-        </>)
+       </> )
 }
 
 function initialValueForm() {

@@ -59,7 +59,7 @@ export default function Theme(props){
                         />
                     </Form.Field>
                     <Grid>
-                        <Grid.Column textAlign="left">
+                        <Grid.Column textAlign="right">
                             <Button type="submit" className="ui button" loading={isLoading} >Crear Tema</Button>
                             <Button className="ui button" onClick={handlerIsNewTheme}>Cancelar</Button>
                         </Grid.Column>
@@ -69,7 +69,7 @@ export default function Theme(props){
 
                     <ListTheme/>
                     <Grid>
-                        <Grid.Column textAlign="left">
+                        <Grid.Column textAlign="right">
                             <Button className="ui common button" onClick={handlerIsNewTheme}>Nuevo Tema</Button>
                         </Grid.Column>
                     </Grid>

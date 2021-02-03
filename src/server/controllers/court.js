@@ -1,4 +1,4 @@
-const { Court} = require("../sequelize");
+const { Court } = require("../sequelize");
 let _ = require("lodash");
 
 function newCourt( req, res ) {

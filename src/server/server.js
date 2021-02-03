@@ -24,6 +24,6 @@ server.use(`/api/${API_VERSION}/project`, projectRoutes);
 server.use(`/api/${API_VERSION}/audio`, audioRoutes);
 server.use(`/api/${API_VERSION}/theme`, themeRoutes);
 server.use(`/api/${API_VERSION}/company`, companyRoutes);
-server.use(`/api/${API_VERSION}/company`, courtRoutes);
+server.use(`/api/${API_VERSION}/court`, courtRoutes);
 
 module.exports = server;
