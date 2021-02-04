@@ -8,3 +8,9 @@ export function newSegment(segment) {
 export function getMaxId() {
   return axios.get(`${basePath}/${apiVersion}/segment/get-max-id`);
 }
+
+export function listSegmentByAudio(audioId) {
+  return axios.get(
+    `${basePath}/${apiVersion}/segment/list-segment-by-audio/${audioId}`
+  );
+}

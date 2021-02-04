@@ -59,7 +59,23 @@ async function getMaxId(req, res) {
   }
 }
 
+function listSegmentByAudioId(req, res) {
+  const { audioId } = req.params;
+  Segment.findAll({
+    where: {
+      id_audio: audioId,
+      deleted: false,
+    },
+  })
+    .then((segments) => res.status(200).send(segments))
+    .catch((err) => {
+      res.status(500).send({ message: "Error al cargar segmentos" });
+      console.log(err.message);
+    });
+}
+
 module.exports = {
   newSegment,
   getMaxId,
+  listSegmentByAudioId,
 };

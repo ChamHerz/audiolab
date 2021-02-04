@@ -5,6 +5,8 @@ import "./WaveTab.scss";
 import { Button } from "semantic-ui-react";
 import { getMaxId } from "../../api/segment";
 
+import Konva from "konva";
+
 export default function WaveTab(props) {
   const { audio, onAddSegment } = props;
   let zoomviewContainer = useRef(null);
@@ -37,6 +39,41 @@ export default function WaveTab(props) {
     console.log("timeUpdate", time);
   };
 
+  function createSegmentLabel(options) {
+    if (options.view === "overview") {
+      return null;
+    }
+
+    let label = new Konva.Label({
+      x: 12,
+      y: 16,
+    });
+
+    label.add(
+      new Konva.Tag({
+        fill: "black",
+        pointerDirection: "none",
+        shadowColor: "black",
+        shadowBlur: 10,
+        shadowOffsetX: 3,
+        shadowOffsetY: 3,
+        shadowOpacity: 0.3,
+      })
+    );
+
+    label.add(
+      new Konva.Text({
+        text: options.segment.labelText,
+        fontSize: 14,
+        fontFamily: "Calibri",
+        fill: "white",
+        padding: 8,
+      })
+    );
+
+    return label;
+  }
+
   useEffect(() => {
     console.log("cambio el audio");
 
@@ -55,8 +92,8 @@ export default function WaveTab(props) {
           arraybuffer: "data/" + filename + ".dat",
         },
         keyboard: true,
-        pointMarkerColor: "#006eb0",
-        showPlayheadTime: true,
+        showPlayheadTime: false,
+        createSegmentLabel: createSegmentLabel,
       };
 
       Peaks.init(options, function (err, peaks) {
