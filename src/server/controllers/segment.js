@@ -55,7 +55,7 @@ async function getMaxId(req, res) {
   if (segment) {
     res.status(200).send({ segmentId: segment });
   } else {
-    res.status(200).send(0);
+    res.status(200).send({ segmentId: 0 });
   }
 }
 

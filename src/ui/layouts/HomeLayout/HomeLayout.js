@@ -28,6 +28,15 @@ export default function HomeLayout(props) {
   let dockLayout;
   let currentAudio;
 
+  const onCloseAudio = () => {
+    console.log("Cerrado de audio");
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: <SegmentTab onClose={true} />,
+    });
+  };
+
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
 
@@ -36,7 +45,13 @@ export default function HomeLayout(props) {
         id: `${oneAudio.name}`,
         title: `${oneAudio.name}`,
         closable: true,
-        content: <WaveTab audio={oneAudio} onAddSegment={onAddSegment} />,
+        content: (
+          <WaveTab
+            audio={oneAudio}
+            onAddSegment={onAddSegment}
+            onClose={onCloseAudio}
+          />
+        ),
       };
     };
 
@@ -49,6 +64,12 @@ export default function HomeLayout(props) {
     }
 
     currentAudio = oneAudio;
+
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: <SegmentTab onLoad={true} currentAudio={currentAudio} />,
+    });
   };
 
   const onAddSegment = (segment) => {

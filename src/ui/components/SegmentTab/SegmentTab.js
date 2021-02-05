@@ -7,7 +7,7 @@ import ContextMenu from "semantic-ui-react-context-menu";
 import "./SegmentTab.scss";
 
 export default function SegmentTab(props) {
-  const { newSegmentToAdd, currentAudio } = props;
+  const { newSegmentToAdd, currentAudio, onClose, onLoad } = props;
   const [segments, setSegments] = useState([]);
 
   const loadSegments = () => {
@@ -45,6 +45,23 @@ export default function SegmentTab(props) {
         });
     }
   }, [newSegmentToAdd]);
+
+  const clearSegments = () => {
+    setSegments([]);
+  };
+
+  useEffect(() => {
+    if (onClose) {
+      console.log("Tengo que resetear la lista");
+      clearSegments();
+    }
+  }, [onClose]);
+
+  useEffect(() => {
+    if (onLoad) {
+      loadSegments();
+    }
+  }, [onLoad]);
 
   return (
     <div className="segment-tab">
