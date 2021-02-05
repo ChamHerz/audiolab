@@ -7,7 +7,13 @@ import ContextMenu from "semantic-ui-react-context-menu";
 import "./SegmentTab.scss";
 
 export default function SegmentTab(props) {
-  const { newSegmentToAdd, currentAudio, onClose, onLoad } = props;
+  const {
+    newSegmentToAdd,
+    currentAudio,
+    onClose,
+    onLoad,
+    onDeleteSegment,
+  } = props;
   const [segments, setSegments] = useState([]);
 
   const loadSegments = () => {
@@ -63,6 +69,11 @@ export default function SegmentTab(props) {
     }
   }, [onLoad]);
 
+  const deleteSegment = (e, segment) => {
+    console.log("Borrar en base de datos", segment);
+    onDeleteSegment(e, segment);
+  };
+
   return (
     <div className="segment-tab">
       <Table inverted>
@@ -78,7 +89,11 @@ export default function SegmentTab(props) {
         </Table.Header>
         <Table.Body>
           {map(segments, (segment) => (
-            <SegmentRow key={segment.id} segment={segment} />
+            <SegmentRow
+              key={segment.id}
+              segment={segment}
+              onDeleteSegment={deleteSegment}
+            />
           ))}
         </Table.Body>
       </Table>
@@ -87,7 +102,7 @@ export default function SegmentTab(props) {
 }
 
 function SegmentRow(props) {
-  const { segment } = props;
+  const { segment, onDeleteSegment } = props;
   const [selected, setSelected] = useState(false);
 
   const onSegment = (e, segmentId) => {
@@ -101,10 +116,6 @@ function SegmentRow(props) {
 
   const onDoubleClickSegment = (e, segment) => {
     console.log("Doble click, ", segment);
-  };
-
-  const onDeleteSegment = (e, segment) => {
-    console.log("borrar segmento");
   };
 
   return (

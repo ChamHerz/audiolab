@@ -25,6 +25,7 @@ let tab = {
 
 export default function HomeLayout(props) {
   const { project } = props;
+  let deleteSegment;
   let dockLayout;
   let currentAudio;
 
@@ -50,6 +51,7 @@ export default function HomeLayout(props) {
             audio={oneAudio}
             onAddSegment={onAddSegment}
             onClose={onCloseAudio}
+            deleteSegment={deleteSegment}
           />
         ),
       };
@@ -68,7 +70,31 @@ export default function HomeLayout(props) {
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
-      content: <SegmentTab onLoad={true} currentAudio={currentAudio} />,
+      content: (
+        <SegmentTab
+          onLoad={true}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
+  };
+
+  const onDeleteSegment = (e, segment) => {
+    console.log("borrar segmento", segment);
+    deleteSegment = segment;
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onClose={onCloseAudio}
+          deleteSegment={deleteSegment}
+        />
+      ),
     });
   };
 
@@ -78,7 +104,11 @@ export default function HomeLayout(props) {
       id: "segmentTab",
       title: "Segmentos",
       content: (
-        <SegmentTab newSegmentToAdd={segment} currentAudio={currentAudio} />
+        <SegmentTab
+          newSegmentToAdd={segment}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
       ),
     });
   };

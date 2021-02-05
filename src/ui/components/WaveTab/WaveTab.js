@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peaks from "peaks.js";
+import { map } from "lodash";
 
 import "./WaveTab.scss";
-import { getMaxId } from "../../api/segment";
+import { getMaxId, listSegmentByAudio } from "../../api/segment";
 
 import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
 
 export default function WaveTab(props) {
-  const { audio, onAddSegment, onClose } = props;
+  const { audio, onAddSegment, onClose, deleteSegment } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [peaksInstance, setPeaksInstance] = useState(null);
   let zoomviewContainer = useRef(null);
@@ -16,6 +17,16 @@ export default function WaveTab(props) {
   let audioContainer = useRef(null);
   let filename = "";
   /*let peaksInstance;*/
+
+  useEffect(() => {
+    if (deleteSegment) {
+      console.log("Aqui borrar el segmento", deleteSegment);
+      const segmentToDelete = deleteSegment.selected;
+      console.log("segmentos", peaksInstance.segments.getSegments());
+      peaksInstance.segments.removeById(segmentToDelete.id);
+      console.log("segmentos", peaksInstance.segments.getSegments());
+    }
+  }, [deleteSegment]);
 
   useEffect(() => {
     return () => {
@@ -117,6 +128,8 @@ export default function WaveTab(props) {
 
         peaks.on("zoomview.dblclick", addSegment);
 
+        loadSegments(peaks);
+
         /*peaksInstance.on("segments.click", segmentClick);
         peaksInstance.on("overview.dblclick", addSegment);
         peaksInstance.on("player.seeked", playerSeeked);
@@ -126,6 +139,23 @@ export default function WaveTab(props) {
       });
     }
   }, [audio]);
+
+  const loadSegments = (peaks) => {
+    console.log("cargando segmentos");
+    listSegmentByAudio(audio?.id).then((response) => {
+      map(response?.data, (segment) => {
+        console.log("segmento", segment);
+        peaks.segments.add({
+          id: segment.id,
+          startTime: segment.startTime,
+          endTime: segment.endTime,
+          labelText: segment.labelText,
+          color: segment.color,
+          editable: true,
+        });
+      });
+    });
+  };
 
   const addSegment = (currentTime) => {
     console.log("Add segment");
