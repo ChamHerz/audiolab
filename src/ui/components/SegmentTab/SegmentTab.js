@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Icon, Segment, Table, TableBody } from "semantic-ui-react";
-import { newSegment, listSegmentByAudio } from "../../api/segment";
+import {
+  newSegment,
+  listSegmentByAudio,
+  deleteSegmentById,
+} from "../../api/segment";
 import { map } from "lodash";
 import ContextMenu from "semantic-ui-react-context-menu";
 
 import "./SegmentTab.scss";
+import { toast } from "react-toastify";
 
 export default function SegmentTab(props) {
   const {
@@ -71,12 +76,22 @@ export default function SegmentTab(props) {
 
   const deleteSegment = (e, segment) => {
     console.log("Borrar en base de datos", segment);
-    onDeleteSegment(e, segment);
+    const segmentToDelete = segment.selected;
+
+    deleteSegmentById(segmentToDelete.id)
+      .then((response) => {
+        toast.success(`El segmento ${segmentToDelete.labelText} fue borrado`);
+        loadSegments();
+        onDeleteSegment(e, segment); //envia señal al waveTab
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
 
   return (
     <div className="segment-tab">
-      <Table inverted>
+      <Table inverted className="segment-list">
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Nombre</Table.HeaderCell>

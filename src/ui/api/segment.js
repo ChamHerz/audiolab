@@ -14,3 +14,9 @@ export function listSegmentByAudio(audioId) {
     `${basePath}/${apiVersion}/segment/list-segment-by-audio/${audioId}`
   );
 }
+
+export function deleteSegmentById(segmentId) {
+  return axios.put(
+    `${basePath}/${apiVersion}/segment/delete-segment-by-id/${segmentId}`
+  );
+}

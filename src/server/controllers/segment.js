@@ -74,8 +74,25 @@ function listSegmentByAudioId(req, res) {
     });
 }
 
+function deleteSegment(req, res) {
+  const { segmentId } = req.params;
+  const segmentIdInt = parseInt(segmentId);
+  Segment.update(
+    {
+      deleted: true,
+    },
+    { where: { id: segmentIdInt } }
+  )
+    .then((segment) => res.status(200).send(segment))
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send({ message: "Error al borrar el segmento" });
+    });
+}
+
 module.exports = {
   newSegment,
   getMaxId,
   listSegmentByAudioId,
+  deleteSegment,
 };

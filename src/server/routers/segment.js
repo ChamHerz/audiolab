@@ -9,5 +9,6 @@ api.get(
   "/list-segment-by-audio/:audioId",
   SegmentController.listSegmentByAudioId
 );
+api.put("/delete-segment-by-id/:segmentId", SegmentController.deleteSegment);
 
 module.exports = api;
