@@ -90,9 +90,33 @@ function deleteSegment(req, res) {
     });
 }
 
+function updateSegment(req, res) {
+  const { id, labelText, startTime, endTime, color } = req.body;
+  const segmentId = parseInt(id);
+
+  Segment.findByPk(segmentId).then((segment) => {
+    return segment
+      .update({
+        labelText: labelText,
+        startTime: startTime,
+        endTime: endTime,
+        color: color,
+      })
+      .then(() => {
+        console.log("rowsUpdate", segment);
+        res.status(200).send(segment);
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "Error al editar el segmento" });
+        console.log(err.message);
+      });
+  });
+}
+
 module.exports = {
   newSegment,
   getMaxId,
   listSegmentByAudioId,
   deleteSegment,
+  updateSegment,
 };

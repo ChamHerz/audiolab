@@ -20,3 +20,7 @@ export function deleteSegmentById(segmentId) {
     `${basePath}/${apiVersion}/segment/delete-segment-by-id/${segmentId}`
   );
 }
+
+export function updateSegment(segment) {
+  return axios.put(`${basePath}/${apiVersion}/segment/update-segment`, segment);
+}

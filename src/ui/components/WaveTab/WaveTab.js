@@ -9,7 +9,7 @@ import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
 
 export default function WaveTab(props) {
-  const { audio, onAddSegment, onClose, deleteSegment } = props;
+  const { audio, onAddSegment, onClose, deleteSegment, updateSegment } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [peaksInstance, setPeaksInstance] = useState(null);
   let zoomviewContainer = useRef(null);
@@ -127,6 +127,12 @@ export default function WaveTab(props) {
         setPeaksInstance(peaks);
 
         peaks.on("zoomview.dblclick", addSegment);
+        peaks.on("segments.dragend", dragEndSegment);
+
+        // evento que se ejecuta al finalizar el drag
+        //peaks.on("segments.dragstart", dragStartSegment);
+        // evento que se ejecuta constantemente
+        //peaks.on("segments.dragged", draggedSegment);
 
         loadSegments(peaks);
 
@@ -161,6 +167,11 @@ export default function WaveTab(props) {
     console.log("Add segment");
 
     setOpenSegmentModal(true);
+  };
+
+  const dragEndSegment = (segment, inMarker) => {
+    console.log("draged End", segment, "inmarler", inMarker);
+    updateSegment(segment);
   };
 
   return audio ? (

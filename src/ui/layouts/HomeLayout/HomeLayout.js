@@ -52,6 +52,7 @@ export default function HomeLayout(props) {
             onAddSegment={onAddSegment}
             onClose={onCloseAudio}
             deleteSegment={deleteSegment}
+            updateSegment={updateSegment}
           />
         ),
       };
@@ -106,6 +107,21 @@ export default function HomeLayout(props) {
       content: (
         <SegmentTab
           newSegmentToAdd={segment}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
+  };
+
+  const updateSegment = (segment) => {
+    console.log("Actuializar segmento", segment);
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: (
+        <SegmentTab
+          segmentToUpdate={segment}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
         />

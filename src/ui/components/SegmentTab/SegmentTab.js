@@ -4,8 +4,9 @@ import {
   newSegment,
   listSegmentByAudio,
   deleteSegmentById,
+  updateSegment,
 } from "../../api/segment";
-import { map } from "lodash";
+import { map, findIndex } from "lodash";
 import ContextMenu from "semantic-ui-react-context-menu";
 
 import "./SegmentTab.scss";
@@ -18,6 +19,7 @@ export default function SegmentTab(props) {
     onClose,
     onLoad,
     onDeleteSegment,
+    segmentToUpdate,
   } = props;
   const [segments, setSegments] = useState([]);
 
@@ -56,6 +58,38 @@ export default function SegmentTab(props) {
         });
     }
   }, [newSegmentToAdd]);
+
+  useEffect(() => {
+    if (segmentToUpdate) {
+      console.log("Aqui actualizao el segmento en tabla", segmentToUpdate);
+
+      updateSegment({
+        id: segmentToUpdate.id,
+        labelText: segmentToUpdate.labelText,
+        startTime: segmentToUpdate.startTime,
+        endTime: segmentToUpdate.endTime,
+        color: segmentToUpdate.color,
+      })
+        .then((response) => {
+          console.log(response);
+          if (response?.data) {
+            const segmentUpdated = response?.data;
+            console.log("Segmneto actualizado", segmentUpdated);
+            const indexToUpdate = findIndex(segments, {
+              id: segmentUpdated.id,
+            });
+            console.log("index", indexToUpdate);
+            segments.splice(indexToUpdate, 1, segmentUpdated);
+            console.log("actualizado", segments);
+            setSegments([]);
+            setSegments(segments);
+          }
+        })
+        .catch((err) => {
+          toast.error("error al actualizar el segmento");
+        });
+    }
+  }, [segmentToUpdate]);
 
   const clearSegments = () => {
     setSegments([]);
