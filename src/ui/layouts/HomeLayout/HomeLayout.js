@@ -116,6 +116,20 @@ export default function HomeLayout(props) {
 
   const updateSegment = (segment) => {
     console.log("Actuializar segmento", segment);
+
+    // para actualizar el UseEffect
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: (
+        <SegmentTab
+          segmentToUpdate={null}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
+
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
