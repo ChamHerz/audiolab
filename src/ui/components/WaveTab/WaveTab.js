@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peaks from "peaks.js";
 import { map } from "lodash";
-
+import { Icon } from "semantic-ui-react";
 import "./WaveTab.scss";
 import { getMaxId, listSegmentByAudio } from "../../api/segment";
+import ReactPlayer from "react-player";
 
 import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
@@ -12,9 +13,11 @@ export default function WaveTab(props) {
   const { audio, onAddSegment, onClose, deleteSegment, updateSegment } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [peaksInstance, setPeaksInstance] = useState(null);
+  const [playing, setPlaying] = useState(false);
   let zoomviewContainer = useRef(null);
   let overviewContainer = useRef(null);
   let audioContainer = useRef(null);
+  let playerRef = useRef(null);
   let filename = "";
   /*let peaksInstance;*/
 
@@ -94,6 +97,14 @@ export default function WaveTab(props) {
     return label;
   }
 
+  const onProgress = (data) => {
+    let time = data.playedSeconds;
+    console.log(time);
+    if (peaksInstance) {
+      peaksInstance.player.seek(time);
+    }
+  };
+
   useEffect(() => {
     console.log("cambio el audio");
 
@@ -102,12 +113,84 @@ export default function WaveTab(props) {
 
       //console.log("audio file:", audio.path.replace(":", ""));
 
+      const player = {
+        init: function (eventEmitter) {
+          this.eventEmitter = eventEmitter;
+          this.state = "paused";
+          this.interval = null;
+
+          // Initialize the external player
+          this.externalPlayer = playerRef;
+
+          this.eventEmitter.emit("player.canplay");
+        },
+        destroy: function () {
+          if (this.interval !== null) {
+            clearTimeout(this.interval);
+            this.interval = null;
+          }
+
+          // Release the external player
+          this.externalPlayer.destroy();
+          this.externalPlayer = null;
+        },
+        play: function () {
+          setPlaying(true);
+          if (peaksInstance) {
+            peaksInstance.eventEmitter.emit(
+              "player.play",
+              this.getCurrentTime()
+            );
+          }
+
+          /*return this.externalPlayer.play().then(() => {
+            this.state = "playing";
+            this.eventEmitter.emit("player.play", this.getCurrentTime());
+          });*/
+        },
+        pause: function () {
+          setPlaying(false);
+          this.eventEmitter.emit("player.pause", this.getCurrentTime());
+          /*this.externalPlayer.pause().then(() => {
+            this.state = "paused";
+            this.eventEmitter.emit("player.pause", this.getCurrentTime());
+          });*/
+        },
+        seek: function (time) {
+          if (peaksInstance) {
+            peaksInstance.eventEmitter.emit("player.timeupdate", time);
+            peaksInstance.eventEmitter.emit("player.seeked", time);
+          }
+          /*this.previousState = this.state; // 'paused' or 'playing'
+          this.state = "seeking";
+
+          this.externalPlayer.seek(time).then(() => {
+            this.state = this.previousState;
+            this.eventEmitter.emit("player.seeked", this.getCurrentTime());
+            this.eventEmitter.emit("player.timeupdate", this.getCurrentTime());
+          });*/
+        },
+        isPlaying: function () {
+          return this.state === "playing";
+        },
+        isSeeking: function () {
+          return this.state === "seeking";
+        },
+        getCurrentTime: function () {
+          return this.externalPlayer.currentTime;
+        },
+        getDuration: function () {
+          return this.externalPlayer.duration;
+        },
+      };
+
       const options = {
         containers: {
           zoomview: zoomviewContainer.current,
           overview: overviewContainer.current,
         },
-        mediaElement: audioContainer.current,
+        /*mediaElement: audioContainer.current,*/
+        player: player,
         dataUri: {
           arraybuffer: "data/" + filename + ".dat",
         },
@@ -183,17 +266,38 @@ export default function WaveTab(props) {
       </div>
 
       <div id="demo-controls">
-        <audio id="audio" controls="controls" ref={audioContainer}>
+        {/*<audio id="audio" controls="controls" ref={audioContainer}>
           <source src={audio.path} type={audio.type} />
-          {/*<source src={soundOgg} type="audio/ogg" />*/}
-        </audio>
-        {peaksInstance ? (
-          <SegmentModal
-            openSegmentModal={openSegmentModal}
-            setOpenSegmentModal={setOpenSegmentModal}
-            peaks={peaksInstance}
-            onAddSegment={onAddSegment}
+        </audio>*/}
+        {playing ? (
+          <Icon
+            onClick={() => peaksInstance.player.pause()}
+            name="pause circle outline"
           />
+        ) : (
+          <Icon
+            onClick={() => peaksInstance.player.play()}
+            name="play circle outline"
+          />
+        )}
+        {peaksInstance ? (
+          <>
+            <ReactPlayer
+              className="react-player"
+              url={[{ src: audio.path, type: audio.type }]}
+              playing={playing}
+              height="0"
+              width="0"
+              ref={playerRef}
+              onProgress={(e) => onProgress(e)}
+            />
+            <SegmentModal
+              openSegmentModal={openSegmentModal}
+              setOpenSegmentModal={setOpenSegmentModal}
+              peaks={peaksInstance}
+              onAddSegment={onAddSegment}
+            />
+          </>
         ) : (
           <div></div>
         )}
