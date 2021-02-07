@@ -1,6 +1,7 @@
 import React from "react";
-import { Menu, Dropdown } from "semantic-ui-react";
+import {Menu, Dropdown, Grid, Icon, Table} from "semantic-ui-react";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
+import MultipleAbm from "../MultipleAbm";
 
 import "./TopBar.scss";
 
@@ -43,33 +44,13 @@ export default function TopBar(props) {
                       <Button className="setting-button">Configuración</Button>
                     }
                   >
-                    <Modal.Header>Select a Photo</Modal.Header>
-                    <Modal.Content image>
-                      <Image
-                        size="medium"
-                        src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
-                        wrapped
-                      />
-                      <Modal.Description>
-                        <Header>Default Profile Image</Header>
-                        <p>
-                          We've found the following gravatar image associated
-                          with your e-mail address.
-                        </p>
-                        <p>Is it okay to use this photo?</p>
-                      </Modal.Description>
+                    <Modal.Content>
+                      <MultipleAbm />
                     </Modal.Content>
                     <Modal.Actions>
                       <Button color="black" onClick={() => setOpen(false)}>
-                        Nope
+                        Cerrar
                       </Button>
-                      <Button
-                        content="Yep, that's me"
-                        labelPosition="right"
-                        icon="checkmark"
-                        onClick={() => setOpen(false)}
-                        positive
-                      />
                     </Modal.Actions>
                   </Modal>
                 </Dropdown.Item>

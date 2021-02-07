@@ -63,3 +63,13 @@ body {
     }
   }
 }
+
+.ui.common.button {
+  border-radius: 50px;
+  background-color: transparent;
+  border: $border-light-dark 2px solid;
+  color: $font-gray;
+  font-weight: bold;
+}
+
+

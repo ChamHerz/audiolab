@@ -38,6 +38,13 @@ export default function ListProject(props) {
             >
               Nuevo Proyecto
             </Button>
+            <hr/>
+            <div>
+              <button
+                className="multiple-abm"
+                onClick = {() => setSelectedForm("abm")}
+              >Ver ABM</button>
+            </div>
           </Grid.Column>
           <Grid.Column className="content" width={13}>
             <Table inverted className="table-songs">

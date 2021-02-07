@@ -1,0 +1,21 @@
+@import "../../../scss/index.scss";
+
+.list-theme {
+  .ui.table.inverted.table-themes {
+    background-color: transparent;
+
+    th {
+      background-color: transparent;
+    }
+
+    tr {
+      &:hover {
+        cursor: pointer;
+
+        td {
+          color: $background-light-dark;
+        }
+      }
+    }
+  }
+}

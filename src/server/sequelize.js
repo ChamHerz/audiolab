@@ -3,6 +3,9 @@ const UserModel = require("./models/user");
 const ProjectModel = require("./models/project");
 const AudioModel = require("./models/audio.js");
 const SegmentModel = require("./models/segment.js");
+const ThemeModel = require("./models/theme");
+const CompanyModel = require("./models/company");
+const CourtModel = require("./models/court")
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -12,6 +15,9 @@ const sequelize = new Sequelize({
 const User = UserModel(sequelize, Sequelize);
 const Project = ProjectModel(sequelize, Sequelize);
 const Audio = AudioModel(sequelize, Sequelize);
+const Theme = ThemeModel(sequelize, Sequelize);
+const Company = CompanyModel(sequelize, Sequelize);
+const Court = CourtModel(sequelize, Sequelize);
 const Segment = SegmentModel(sequelize, Sequelize);
 
 // ASSOCIATIONS
@@ -31,4 +37,7 @@ module.exports = {
   Project,
   Audio,
   Segment,
+  Theme,
+  Company,
+  Court
 };
