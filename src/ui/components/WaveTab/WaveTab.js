@@ -3,8 +3,8 @@ import Peaks from "peaks.js";
 import { map } from "lodash";
 import { Icon } from "semantic-ui-react";
 import "./WaveTab.scss";
-import { getMaxId, listSegmentByAudio } from "../../api/segment";
-import ReactPlayer from "react-player";
+import { listSegmentByAudio } from "../../api/segment";
+import * as Tone from "tone";
 
 import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
@@ -17,9 +17,7 @@ export default function WaveTab(props) {
   let zoomviewContainer = useRef(null);
   let overviewContainer = useRef(null);
   let audioContainer = useRef(null);
-  let playerRef = useRef(null);
   let filename = "";
-  /*let peaksInstance;*/
 
   useEffect(() => {
     if (deleteSegment) {
@@ -37,30 +35,6 @@ export default function WaveTab(props) {
       onClose();
     };
   }, []);
-
-  /*const segmentClick = (segment) => {
-    console.log("segment click", segment);
-  };
-
-  const mouseEnter = (segment) => {
-    console.log("SegmentEnter", segment);
-  };
-
-  const mouseLeave = (segment) => {
-    console.log("SegmentLeave", segment);
-  };
-
-  const zoomviewDblClick = (time) => {
-    console.log("zoomviewDblClick", time);
-  };
-
-  const playerSeeked = (time) => {
-    console.log("playerSeeked", time);
-  };
-
-  const timeUpdate = (time) => {
-    console.log("timeUpdate", time);
-  };*/
 
   function createSegmentLabel(options) {
     if (options.view === "overview") {
@@ -97,90 +71,71 @@ export default function WaveTab(props) {
     return label;
   }
 
-  const onProgress = (data) => {
-    let time = data.playedSeconds;
-    console.log(time);
-    if (peaksInstance) {
-      peaksInstance.player.seek(time);
-    }
-  };
-
   useEffect(() => {
     console.log("cambio el audio");
 
     if (audio?.name) {
       filename = audio.name.split(".").slice(0, -1).join(".");
 
-      //console.log("audio file:", audio.path.replace(":", ""));
-
       const player = {
+        externalPlayer: new Tone.Player({
+          url: audio.path,
+        }),
+        eventEmitter: null,
+
         init: function (eventEmitter) {
           this.eventEmitter = eventEmitter;
-          this.state = "paused";
-          this.interval = null;
 
-          // Initialize the external player
-          this.externalPlayer = playerRef;
+          this.externalPlayer.sync();
+          this.externalPlayer.start();
 
-          this.eventEmitter.emit("player.canplay");
+          Tone.connectSeries(this.externalPlayer, Tone.Master);
+
+          eventEmitter.emit("player.canplay");
+
+          Tone.Transport.scheduleRepeat(() => {
+            let time = this.getCurrentTime();
+            eventEmitter.emit("player.timeupdate", time);
+
+            if (time >= this.getDuration()) {
+              Tone.Transport.stop();
+            }
+          }, 0.25);
         },
         destroy: function () {
-          if (this.interval !== null) {
-            clearTimeout(this.interval);
-            this.interval = null;
-          }
-
-          // Release the external player
-          this.externalPlayer.destroy();
+          Tone.context.dispose();
           this.externalPlayer = null;
+          this.eventEmitter = null;
         },
         play: function () {
-          setPlaying(true);
-          if (peaksInstance) {
-            peaksInstance.eventEmitter.emit(
-              "player.play",
-              this.getCurrentTime()
-            );
-          }
+          Tone.Transport.start(Tone.now(), this.getCurrentTime());
 
-          /*return this.externalPlayer.play().then(() => {
-            this.state = "playing";
-            this.eventEmitter.emit("player.play", this.getCurrentTime());
-          });*/
+          this.eventEmitter.emit("player.play", this.getCurrentTime());
         },
         pause: function () {
-          setPlaying(false);
-          this.eventEmitter.emit("player.pause", this.getCurrentTime());
-          /*this.externalPlayer.pause().then(() => {
-            this.state = "paused";
-            this.eventEmitter.emit("player.pause", this.getCurrentTime());
-          });*/
-        },
-        seek: function (time) {
-          if (peaksInstance) {
-            peaksInstance.eventEmitter.emit("player.timeupdate", time);
-            peaksInstance.eventEmitter.emit("player.seeked", time);
-          }
-          /*this.previousState = this.state; // 'paused' or 'playing'
-          this.state = "seeking";
+          Tone.Transport.pause();
 
-          this.externalPlayer.seek(time).then(() => {
-            this.state = this.previousState;
-            this.eventEmitter.emit("player.seeked", this.getCurrentTime());
-            this.eventEmitter.emit("player.timeupdate", this.getCurrentTime());
-          });*/
+          this.eventEmitter.emit("player.pause", this.getCurrentTime());
         },
         isPlaying: function () {
-          return this.state === "playing";
+          return Tone.Transport.state === "started";
         },
+        seek: function (time) {
+          Tone.Transport.seconds = time;
+
+          this.eventEmitter.emit("player.seeked", this.getCurrentTime());
+          this.eventEmitter.emit("player.timeupdate", this.getCurrentTime());
+        },
+
         isSeeking: function () {
-          return this.state === "seeking";
+          return false;
         },
         getCurrentTime: function () {
-          return this.externalPlayer.currentTime;
+          console.log("buffer", this.externalPlayer.buffer);
+          return this.externalPlayer.toSeconds(Tone.Transport.position);
         },
         getDuration: function () {
-          return this.externalPlayer.duration;
+          return this.externalPlayer.buffer.duration;
         },
       };
 
@@ -218,13 +173,6 @@ export default function WaveTab(props) {
         //peaks.on("segments.dragged", draggedSegment);
 
         loadSegments(peaks);
-
-        /*peaksInstance.on("segments.click", segmentClick);
-        peaksInstance.on("overview.dblclick", addSegment);
-        peaksInstance.on("player.seeked", playerSeeked);
-        peaksInstance.on("player.timeupdate", playerSeeked);
-        peaksInstance.on("segments.mouseenter", mouseEnter);
-        peaksInstance.on("segments.mouseleave", mouseLeave);*/
       });
     }
   }, [audio]);
@@ -266,9 +214,6 @@ export default function WaveTab(props) {
       </div>
 
       <div id="demo-controls">
-        {/*<audio id="audio" controls="controls" ref={audioContainer}>
-          <source src={audio.path} type={audio.type} />
-        </audio>*/}
         {playing ? (
           <Icon
             onClick={() => peaksInstance.player.pause()}
@@ -282,15 +227,6 @@ export default function WaveTab(props) {
         )}
         {peaksInstance ? (
           <>
-            <ReactPlayer
-              className="react-player"
-              url={[{ src: audio.path, type: audio.type }]}
-              playing={playing}
-              height="0"
-              width="0"
-              ref={playerRef}
-              onProgress={(e) => onProgress(e)}
-            />
             <SegmentModal
               openSegmentModal={openSegmentModal}
               setOpenSegmentModal={setOpenSegmentModal}
