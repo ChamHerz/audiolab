@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peaks from "peaks.js";
 import { map } from "lodash";
-import { Icon } from "semantic-ui-react";
 import "./WaveTab.scss";
 import { listSegmentByAudio } from "../../api/segment";
 import * as Tone from "tone";
 
 import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
+import Player from "../Player/Player";
+import { truncate2decimal } from "../../utils/truncate";
 
 export default function WaveTab(props) {
   const { audio, onAddSegment, onClose, deleteSegment, updateSegment } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [peaksInstance, setPeaksInstance] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   let zoomviewContainer = useRef(null);
   let overviewContainer = useRef(null);
   let audioContainer = useRef(null);
@@ -80,7 +83,7 @@ export default function WaveTab(props) {
       const player = {
         externalPlayer: new Tone.Player({
           url: audio.path,
-        }),
+        }).toDestination(),
         eventEmitter: null,
 
         init: function (eventEmitter) {
@@ -108,13 +111,13 @@ export default function WaveTab(props) {
           this.eventEmitter = null;
         },
         play: function () {
+          setPlaying(true);
           Tone.Transport.start(Tone.now(), this.getCurrentTime());
-
           this.eventEmitter.emit("player.play", this.getCurrentTime());
         },
         pause: function () {
+          setPlaying(false);
           Tone.Transport.pause();
-
           this.eventEmitter.emit("player.pause", this.getCurrentTime());
         },
         isPlaying: function () {
@@ -131,7 +134,12 @@ export default function WaveTab(props) {
           return false;
         },
         getCurrentTime: function () {
-          console.log("buffer", this.externalPlayer.buffer);
+          setCurrentTime(
+            truncate2decimal(
+              this.externalPlayer.toSeconds(Tone.Transport.position)
+            )
+          );
+          setDuration(truncate2decimal(this.externalPlayer.buffer.duration));
           return this.externalPlayer.toSeconds(Tone.Transport.position);
         },
         getDuration: function () {
@@ -214,17 +222,12 @@ export default function WaveTab(props) {
       </div>
 
       <div id="demo-controls">
-        {playing ? (
-          <Icon
-            onClick={() => peaksInstance.player.pause()}
-            name="pause circle outline"
-          />
-        ) : (
-          <Icon
-            onClick={() => peaksInstance.player.play()}
-            name="play circle outline"
-          />
-        )}
+        <Player
+          playing={playing}
+          currentTime={currentTime}
+          duration={duration}
+          peaksInstance={peaksInstance}
+        />
         {peaksInstance ? (
           <>
             <SegmentModal
