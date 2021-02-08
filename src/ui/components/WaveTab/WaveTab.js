@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peaks from "peaks.js";
 import { map } from "lodash";
-import "./WaveTab.scss";
 import { listSegmentByAudio } from "../../api/segment";
 import * as Tone from "tone";
-
 import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
 import Player from "../Player/Player";
 import { truncate2decimal } from "../../utils/truncate";
+
+import "./WaveTab.scss";
 
 export default function WaveTab(props) {
   const { audio, onAddSegment, onClose, deleteSegment, updateSegment } = props;
@@ -69,6 +69,10 @@ export default function WaveTab(props) {
 
     return label;
   }
+
+  const playerSeeked = (numberTime) => {
+    //console.log("click", numberTime);
+  };
 
   useEffect(() => {
     if (audio?.name) {
@@ -166,6 +170,7 @@ export default function WaveTab(props) {
 
         peaks.on("zoomview.dblclick", addSegment);
         peaks.on("segments.dragend", dragEndSegment);
+        peaks.on("player.seeked", playerSeeked);
 
         // evento que se ejecuta al finalizar el drag
         //peaks.on("segments.dragstart", dragStartSegment);
@@ -200,11 +205,22 @@ export default function WaveTab(props) {
     updateSegment(segment);
   };
 
+  const onContextMenu = (e) => {
+    if (e.type === "contextmenu") {
+      console.log("boton derecho", e);
+    }
+  };
+
   return audio ? (
     <div className="wave-tab">
       <h1>{audio?.name}</h1>
       <div id="peaks-container">
-        <div id="zoomview-container" ref={zoomviewContainer}></div>
+        <div
+          id="zoomview-container"
+          ref={zoomviewContainer}
+          onContextMenu={onContextMenu}
+          tabIndex="0"
+        ></div>
         <div id="overview-container" ref={overviewContainer}></div>
       </div>
 
