@@ -25,8 +25,18 @@ let tab = {
 
 export default function HomeLayout(props) {
   const { project } = props;
+  let deleteSegment;
   let dockLayout;
   let currentAudio;
+
+  const onCloseAudio = () => {
+    console.log("Cerrado de audio");
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: <SegmentTab onClose={true} />,
+    });
+  };
 
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
@@ -36,7 +46,15 @@ export default function HomeLayout(props) {
         id: `${oneAudio.name}`,
         title: `${oneAudio.name}`,
         closable: true,
-        content: <WaveTab audio={oneAudio} onAddSegment={onAddSegment} />,
+        content: (
+          <WaveTab
+            audio={oneAudio}
+            onAddSegment={onAddSegment}
+            onClose={onCloseAudio}
+            deleteSegment={deleteSegment}
+            updateSegment={updateSegment}
+          />
+        ),
       };
     };
 
@@ -49,6 +67,36 @@ export default function HomeLayout(props) {
     }
 
     currentAudio = oneAudio;
+
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: (
+        <SegmentTab
+          onLoad={true}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
+  };
+
+  const onDeleteSegment = (e, segment) => {
+    console.log("borrar segmento", segment);
+    deleteSegment = segment;
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onClose={onCloseAudio}
+          deleteSegment={deleteSegment}
+        />
+      ),
+    });
   };
 
   const onAddSegment = (segment) => {
@@ -57,7 +105,40 @@ export default function HomeLayout(props) {
       id: "segmentTab",
       title: "Segmentos",
       content: (
-        <SegmentTab newSegmentToAdd={segment} currentAudio={currentAudio} />
+        <SegmentTab
+          newSegmentToAdd={segment}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
+  };
+
+  const updateSegment = (segment) => {
+    console.log("Actuializar segmento", segment);
+
+    // para actualizar el UseEffect
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: (
+        <SegmentTab
+          segmentToUpdate={null}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
+
+    dockLayout.updateTab("segmentTab", {
+      id: "segmentTab",
+      title: "Segmentos",
+      content: (
+        <SegmentTab
+          segmentToUpdate={segment}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
       ),
     });
   };

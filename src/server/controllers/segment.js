@@ -55,11 +55,68 @@ async function getMaxId(req, res) {
   if (segment) {
     res.status(200).send({ segmentId: segment });
   } else {
-    res.status(200).send(0);
+    res.status(200).send({ segmentId: 0 });
   }
+}
+
+function listSegmentByAudioId(req, res) {
+  const { audioId } = req.params;
+  Segment.findAll({
+    where: {
+      id_audio: audioId,
+      deleted: false,
+    },
+  })
+    .then((segments) => res.status(200).send(segments))
+    .catch((err) => {
+      res.status(500).send({ message: "Error al cargar segmentos" });
+      console.log(err.message);
+    });
+}
+
+function deleteSegment(req, res) {
+  const { segmentId } = req.params;
+  const segmentIdInt = parseInt(segmentId);
+  Segment.update(
+    {
+      deleted: true,
+    },
+    { where: { id: segmentIdInt } }
+  )
+    .then((segment) => res.status(200).send(segment))
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send({ message: "Error al borrar el segmento" });
+    });
+}
+
+function updateSegment(req, res) {
+  const { id, labelText, startTime, endTime, color } = req.body;
+  const segmentId = parseInt(id);
+
+  Segment.findByPk(segmentId).then((segment) => {
+    return segment
+      .update({
+        labelText: labelText,
+        startTime: startTime,
+        endTime: endTime,
+        color: color,
+      })
+      .then(() => {
+        console.log("rowsUpdate", segment);
+        res.status(200).send(segment);
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "Error al editar el segmento" });
+        console.log(err.message);
+      });
+  });
 }
 
 module.exports = {
   newSegment,
   getMaxId,
+  listSegmentByAudioId,
+  deleteSegment,
+  updateSegment,
 };

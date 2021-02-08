@@ -1,4 +1,5 @@
-@import "./colors";
+@import "./_colors";
+@import "./_modal.scss";
 
 body {
   background-color: $background-dark !important;
