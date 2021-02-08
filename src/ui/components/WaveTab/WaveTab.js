@@ -9,10 +9,19 @@ import Player from "../Player/Player";
 import { truncate2decimal } from "../../utils/truncate";
 
 import "./WaveTab.scss";
+import LabelModal from "../../modals/LabelModal";
 
 export default function WaveTab(props) {
-  const { audio, onAddSegment, onClose, deleteSegment, updateSegment } = props;
+  const {
+    audio,
+    onAddSegment,
+    onClose,
+    deleteSegment,
+    updateSegment,
+    onAddLabel,
+  } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
+  const [openLabelModal, setOpenLabelModal] = useState(false);
   const [peaksInstance, setPeaksInstance] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -207,7 +216,7 @@ export default function WaveTab(props) {
 
   const onContextMenu = (e) => {
     if (e.type === "contextmenu") {
-      console.log("boton derecho", e);
+      setOpenLabelModal(true);
     }
   };
 
@@ -238,6 +247,12 @@ export default function WaveTab(props) {
               setOpenSegmentModal={setOpenSegmentModal}
               peaks={peaksInstance}
               onAddSegment={onAddSegment}
+            />
+            <LabelModal
+              openLabelModal={openLabelModal}
+              setOpenLabelModal={setOpenLabelModal}
+              peaks={peaksInstance}
+              onAddLabel={onAddLabel}
             />
           </>
         ) : (

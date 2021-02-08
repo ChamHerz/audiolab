@@ -50,6 +50,7 @@ export default function HomeLayout(props) {
           <WaveTab
             audio={oneAudio}
             onAddSegment={onAddSegment}
+            onAddLabel={onAddLabel}
             onClose={onCloseAudio}
             deleteSegment={deleteSegment}
             updateSegment={updateSegment}
@@ -100,6 +101,7 @@ export default function HomeLayout(props) {
         <WaveTab
           audio={currentAudio}
           onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
           onClose={onCloseAudio}
           deleteSegment={deleteSegment}
         />
@@ -118,6 +120,16 @@ export default function HomeLayout(props) {
           onDeleteSegment={onDeleteSegment}
         />
       ),
+    });
+  };
+
+  const onAddLabel = (label) => {
+    console.log("agregar etiqueta", label);
+
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: <LabelTab newLabelToAdd={label} currentAudio={currentAudio} />,
     });
   };
 

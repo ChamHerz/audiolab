@@ -1,35 +1,34 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input } from "semantic-ui-react";
+import { Button, Form, Input, Modal } from "semantic-ui-react";
 import { toast } from "react-toastify";
-import { getMaxId } from "../../api/segment";
+import { getMaxId } from "../../api/label";
 
-import "./SegmentModal.scss";
+import "./LabelModal.scss";
 
-export default function SegmentModal(props) {
-  const { openSegmentModal, setOpenSegmentModal, peaks, onAddSegment } = props;
+export default function LabelModal(props) {
+  const { openLabelModal, setOpenLabelModal, peaks, onAddLabel } = props;
   const [formData, setFormData] = useState(initialValueForm());
 
   const onSubmit = () => {
     if (!formData.labelText && formData.labelText === "") {
-      toast.warning("Añade un nombre al segmento");
+      toast.warning("Añade un nombre a la etiqueta");
     } else {
       getMaxId()
         .then((response) => {
-          const newIdToAdd = response.data.segmentId + 1;
+          const newIdToAdd = response.data.labelId + 1;
 
-          peaks.segments.add({
+          peaks.points.add({
             id: newIdToAdd,
-            startTime: peaks.player.getCurrentTime(),
-            endTime: peaks.player.getCurrentTime() + 5,
+            time: peaks.player.getCurrentTime(),
             labelText: formData.labelText,
             editable: true,
           });
 
-          onAddSegment(peaks.segments.getSegment(newIdToAdd));
-          setOpenSegmentModal(false);
+          onAddLabel(peaks.points.getPoint(newIdToAdd));
+          setOpenLabelModal(false);
         })
         .catch((err) => {
-          console.log("error en segmento", err);
+          console.log("error en etiqueta", err);
         });
     }
   };
@@ -38,18 +37,18 @@ export default function SegmentModal(props) {
     <Modal
       size="mini"
       className="basic-modal"
-      onClose={() => setOpenSegmentModal(false)}
-      onOpen={() => setOpenSegmentModal(true)}
-      open={openSegmentModal}
-      trigger={<Button>Agregar Segmento</Button>}
+      onClose={() => setOpenLabelModal(false)}
+      onOpen={() => setOpenLabelModal(true)}
+      open={openLabelModal}
+      trigger={<Button>Agregar Etiqueta</Button>}
     >
-      <Modal.Header>Nuevo Segmento</Modal.Header>
+      <Modal.Header>Nueva Etiqueta</Modal.Header>
       <Modal.Content>
-        <Form className="add-segment-form" onSubmit={onSubmit}>
+        <Form className="add-label-form" onSubmit={onSubmit}>
           <Form.Field className="labelText" control={Input}>
             <Input
               autoFocus
-              placeholder="Nombre del segmento"
+              placeholder="Nombre de la etiqueta"
               onChange={(e) => setFormData({ labelText: e.target.value })}
             />
           </Form.Field>
@@ -57,7 +56,7 @@ export default function SegmentModal(props) {
       </Modal.Content>
       <Modal.Actions>
         <Button
-          content="Crear segmento"
+          content="Crear etiqueta"
           labelPosition="right"
           icon="checkmark"
           onClick={() => onSubmit()}

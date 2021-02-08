@@ -50,7 +50,7 @@ export default function SegmentTab(props) {
           loadSegments();
         })
         .catch((error) => {
-          console.log("error en segmento", error);
+          toast.error(error.response.data.message);
         });
     }
   }, [newSegmentToAdd]);
