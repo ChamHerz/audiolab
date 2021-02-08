@@ -10,14 +10,11 @@ export default function ListProject(props) {
   const { setSelectedForm, setProject } = props;
   const [projects, setProjects] = useState([]);
 
-  console.log("proyectos", projects);
-
   useEffect(() => {
     listProject().then((response) => {
       if (response?.data) {
         const arrayProjects = [];
         map(response?.data, (project) => {
-          console.log("project", project);
           arrayProjects.push(project);
         });
         setProjects(response.data);

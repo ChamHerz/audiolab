@@ -7,10 +7,6 @@ import "./TopBar.scss";
 export default function TopBar(props) {
   const [open, setOpen] = React.useState(false);
 
-  const onSetting = () => {
-    console.log("click en setting");
-  };
-
   const options = [
     { key: 1, text: "This is a super long item", value: 1 },
     { key: 2, text: "Dropdown direction can help", value: 2 },

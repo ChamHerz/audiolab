@@ -36,7 +36,6 @@ async function newAudio(req, res) {
     Audio.create(audio.dataValues)
       .then((newAudio) => res.status(200).send(newAudio))
       .catch((err) => {
-        console.log(err);
         if (err.errors) {
           res.status(500).send({ message: "Error en la tabla audio" });
         }

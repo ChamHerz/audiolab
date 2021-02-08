@@ -24,17 +24,13 @@ export default function WaveTab(props) {
 
   useEffect(() => {
     if (deleteSegment) {
-      console.log("Aqui borrar el segmento", deleteSegment);
       const segmentToDelete = deleteSegment.selected;
-      console.log("segmentos", peaksInstance.segments.getSegments());
       peaksInstance.segments.removeById(segmentToDelete.id);
-      console.log("segmentos", peaksInstance.segments.getSegments());
     }
   }, [deleteSegment]);
 
   useEffect(() => {
     return () => {
-      console.log("Cerrado del Audio");
       onClose();
     };
   }, []);
@@ -75,8 +71,6 @@ export default function WaveTab(props) {
   }
 
   useEffect(() => {
-    console.log("cambio el audio");
-
     if (audio?.name) {
       filename = audio.name.split(".").slice(0, -1).join(".");
 
@@ -163,8 +157,6 @@ export default function WaveTab(props) {
       };
 
       Peaks.init(options, function (err, peaks) {
-        console.log("tag Audio", audioContainer);
-
         if (err) {
           console.error(err.message);
         }
@@ -186,10 +178,8 @@ export default function WaveTab(props) {
   }, [audio]);
 
   const loadSegments = (peaks) => {
-    console.log("cargando segmentos");
     listSegmentByAudio(audio?.id).then((response) => {
       map(response?.data, (segment) => {
-        console.log("segmento", segment);
         peaks.segments.add({
           id: segment.id,
           startTime: segment.startTime,
@@ -203,13 +193,10 @@ export default function WaveTab(props) {
   };
 
   const addSegment = (currentTime) => {
-    console.log("Add segment");
-
     setOpenSegmentModal(true);
   };
 
   const dragEndSegment = (segment, inMarker) => {
-    console.log("draged End", segment, "inmarler", inMarker);
     updateSegment(segment);
   };
 

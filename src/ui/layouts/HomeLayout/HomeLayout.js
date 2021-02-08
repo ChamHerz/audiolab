@@ -7,6 +7,7 @@ import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
 
 import SegmentTab from "../../components/SegmentTab";
+import LabelTab from "../../components/LabelTab";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -30,7 +31,6 @@ export default function HomeLayout(props) {
   let currentAudio;
 
   const onCloseAudio = () => {
-    console.log("Cerrado de audio");
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
@@ -58,9 +58,6 @@ export default function HomeLayout(props) {
       };
     };
 
-    console.log("click en cancion");
-    console.log(oneAudio);
-
     if (!dockLayout.find(`${oneAudio.name}`)) {
       //El audio no esta abierto
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
@@ -79,10 +76,21 @@ export default function HomeLayout(props) {
         />
       ),
     });
+
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: (
+        <LabelTab
+          onLoad={true}
+          currentAudio={currentAudio}
+          onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
   };
 
   const onDeleteSegment = (e, segment) => {
-    console.log("borrar segmento", segment);
     deleteSegment = segment;
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
@@ -100,7 +108,6 @@ export default function HomeLayout(props) {
   };
 
   const onAddSegment = (segment) => {
-    console.log("onAddSegment", segment);
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
@@ -115,8 +122,6 @@ export default function HomeLayout(props) {
   };
 
   const updateSegment = (segment) => {
-    console.log("Actuializar segmento", segment);
-
     // para actualizar el UseEffect
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
@@ -200,8 +205,14 @@ export default function HomeLayout(props) {
                   ],
                 },
                 {
-                  id: "labelTab",
-                  tabs: [{ ...tab, id: "labelTab", title: "Etiquetas" }],
+                  id: "labelPanel",
+                  tabs: [
+                    {
+                      id: "labelTab",
+                      title: "Etiquetas",
+                      content: <LabelTab />,
+                    },
+                  ],
                 },
               ],
             },

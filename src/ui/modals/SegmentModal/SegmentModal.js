@@ -10,14 +10,11 @@ export default function SegmentModal(props) {
   const [formData, setFormData] = useState(initialValueForm());
 
   const onSubmit = () => {
-    console.log("form enviado");
     if (!formData.labelText) {
       toast.warning("Añade un nombre al segmento");
     } else {
       getMaxId()
         .then((response) => {
-          console.log("newId", response);
-
           const newIdToAdd = response.data.segmentId + 1;
 
           peaks.segments.add({
