@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Icon, Table } from "semantic-ui-react";
-import { newLabel } from "../../api/label";
+import { listLabelByAudio, newLabel } from "../../api/label";
 import { toast } from "react-toastify";
 import ContextMenu from "semantic-ui-react-context-menu";
 import { truncate2decimal } from "../../utils/truncate";
@@ -14,10 +14,23 @@ export default function LabelTab(props) {
 
   const loadLabels = () => {
     console.log("Aqui cargar las etiquetas");
+    listLabelByAudio(currentAudio.id).then((response) => {
+      if (response?.data) {
+        console.log(response?.data);
+        const arrayLabels = [];
+        map(response?.data, (label) => {
+          label.selected = false;
+          arrayLabels.push(label);
+        });
+        setLabels(arrayLabels);
+      }
+    });
   };
 
   useEffect(() => {
-    loadLabels();
+    if (onLoad) {
+      loadLabels();
+    }
   }, [onLoad]);
 
   useEffect(() => {
@@ -69,7 +82,7 @@ export default function LabelTab(props) {
           {map(labels, (label) => (
             <LabelRow
               key={label.id}
-              segment={label}
+              label={label}
               onDeleteSegment={deleteLabel}
             />
           ))}

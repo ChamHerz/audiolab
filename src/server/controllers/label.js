@@ -42,11 +42,14 @@ async function newLabel(req, res) {
   } else if (!color) {
     res.status(404).send({ message: "El color no puede ser vacio" });
   } else {
-    Label.create((newLabel) => res.status(200).send(newLabel)).catch((err) => {
-      if (err.errors) {
-        res.status(500).send({ message: "Error en la tabla Labels" });
-      }
-    });
+    Label.create(label.dataValues)
+      .then((newLabel) => res.status(200).send(newLabel))
+      .catch((err) => {
+        console.log(err);
+        if (err.errors) {
+          res.status(500).send({ message: "Error en la tabla Labels" });
+        }
+      });
   }
 }
 
