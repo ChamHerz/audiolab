@@ -11,7 +11,7 @@ export default function ListTheme(props) {
     const [ themes, setThemes] = useState([]);
     const [ reloadTable, setReloadTable] = useState(false);
 
-    useEffect(() => {
+    const loadThemes = () => {
         listTheme().then((response) => {
             if (response?.data) {
                 const arrayThemes = [];
@@ -21,6 +21,11 @@ export default function ListTheme(props) {
                 setThemes(response.data);
             }
         });
+
+    }
+
+    useEffect(() => {
+        loadThemes();
     }, []);
 
     return (
@@ -44,6 +49,7 @@ export default function ListTheme(props) {
                                     theme={theme}
                                     setTheme={setTheme}
                                     setReloadTable = { setReloadTable}
+                                    loadThemes = { loadThemes }
                                 />
                             ))}
                         </Table.Body>
@@ -55,14 +61,14 @@ export default function ListTheme(props) {
     );
 }
 
-function DeleteTheme( themeId, setReloadTable ){
+function DeleteTheme( themeId, setReloadTable, loadThemes ){
 
     deleteTheme( {
         id : themeId,
     })
         .then(() => {
             toast.success(" Tema borrado correctamente.");
-            setReloadTable(true);
+            loadThemes();
         })
         .catch((error) => {
             toast.error(error.response.data.message);
@@ -70,7 +76,8 @@ function DeleteTheme( themeId, setReloadTable ){
 }
 
 function Theme(props) {
-    const { theme, setTheme, setReloadTable } = props;
+
+    const { theme, setTheme, setReloadTable, loadThemes } = props;
 
     const onTheme = () => {
         setTheme(theme);
@@ -86,7 +93,7 @@ function Theme(props) {
                 </Button>
             </Table.Cell>
             <Table.Cell collapsing>
-                <Button icon onClick={() => DeleteTheme(theme.id, setReloadTable)}>
+                <Button icon onClick={() => DeleteTheme(theme.id, setReloadTable, loadThemes)}>
                     <Icon name='trash' />
                 </Button>
             </Table.Cell>
