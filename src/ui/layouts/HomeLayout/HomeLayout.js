@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
 import TopBar from "../../components/TopBar";
+import WaveTab from "../../components/WaveTab";
+import SegmentTab from "../../components/SegmentTab";
+import LabelTab from "../../components/LabelTab";
 
 import "./HomeLayout.scss";
-import WaveTab from "../../components/WaveTab";
-
-import SegmentTab from "../../components/SegmentTab";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -26,15 +26,21 @@ let tab = {
 export default function HomeLayout(props) {
   const { project } = props;
   let deleteSegment;
+  let deleteLabel;
   let dockLayout;
   let currentAudio;
 
   const onCloseAudio = () => {
-    console.log("Cerrado de audio");
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
       content: <SegmentTab onClose={true} />,
+    });
+
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: <LabelTab onClose={true} />,
     });
   };
 
@@ -50,16 +56,15 @@ export default function HomeLayout(props) {
           <WaveTab
             audio={oneAudio}
             onAddSegment={onAddSegment}
+            onAddLabel={onAddLabel}
             onClose={onCloseAudio}
             deleteSegment={deleteSegment}
             updateSegment={updateSegment}
+            updateLabel={updateLabel}
           />
         ),
       };
     };
-
-    console.log("click en cancion");
-    console.log(oneAudio);
 
     if (!dockLayout.find(`${oneAudio.name}`)) {
       //El audio no esta abierto
@@ -79,10 +84,21 @@ export default function HomeLayout(props) {
         />
       ),
     });
+
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: (
+        <LabelTab
+          onLoad={true}
+          currentAudio={currentAudio}
+          onDeleteLabel={onDeleteLabel}
+        />
+      ),
+    });
   };
 
   const onDeleteSegment = (e, segment) => {
-    console.log("borrar segmento", segment);
     deleteSegment = segment;
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
@@ -92,6 +108,7 @@ export default function HomeLayout(props) {
         <WaveTab
           audio={currentAudio}
           onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
           onClose={onCloseAudio}
           deleteSegment={deleteSegment}
         />
@@ -99,8 +116,25 @@ export default function HomeLayout(props) {
     });
   };
 
+  const onDeleteLabel = (e, label) => {
+    deleteLabel = label;
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
+          onClose={onCloseAudio}
+          deleteLabel={deleteLabel}
+        />
+      ),
+    });
+  };
+
   const onAddSegment = (segment) => {
-    console.log("onAddSegment", segment);
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
@@ -114,9 +148,23 @@ export default function HomeLayout(props) {
     });
   };
 
-  const updateSegment = (segment) => {
-    console.log("Actuializar segmento", segment);
+  const onAddLabel = (label) => {
+    console.log("agregar etiqueta", label);
 
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: (
+        <LabelTab
+          newLabelToAdd={label}
+          currentAudio={currentAudio}
+          onDeleteLabel={onDeleteLabel}
+        />
+      ),
+    });
+  };
+
+  const updateSegment = (segment) => {
     // para actualizar el UseEffect
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
@@ -138,6 +186,33 @@ export default function HomeLayout(props) {
           segmentToUpdate={segment}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+        />
+      ),
+    });
+  };
+
+  const updateLabel = (label) => {
+    // para actualizar el UseEffect
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: (
+        <LabelTab
+          labelToUpdate={null}
+          currentAudio={currentAudio}
+          onDeleteLabel={onDeleteLabel}
+        />
+      ),
+    });
+
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: (
+        <LabelTab
+          labelToUpdate={label}
+          currentAudio={currentAudio}
+          onDeleteLabel={onDeleteLabel}
         />
       ),
     });
@@ -200,8 +275,14 @@ export default function HomeLayout(props) {
                   ],
                 },
                 {
-                  id: "labelTab",
-                  tabs: [{ ...tab, id: "labelTab", title: "Etiquetas" }],
+                  id: "labelPanel",
+                  tabs: [
+                    {
+                      id: "labelTab",
+                      title: "Etiquetas",
+                      content: <LabelTab />,
+                    },
+                  ],
                 },
               ],
             },

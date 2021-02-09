@@ -1,18 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import Peaks from "peaks.js";
 import { map } from "lodash";
-import "./WaveTab.scss";
 import { listSegmentByAudio } from "../../api/segment";
 import * as Tone from "tone";
-
 import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
 import Player from "../Player/Player";
 import { truncate2decimal } from "../../utils/truncate";
 
+import "./WaveTab.scss";
+import LabelModal from "../../modals/LabelModal";
+import { listLabelByAudio } from "../../api/label";
+
 export default function WaveTab(props) {
-  const { audio, onAddSegment, onClose, deleteSegment, updateSegment } = props;
+  const {
+    audio,
+    onAddSegment,
+    onClose,
+    deleteSegment,
+    deleteLabel,
+    updateSegment,
+    updateLabel,
+    onAddLabel,
+  } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
+  const [openLabelModal, setOpenLabelModal] = useState(false);
   const [peaksInstance, setPeaksInstance] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -24,17 +36,20 @@ export default function WaveTab(props) {
 
   useEffect(() => {
     if (deleteSegment) {
-      console.log("Aqui borrar el segmento", deleteSegment);
       const segmentToDelete = deleteSegment.selected;
-      console.log("segmentos", peaksInstance.segments.getSegments());
       peaksInstance.segments.removeById(segmentToDelete.id);
-      console.log("segmentos", peaksInstance.segments.getSegments());
     }
   }, [deleteSegment]);
 
   useEffect(() => {
+    if (deleteLabel) {
+      const labelToDelete = deleteLabel.selected;
+      peaksInstance.points.removeById(labelToDelete.id);
+    }
+  }, [deleteLabel]);
+
+  useEffect(() => {
     return () => {
-      console.log("Cerrado del Audio");
       onClose();
     };
   }, []);
@@ -74,9 +89,11 @@ export default function WaveTab(props) {
     return label;
   }
 
-  useEffect(() => {
-    console.log("cambio el audio");
+  const playerSeeked = (numberTime) => {
+    //console.log("click", numberTime);
+  };
 
+  useEffect(() => {
     if (audio?.name) {
       filename = audio.name.split(".").slice(0, -1).join(".");
 
@@ -163,8 +180,6 @@ export default function WaveTab(props) {
       };
 
       Peaks.init(options, function (err, peaks) {
-        console.log("tag Audio", audioContainer);
-
         if (err) {
           console.error(err.message);
         }
@@ -174,6 +189,8 @@ export default function WaveTab(props) {
 
         peaks.on("zoomview.dblclick", addSegment);
         peaks.on("segments.dragend", dragEndSegment);
+        peaks.on("points.dragend", dragEndPoint);
+        peaks.on("player.seeked", playerSeeked);
 
         // evento que se ejecuta al finalizar el drag
         //peaks.on("segments.dragstart", dragStartSegment);
@@ -181,15 +198,14 @@ export default function WaveTab(props) {
         //peaks.on("segments.dragged", draggedSegment);
 
         loadSegments(peaks);
+        loadLabels(peaks);
       });
     }
   }, [audio]);
 
   const loadSegments = (peaks) => {
-    console.log("cargando segmentos");
     listSegmentByAudio(audio?.id).then((response) => {
       map(response?.data, (segment) => {
-        console.log("segmento", segment);
         peaks.segments.add({
           id: segment.id,
           startTime: segment.startTime,
@@ -202,22 +218,48 @@ export default function WaveTab(props) {
     });
   };
 
-  const addSegment = (currentTime) => {
-    console.log("Add segment");
+  const loadLabels = (peaks) => {
+    listLabelByAudio(audio?.id).then((response) => {
+      map(response?.data, (label) => {
+        peaks.points.add({
+          id: label.id,
+          time: label.time,
+          labelText: label.labelText,
+          color: label.color,
+          editable: true,
+        });
+      });
+    });
+  };
 
+  const addSegment = (currentTime) => {
     setOpenSegmentModal(true);
   };
 
   const dragEndSegment = (segment, inMarker) => {
-    console.log("draged End", segment, "inmarler", inMarker);
     updateSegment(segment);
+  };
+
+  const dragEndPoint = (label) => {
+    updateLabel(label);
+  };
+
+  const onContextMenu = (e) => {
+    if (e.type === "contextmenu") {
+      setOpenLabelModal(true);
+    }
   };
 
   return audio ? (
     <div className="wave-tab">
       <h1>{audio?.name}</h1>
       <div id="peaks-container">
-        <div id="zoomview-container" ref={zoomviewContainer}></div>
+        <div
+          id="zoomview-container"
+          ref={zoomviewContainer}
+          onContextMenu={onContextMenu}
+          tabIndex="0"
+        ></div>
         <div id="overview-container" ref={overviewContainer}></div>
       </div>
 
@@ -235,6 +277,12 @@ export default function WaveTab(props) {
               setOpenSegmentModal={setOpenSegmentModal}
               peaks={peaksInstance}
               onAddSegment={onAddSegment}
+            />
+            <LabelModal
+              openLabelModal={openLabelModal}
+              setOpenLabelModal={setOpenLabelModal}
+              peaks={peaksInstance}
+              onAddLabel={onAddLabel}
             />
           </>
         ) : (

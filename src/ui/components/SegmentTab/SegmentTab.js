@@ -8,9 +8,10 @@ import {
 } from "../../api/segment";
 import { map, findIndex } from "lodash";
 import ContextMenu from "semantic-ui-react-context-menu";
+import { toast } from "react-toastify";
+import { truncate2decimal } from "../../utils/truncate";
 
 import "./SegmentTab.scss";
-import { toast } from "react-toastify";
 
 export default function SegmentTab(props) {
   const {
@@ -32,16 +33,12 @@ export default function SegmentTab(props) {
           arraySegments.push(segment);
         });
         setSegments(arraySegments);
-        console.log("Segmentos Cargados");
       }
     });
   };
 
   useEffect(() => {
     if (newSegmentToAdd) {
-      console.log("efefcto segmneto,", newSegmentToAdd);
-      console.log("audio", currentAudio);
-
       newSegment({
         audioId: currentAudio.id,
         labelText: newSegmentToAdd.labelText,
@@ -50,19 +47,16 @@ export default function SegmentTab(props) {
         color: newSegmentToAdd.color,
       })
         .then((response) => {
-          console.log("Segmento creado", response);
           loadSegments();
         })
         .catch((error) => {
-          console.log("error en segmento", error);
+          toast.error(error.response.data.message);
         });
     }
   }, [newSegmentToAdd]);
 
   useEffect(() => {
     if (segmentToUpdate) {
-      console.log("Aqui actualizao el segmento en tabla", segmentToUpdate);
-
       updateSegment({
         id: segmentToUpdate.id,
         labelText: segmentToUpdate.labelText,
@@ -71,16 +65,12 @@ export default function SegmentTab(props) {
         color: segmentToUpdate.color,
       })
         .then((response) => {
-          console.log(response);
           if (response?.data) {
             const segmentUpdated = response?.data;
-            console.log("Segmneto actualizado", segmentUpdated);
             const indexToUpdate = findIndex(segments, {
               id: segmentUpdated.id,
             });
-            console.log("index", indexToUpdate);
             segments.splice(indexToUpdate, 1, segmentUpdated);
-            console.log("actualizado", segments);
             setSegments([]);
             setSegments(segments);
           }
@@ -97,7 +87,6 @@ export default function SegmentTab(props) {
 
   useEffect(() => {
     if (onClose) {
-      console.log("Tengo que resetear la lista");
       clearSegments();
     }
   }, [onClose]);
@@ -109,7 +98,6 @@ export default function SegmentTab(props) {
   }, [onLoad]);
 
   const deleteSegment = (e, segment) => {
-    console.log("Borrar en base de datos", segment);
     const segmentToDelete = segment.selected;
 
     deleteSegmentById(segmentToDelete.id)
@@ -130,8 +118,8 @@ export default function SegmentTab(props) {
           <Table.Row>
             <Table.HeaderCell>Nombre</Table.HeaderCell>
             <Table.HeaderCell>Descripción</Table.HeaderCell>
-            <Table.HeaderCell>Inicio</Table.HeaderCell>
-            <Table.HeaderCell>Fin</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">Inicio</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">Fin</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
@@ -178,8 +166,12 @@ function SegmentRow(props) {
         >
           <Table.Cell>{segment.labelText}</Table.Cell>
           <Table.Cell>{segment.description}</Table.Cell>
-          <Table.Cell>{segment.startTime}</Table.Cell>
-          <Table.Cell>{segment.endTime}</Table.Cell>
+          <Table.Cell textAlign="right">
+            {truncate2decimal(segment.startTime)}
+          </Table.Cell>
+          <Table.Cell textAlign="right">
+            {truncate2decimal(segment.endTime)}
+          </Table.Cell>
           <Table.Cell collapsing>
             <Icon name="play circle outline" />
           </Table.Cell>

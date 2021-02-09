@@ -46,11 +46,7 @@ async function newSegment(req, res) {
 }
 
 async function getMaxId(req, res) {
-  console.log("call getMaxId");
-
   const segment = await segmentService.getMaxId();
-
-  console.log("segmentoEnocntrad", segment);
 
   if (segment) {
     res.status(200).send({ segmentId: segment });
@@ -70,7 +66,6 @@ function listSegmentByAudioId(req, res) {
     .then((segments) => res.status(200).send(segments))
     .catch((err) => {
       res.status(500).send({ message: "Error al cargar segmentos" });
-      console.log(err.message);
     });
 }
 
@@ -85,7 +80,6 @@ function deleteSegment(req, res) {
   )
     .then((segment) => res.status(200).send(segment))
     .catch((err) => {
-      console.log(err.message);
       res.status(500).send({ message: "Error al borrar el segmento" });
     });
 }
@@ -103,12 +97,10 @@ function updateSegment(req, res) {
         color: color,
       })
       .then(() => {
-        console.log("rowsUpdate", segment);
         res.status(200).send(segment);
       })
       .catch((err) => {
         res.status(500).send({ message: "Error al editar el segmento" });
-        console.log(err.message);
       });
   });
 }

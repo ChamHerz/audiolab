@@ -12,6 +12,7 @@ const audioRoutes = require("./routers/audio.js");
 const themeRoutes = require("./routers/theme");
 const companyRoutes = require("./routers/company");
 const courtRoutes = require("./routers/court");
+const labelRoutes = require("./routers/label");
 
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -27,5 +28,6 @@ server.use(`/api/${API_VERSION}/segment`, segmentRoutes);
 server.use(`/api/${API_VERSION}/theme`, themeRoutes);
 server.use(`/api/${API_VERSION}/company`, companyRoutes);
 server.use(`/api/${API_VERSION}/court`, courtRoutes);
+server.use(`/api/${API_VERSION}/label`, labelRoutes);
 
 module.exports = server;
