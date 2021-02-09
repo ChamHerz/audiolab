@@ -54,6 +54,7 @@ export default function HomeLayout(props) {
             onClose={onCloseAudio}
             deleteSegment={deleteSegment}
             updateSegment={updateSegment}
+            updateLabel={updateLabel}
           />
         ),
       };
@@ -157,6 +158,21 @@ export default function HomeLayout(props) {
           onDeleteSegment={onDeleteSegment}
         />
       ),
+    });
+  };
+
+  const updateLabel = (label) => {
+    // para actualizar el UseEffect
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: <LabelTab labelToUpdate={null} currentAudio={currentAudio} />,
+    });
+
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: <LabelTab labelToUpdate={label} currentAudio={currentAudio} />,
     });
   };
 

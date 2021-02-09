@@ -82,9 +82,30 @@ function deleteLabel(req, res) {
     });
 }
 
+function updateLabel(req, res) {
+  const { id, labelText, time, color } = req.body;
+  const labelId = parseInt(id);
+
+  Label.findByPk(labelId).then((label) => {
+    return label
+      .update({
+        labelText: labelText,
+        time: time,
+        color: color,
+      })
+      .then(() => {
+        res.status(200).send(label);
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "Error al editar la etiqueta" });
+      });
+  });
+}
+
 module.exports = {
   getMaxId,
   newLabel,
   listLabelByAudioId,
   deleteLabel,
+  updateLabel,
 };

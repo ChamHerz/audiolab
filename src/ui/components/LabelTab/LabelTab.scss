@@ -1,4 +1,28 @@
 @import "../../scss/index";
 
-.label-tab {
+.dock-tabpane > div.label-tab {
+  margin: 5px;
+
+  .ui.table.inverted.label-list {
+    background-color: $background-dark;
+
+    th {
+      background-color: transparent;
+    }
+
+    .selected {
+      background-color: blanchedalmond;
+    }
+
+    tr {
+      &:hover {
+        cursor: pointer;
+        background-color: whitesmoke;
+      }
+
+      td {
+        color: $background-light-dark;
+      }
+    }
+  }
 }

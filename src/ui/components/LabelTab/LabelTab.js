@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Icon, Table } from "semantic-ui-react";
-import { listLabelByAudio, newLabel } from "../../api/label";
+import { listLabelByAudio, newLabel, updateLabel } from "../../api/label";
 import { toast } from "react-toastify";
 import ContextMenu from "semantic-ui-react-context-menu";
 import { truncate2decimal } from "../../utils/truncate";
-import { map } from "lodash";
+import { findIndex, map } from "lodash";
 
 import "./LabelTab.scss";
 
 export default function LabelTab(props) {
-  const { onLoad, newLabelToAdd, currentAudio } = props;
+  const { onLoad, newLabelToAdd, labelToUpdate, currentAudio } = props;
   const [labels, setLabels] = useState([]);
 
   const loadLabels = () => {
@@ -50,6 +50,31 @@ export default function LabelTab(props) {
     }
   }, [newLabelToAdd]);
 
+  useEffect(() => {
+    if (labelToUpdate) {
+      updateLabel({
+        id: labelToUpdate.id,
+        time: labelToUpdate.time,
+        labelText: labelToUpdate.labelText,
+        color: labelToUpdate.color,
+      })
+        .then((response) => {
+          if (response?.data) {
+            const labelUpdate = response?.data;
+            const indexToUpdate = findIndex(labels, {
+              id: labelUpdate.id,
+            });
+            labels.splice(indexToUpdate, 1, labelUpdate);
+            setLabels([]);
+            setLabels(labels);
+          }
+        })
+        .catch((err) => {
+          toast.error("error al actualizar la etiqueta");
+        });
+    }
+  }, [labelToUpdate]);
+
   const deleteLabel = (e, label) => {
     const labelToDelete = label.selected;
 
@@ -68,11 +93,10 @@ export default function LabelTab(props) {
 
   return (
     <div className="label-tab">
-      <Table inverted className="segment-list">
+      <Table inverted className="label-list">
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Nombre</Table.HeaderCell>
-            <Table.HeaderCell>Descripción</Table.HeaderCell>
             <Table.HeaderCell textAlign="right">Tiempo</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>

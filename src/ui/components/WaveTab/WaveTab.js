@@ -10,6 +10,7 @@ import { truncate2decimal } from "../../utils/truncate";
 
 import "./WaveTab.scss";
 import LabelModal from "../../modals/LabelModal";
+import { listLabelByAudio } from "../../api/label";
 
 export default function WaveTab(props) {
   const {
@@ -18,6 +19,7 @@ export default function WaveTab(props) {
     onClose,
     deleteSegment,
     updateSegment,
+    updateLabel,
     onAddLabel,
   } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
@@ -179,6 +181,7 @@ export default function WaveTab(props) {
 
         peaks.on("zoomview.dblclick", addSegment);
         peaks.on("segments.dragend", dragEndSegment);
+        peaks.on("points.dragend", dragEndPoint);
         peaks.on("player.seeked", playerSeeked);
 
         // evento que se ejecuta al finalizar el drag
@@ -187,6 +190,7 @@ export default function WaveTab(props) {
         //peaks.on("segments.dragged", draggedSegment);
 
         loadSegments(peaks);
+        loadLabels(peaks);
       });
     }
   }, [audio]);
@@ -206,12 +210,30 @@ export default function WaveTab(props) {
     });
   };
 
+  const loadLabels = (peaks) => {
+    listLabelByAudio(audio?.id).then((response) => {
+      map(response?.data, (label) => {
+        peaks.points.add({
+          id: label.id,
+          time: label.time,
+          labelText: label.labelText,
+          color: label.color,
+          editable: true,
+        });
+      });
+    });
+  };
+
   const addSegment = (currentTime) => {
     setOpenSegmentModal(true);
   };
 
   const dragEndSegment = (segment, inMarker) => {
     updateSegment(segment);
+  };
+
+  const dragEndPoint = (label) => {
+    updateLabel(label);
   };
 
   const onContextMenu = (e) => {

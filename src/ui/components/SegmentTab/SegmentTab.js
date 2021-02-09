@@ -8,10 +8,10 @@ import {
 } from "../../api/segment";
 import { map, findIndex } from "lodash";
 import ContextMenu from "semantic-ui-react-context-menu";
-
-import "./SegmentTab.scss";
 import { toast } from "react-toastify";
 import { truncate2decimal } from "../../utils/truncate";
+
+import "./SegmentTab.scss";
 
 export default function SegmentTab(props) {
   const {

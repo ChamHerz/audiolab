@@ -20,3 +20,7 @@ export function deleteLabelById(labelId) {
     `${basePath}/${apiVersion}/label/delete-label-by-id/${labelId}`
   );
 }
+
+export function updateLabel(label) {
+  return axios.put(`${basePath}/${apiVersion}/label/update-label`, label);
+}
