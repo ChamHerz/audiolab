@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { DockLayout } from "rc-dock";
 import ExplorerTab from "../../components/ExplorerTab";
 import TopBar from "../../components/TopBar";
-
-import "./HomeLayout.scss";
 import WaveTab from "../../components/WaveTab";
-
 import SegmentTab from "../../components/SegmentTab";
 import LabelTab from "../../components/LabelTab";
+
+import "./HomeLayout.scss";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -27,6 +26,7 @@ let tab = {
 export default function HomeLayout(props) {
   const { project } = props;
   let deleteSegment;
+  let deleteLabel;
   let dockLayout;
   let currentAudio;
 
@@ -35,6 +35,12 @@ export default function HomeLayout(props) {
       id: "segmentTab",
       title: "Segmentos",
       content: <SegmentTab onClose={true} />,
+    });
+
+    dockLayout.updateTab("labelTab", {
+      id: "labelTab",
+      title: "Etiquetas",
+      content: <LabelTab onClose={true} />,
     });
   };
 
@@ -86,7 +92,7 @@ export default function HomeLayout(props) {
         <LabelTab
           onLoad={true}
           currentAudio={currentAudio}
-          onDeleteSegment={onDeleteSegment}
+          onDeleteLabel={onDeleteLabel}
         />
       ),
     });
@@ -105,6 +111,24 @@ export default function HomeLayout(props) {
           onAddLabel={onAddLabel}
           onClose={onCloseAudio}
           deleteSegment={deleteSegment}
+        />
+      ),
+    });
+  };
+
+  const onDeleteLabel = (e, label) => {
+    deleteLabel = label;
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
+          onClose={onCloseAudio}
+          deleteLabel={deleteLabel}
         />
       ),
     });
@@ -130,7 +154,13 @@ export default function HomeLayout(props) {
     dockLayout.updateTab("labelTab", {
       id: "labelTab",
       title: "Etiquetas",
-      content: <LabelTab newLabelToAdd={label} currentAudio={currentAudio} />,
+      content: (
+        <LabelTab
+          newLabelToAdd={label}
+          currentAudio={currentAudio}
+          onDeleteLabel={onDeleteLabel}
+        />
+      ),
     });
   };
 
@@ -166,13 +196,25 @@ export default function HomeLayout(props) {
     dockLayout.updateTab("labelTab", {
       id: "labelTab",
       title: "Etiquetas",
-      content: <LabelTab labelToUpdate={null} currentAudio={currentAudio} />,
+      content: (
+        <LabelTab
+          labelToUpdate={null}
+          currentAudio={currentAudio}
+          onDeleteLabel={onDeleteLabel}
+        />
+      ),
     });
 
     dockLayout.updateTab("labelTab", {
       id: "labelTab",
       title: "Etiquetas",
-      content: <LabelTab labelToUpdate={label} currentAudio={currentAudio} />,
+      content: (
+        <LabelTab
+          labelToUpdate={label}
+          currentAudio={currentAudio}
+          onDeleteLabel={onDeleteLabel}
+        />
+      ),
     });
   };
 

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Icon, Table } from "semantic-ui-react";
-import { listLabelByAudio, newLabel, updateLabel } from "../../api/label";
+import {
+  deleteLabelById,
+  listLabelByAudio,
+  newLabel,
+  updateLabel,
+} from "../../api/label";
 import { toast } from "react-toastify";
 import ContextMenu from "semantic-ui-react-context-menu";
 import { truncate2decimal } from "../../utils/truncate";
@@ -9,7 +14,14 @@ import { findIndex, map } from "lodash";
 import "./LabelTab.scss";
 
 export default function LabelTab(props) {
-  const { onLoad, newLabelToAdd, labelToUpdate, currentAudio } = props;
+  const {
+    onLoad,
+    onClose,
+    newLabelToAdd,
+    onDeleteLabel,
+    labelToUpdate,
+    currentAudio,
+  } = props;
   const [labels, setLabels] = useState([]);
 
   const loadLabels = () => {
@@ -26,6 +38,16 @@ export default function LabelTab(props) {
       }
     });
   };
+
+  const clearLabels = () => {
+    setLabels([]);
+  };
+
+  useEffect(() => {
+    if (onClose) {
+      clearLabels();
+    }
+  }, [onClose]);
 
   useEffect(() => {
     if (onLoad) {
@@ -78,17 +100,16 @@ export default function LabelTab(props) {
   const deleteLabel = (e, label) => {
     const labelToDelete = label.selected;
 
-    console.log("borrar etiqueta");
-
-    /*deleteSegmentById(segmentToDelete.id)
-        .then((response) => {
-          toast.success(`El segmento ${segmentToDelete.labelText} fue borrado`);
-          loadSegments();
-          onDeleteSegment(e, segment); //envia señal al waveTab
-        })
-        .catch((err) => {
-          toast.error(err.response.data.message);
-        });*/
+    deleteLabelById(labelToDelete.id)
+      .then((response) => {
+        toast.success(`La etiqueta ${labelToDelete.labelText} fue borrada`);
+        loadLabels();
+        onDeleteLabel(e, label); //envia señal al waveTab
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
   };
 
   return (
@@ -107,7 +128,7 @@ export default function LabelTab(props) {
             <LabelRow
               key={label.id}
               label={label}
-              onDeleteSegment={deleteLabel}
+              onDeleteLabel={deleteLabel}
             />
           ))}
         </Table.Body>

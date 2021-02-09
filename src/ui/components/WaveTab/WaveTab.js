@@ -18,6 +18,7 @@ export default function WaveTab(props) {
     onAddSegment,
     onClose,
     deleteSegment,
+    deleteLabel,
     updateSegment,
     updateLabel,
     onAddLabel,
@@ -39,6 +40,13 @@ export default function WaveTab(props) {
       peaksInstance.segments.removeById(segmentToDelete.id);
     }
   }, [deleteSegment]);
+
+  useEffect(() => {
+    if (deleteLabel) {
+      const labelToDelete = deleteLabel.selected;
+      peaksInstance.points.removeById(labelToDelete.id);
+    }
+  }, [deleteLabel]);
 
   useEffect(() => {
     return () => {
