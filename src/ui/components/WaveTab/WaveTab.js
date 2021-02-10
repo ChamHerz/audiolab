@@ -29,7 +29,7 @@ export default function WaveTab(props) {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  let zoomviewContainer = useRef(null);
+  let zoomviewContainer = React.createRef();
   let overviewContainer = useRef(null);
   let audioContainer = useRef(null);
   let filename = "";
@@ -164,6 +164,166 @@ export default function WaveTab(props) {
         },
       };
 
+      /*
+       * CustomPointMarker
+       */
+
+      function CustomPointMarker(options) {
+        this._options = options;
+      }
+
+      CustomPointMarker.prototype.init = function (group) {
+        this._group = group;
+
+        this._label = new Konva.Label({
+          x: 0.5,
+          y: 0.5,
+        });
+
+        var handleWidth = 10;
+        var handleHeight = 20;
+        var handleX = -(handleWidth / 2) + 0.5; // Place in the middle of the marker
+
+        if (this._options.draggable) {
+          this._handle = new Konva.Rect({
+            x: handleX,
+            y: 0,
+            width: handleWidth,
+            height: handleHeight,
+            fill: this._options.color,
+          });
+        }
+
+        this._tag = new Konva.Tag({
+          fill: this._options.color,
+          stroke: this._options.color,
+          strokeWidth: 1,
+          pointerDirection: "down",
+          pointerWidth: 10,
+          pointerHeight: 10,
+          lineJoin: "round",
+          shadowColor: "black",
+          shadowBlur: 10,
+          shadowOffsetX: 3,
+          shadowOffsetY: 3,
+          shadowOpacity: 0.3,
+        });
+
+        this._label.add(this._tag);
+
+        this._text = new Konva.Text({
+          text: this._options.point.labelText,
+          fontFamily: "Calibri",
+          fontSize: 14,
+          padding: 5,
+          fill: "white",
+        });
+
+        this._label.add(this._text);
+
+        // Vertical Line - create with default y and points, the real values
+        // are set in fitToView().
+        this._line = new Konva.Line({
+          x: 0,
+          y: 0,
+          stroke: this._options.color,
+          strokeWidth: 1,
+        });
+
+        group.add(this._label);
+        group.add(this._line);
+
+        this.fitToView();
+
+        this.bindEventHandlers();
+      };
+
+      CustomPointMarker.prototype.bindEventHandlers = function () {
+        var self = this;
+
+        if (self._handle) {
+          self._handle.on("mouseover touchstart", function () {
+            console.log("entro");
+            // Position text to the left of the marker
+            self._time.setX(-24 - self._time.getWidth());
+            self._time.show();
+            self._options.layer.draw();
+          });
+
+          self._handle.on("mouseout touchend", function () {
+            self._time.hide();
+            self._options.layer.draw();
+          });
+
+          this._group.on("dragstart", function () {
+            self._time.setX(-24 - self._time.getWidth());
+            self._time.show();
+            self._options.layer.draw();
+          });
+
+          this._group.on("dragend", function () {
+            self._time.hide();
+            self._options.layer.draw();
+          });
+        }
+      };
+
+      CustomPointMarker.prototype.fitToView = function () {
+        var height = this._options.layer.getHeight();
+
+        var labelHeight = this._text.height() + 2 * this._text.padding();
+        var offsetTop = 14;
+        var offsetBottom = 26;
+
+        this._group.y(offsetTop + labelHeight + 0.5);
+
+        this._line.points([
+          0.5,
+          0,
+          0.5,
+          height - labelHeight - offsetTop - offsetBottom,
+        ]);
+      };
+
+      /*
+       * SimplePointMarker
+       */
+
+      function SimplePointMarker(options) {
+        this._options = options;
+      }
+
+      SimplePointMarker.prototype.init = function (group) {
+        this._group = group;
+
+        // Vertical Line - create with default y and points, the real values
+        // are set in fitToView().
+        this._line = new Konva.Line({
+          x: 0,
+          y: 0,
+          stroke: this._options.color,
+          strokeWidth: 1,
+        });
+
+        group.add(this._line);
+
+        this.fitToView();
+      };
+
+      SimplePointMarker.prototype.fitToView = function () {
+        var height = this._options.layer.getHeight();
+
+        this._line.points([0.5, 0, 0.5, height]);
+      };
+
+      function createPointMarker(options) {
+        if (options.view === "zoomview") {
+          return new CustomPointMarker(options);
+        } else {
+          return new SimplePointMarker(options);
+        }
+      }
+
       const options = {
         containers: {
           zoomview: zoomviewContainer.current,
@@ -175,8 +335,17 @@ export default function WaveTab(props) {
           arraybuffer: "data/" + filename + ".dat",
         },
         keyboard: true,
-        showPlayheadTime: false,
+        showPlayheadTime: true,
+        emitCueEvents: true,
+        zoomWaveformColor: "rgba(0, 225, 20, 1)", //color de onda superior
+        overviewWaveformColor: "rgba(0,0,0,0.5)", //color de onda inferior
+        overviewHighlightColor: "white", //color rectangulo inferior (zoom)
+        playheadColor: "rgba(0, 0, 0, 1)", //color del play cabezal
+        playheadTextColor: "#fff", //texto en el cabeza
+        axisGridlineColor: "#fff", //color de la grilla
+        axisLabelColor: "#aaa", //numeros de la grilla
         createSegmentLabel: createSegmentLabel,
+        createPointMarker: createPointMarker,
       };
 
       Peaks.init(options, function (err, peaks) {

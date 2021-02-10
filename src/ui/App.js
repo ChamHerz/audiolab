@@ -6,13 +6,22 @@ import HomeLayout from "./layouts/HomeLayout";
 
 import "./index.scss";
 
+require.config({
+  paths: {
+    peaks: "bower_components/peaks.js/src/main",
+    EventEmitter: "bower_components/eventemitter2/lib/eventemitter2",
+    Konva: "bower_components/konvajs/konva",
+    "waveform-data": "bower_components/waveform-data/dist/waveform-data.min",
+  },
+});
+
 function App() {
   const [project, setProject] = useState(null);
 
   return (
     <>
       {!project ? (
-       <Project setProject={setProject} />
+        <Project setProject={setProject} />
       ) : (
         <HomeLayout project={project} />
       )}
