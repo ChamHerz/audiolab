@@ -25,10 +25,8 @@ export default function LabelTab(props) {
   const [labels, setLabels] = useState([]);
 
   const loadLabels = () => {
-    console.log("Aqui cargar las etiquetas");
     listLabelByAudio(currentAudio.id).then((response) => {
       if (response?.data) {
-        console.log(response?.data);
         const arrayLabels = [];
         map(response?.data, (label) => {
           label.selected = false;

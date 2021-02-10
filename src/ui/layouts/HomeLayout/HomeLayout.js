@@ -44,8 +44,34 @@ export default function HomeLayout(props) {
     });
   };
 
+  const onDoubleClickSegment = (e, segment) => {
+    console.log("Doble click, ", segment);
+
+    const segmentToUpdate = { ...segment };
+
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
+          onClose={onCloseAudio}
+          deleteSegment={deleteSegment}
+          updateSegment={updateSegment}
+          updateLabel={updateLabel}
+          onDoubleClickSegment={segmentToUpdate}
+        />
+      ),
+    });
+  };
+
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
+
+    currentAudio = oneAudio;
 
     const newTab = () => {
       return {
@@ -71,8 +97,6 @@ export default function HomeLayout(props) {
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
     }
 
-    currentAudio = oneAudio;
-
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
@@ -81,6 +105,7 @@ export default function HomeLayout(props) {
           onLoad={true}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
@@ -143,6 +168,7 @@ export default function HomeLayout(props) {
           newSegmentToAdd={segment}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
@@ -174,6 +200,7 @@ export default function HomeLayout(props) {
           segmentToUpdate={null}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
@@ -186,6 +213,7 @@ export default function HomeLayout(props) {
           segmentToUpdate={segment}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
