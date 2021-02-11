@@ -21,6 +21,7 @@ export default function LabelTab(props) {
     onDeleteLabel,
     labelToUpdate,
     currentAudio,
+    onDoubleClickLabel,
   } = props;
   const [labels, setLabels] = useState([]);
 
@@ -127,6 +128,7 @@ export default function LabelTab(props) {
               key={label.id}
               label={label}
               onDeleteLabel={deleteLabel}
+              onDoubleClickLabel={onDoubleClickLabel}
             />
           ))}
         </Table.Body>
@@ -136,7 +138,7 @@ export default function LabelTab(props) {
 }
 
 function LabelRow(props) {
-  const { label, onDeleteLabel } = props;
+  const { label, onDeleteLabel, onDoubleClickLabel } = props;
   const [selected, setSelected] = useState(false);
 
   const onLabel = (e, labelId) => {
@@ -146,10 +148,6 @@ function LabelRow(props) {
     } else {
       console.log("solo click segment");
     }
-  };
-
-  const onDoubleClickLabel = (e, label) => {
-    console.log("Doble click, ", label);
   };
 
   return (

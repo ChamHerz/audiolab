@@ -23,10 +23,12 @@ export default function WaveTab(props) {
     updateLabel,
     onAddLabel,
     onDoubleClickSegment,
+    onDoubleClickLabel,
   } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [segmentToUpdate, setSegmentToUpdate] = useState(null);
   const [openLabelModal, setOpenLabelModal] = useState(false);
+  const [labelToUpdate, setLabelToUpdate] = useState(null);
   const [peaksInstance, setPeaksInstance] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -36,8 +38,15 @@ export default function WaveTab(props) {
   let filename = "";
 
   useEffect(() => {
+    if (onDoubleClickLabel) {
+      console.log("Mostrar modal etiqueta", onDoubleClickLabel);
+      setLabelToUpdate(onDoubleClickLabel);
+      setOpenLabelModal(true);
+    }
+  }, [onDoubleClickLabel]);
+
+  useEffect(() => {
     if (onDoubleClickSegment) {
-      console.log("Mostrar modal", onDoubleClickSegment);
       setSegmentToUpdate(onDoubleClickSegment);
       setOpenSegmentModal(true);
     }
@@ -264,6 +273,7 @@ export default function WaveTab(props) {
 
   const onContextMenu = (e) => {
     if (e.type === "contextmenu") {
+      setLabelToUpdate(null);
       setOpenLabelModal(true);
     }
   };
@@ -300,9 +310,11 @@ export default function WaveTab(props) {
             />
             <LabelModal
               openLabelModal={openLabelModal}
+              labelToUpdate={labelToUpdate}
               setOpenLabelModal={setOpenLabelModal}
               peaks={peaksInstance}
               onAddLabel={onAddLabel}
+              updateLabel={updateLabel}
             />
           </>
         ) : (

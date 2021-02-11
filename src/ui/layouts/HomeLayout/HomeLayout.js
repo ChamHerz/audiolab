@@ -44,9 +44,31 @@ export default function HomeLayout(props) {
     });
   };
 
-  const onDoubleClickSegment = (e, segment) => {
-    console.log("Doble click, ", segment);
+  const onDoubleClickLabel = (e, label) => {
+    console.log("Doble click, ", label);
 
+    const labelToUpdate = { ...label };
+
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
+          onClose={onCloseAudio}
+          deleteSegment={deleteSegment}
+          updateSegment={updateSegment}
+          updateLabel={updateLabel}
+          onDoubleClickLabel={labelToUpdate}
+        />
+      ),
+    });
+  };
+
+  const onDoubleClickSegment = (e, segment) => {
     const segmentToUpdate = { ...segment };
 
     dockLayout.updateTab(`${currentAudio.name}`, {
@@ -118,6 +140,7 @@ export default function HomeLayout(props) {
           onLoad={true}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
@@ -185,6 +208,7 @@ export default function HomeLayout(props) {
           newLabelToAdd={label}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
@@ -229,6 +253,7 @@ export default function HomeLayout(props) {
           labelToUpdate={null}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
@@ -241,6 +266,7 @@ export default function HomeLayout(props) {
           labelToUpdate={label}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
