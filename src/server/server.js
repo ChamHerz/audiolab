@@ -13,6 +13,7 @@ const themeRoutes = require("./routers/theme");
 const companyRoutes = require("./routers/company");
 const courtRoutes = require("./routers/court");
 const interlocutorRoutes = require("./routers/interlocutor.js");
+const labelRoutes = require("./routers/label");
 
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -29,5 +30,6 @@ server.use(`/api/${API_VERSION}/theme`, themeRoutes);
 server.use(`/api/${API_VERSION}/company`, companyRoutes);
 server.use(`/api/${API_VERSION}/court`, courtRoutes);
 server.use(`/api/${API_VERSION}/interlocutor`, interlocutorRoutes);
+server.use(`/api/${API_VERSION}/label`, labelRoutes);
 
 module.exports = server;

@@ -8,6 +8,10 @@
 
 #zoomview-container {
   height: 200px;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 #overview-container {

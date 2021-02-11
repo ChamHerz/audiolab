@@ -16,7 +16,6 @@ export default function AddProjectForm(props) {
   };
 
   const onSubmit = () => {
-    console.log("onSubmit");
     if (!formData.name) {
       toast.warning("Añade el nombre del proyecto");
     } else {

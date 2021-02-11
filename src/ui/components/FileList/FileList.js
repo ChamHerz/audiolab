@@ -29,7 +29,6 @@ export default function FileList(props) {
           arrayAudios.push(audio);
         });
         setAudios(arrayAudios);
-        console.log("audios Cargados");
       }
     });
   };
@@ -38,15 +37,10 @@ export default function FileList(props) {
     loadAudios();
   }, []);
 
-  const onAudioFile = () => {
-    console.log("dobleClick");
-  };
-
   const onDrop = useCallback((acceptedFile) => {
     map(acceptedFile, (audioFile) => {
       const file = audioFile;
       // setFile(file);
-      console.log(file);
       newAudio({
         projectId: project.id,
         name: file.name,
@@ -60,7 +54,6 @@ export default function FileList(props) {
             createDataAudioById(audio.id)
               .then((response) => {
                 audio.hasData = true;
-                console.log("data creada");
               })
               .catch((error) => {
                 console.log("error en boolear el data", error);
@@ -132,12 +125,10 @@ function AudioFile(props) {
   };
 
   const onDeleteAudio = (e, item) => {
-    console.log("borrado", item.selected);
     const audiosToDelete = union(
       [item.selected],
       filter(audios, (a) => a.selected)
     );
-    console.log(audiosToDelete);
     map(audiosToDelete, (audio) => {
       deleteAudioById(audio.id)
         .then((response) => {
