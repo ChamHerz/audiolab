@@ -28,7 +28,7 @@ function newTheme( req, res ) {
 }
 
 function listTheme( req, res ) {
-    Theme.findAll( { attributes: [ "id", "name", "description"] })
+    Theme.findAll( { attributes: [ "id", "name", "description", "isDeleted"], where: {isDeleted : 0} })
         .then((themes) => res.status(200).send(themes))
         .catch((err) => {
             res.status(500).send({ message:"Error al cargar tema."})
@@ -42,14 +42,14 @@ function deleteTheme( req, res ) {
     const { id } = req.body;
     theme.id = id;
 
-    Theme.destroy({
+    Theme.update({ isDeleted: 1},{
         where: {
             id : theme.id
         }
     })
         .then(() => res.sendStatus(200))
         .catch((err) => {
-            res.status(500).send({message: "Error al borrar tema."})
+            res.status(500).send({ message: "Error al borrar tema."})
         })
 }
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define("theme", {
+    return sequelize.define("interlocutor", {
         id: {
             type: type.INTEGER,
             primaryKey: true,
@@ -8,11 +8,19 @@ module.exports = (sequelize, type) => {
 
         name: {
             type: type.STRING,
+        },
+
+        lastname: {
+            type: type.STRING,
+        },
+
+        dni: {
+            type: type.STRING,
             unique: true,
         },
 
-        description: {
-            type: type.STRING,
+        picture: {
+            type: type.BLOB,
         },
 
         isDeleted: {

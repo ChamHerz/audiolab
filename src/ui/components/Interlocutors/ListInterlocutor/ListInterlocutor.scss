@@ -1,0 +1,22 @@
+@import "../../../scss/index.scss";
+
+.list-interlocutor {
+  .ui.table.inverted.table-interlocutors {
+    background-color: transparent;
+
+    th {
+      background-color: transparent;
+    }
+
+    tr {
+      &:hover {
+        cursor: pointer;
+
+        td {
+          color: $background-light-dark;
+        }
+
+      }
+    }
+  }
+}

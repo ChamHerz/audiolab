@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, Icon, Table } from "semantic-ui-react";
-import {deleteTheme, listTheme} from "../../../api/theme";
+import { deleteTheme, listTheme } from "../../../api/theme";
 import { map } from "lodash";
 import { toast } from "react-toastify";
+import EditTheme from "../EditTheme";
 
 import "./ListTheme.scss";
 
@@ -10,7 +11,11 @@ export default function ListTheme(props) {
     const { setSelectedForm, setTheme } = props;
     const [ themes, setThemes] = useState([]);
     const [ reloadTable, setReloadTable] = useState(false);
+    const [ isEditTheme, setIsEditTheme ] = useState(false);
 
+    const handlerIsEditTheme = () => {
+        setIsEditTheme(!isEditTheme);
+    }
     const loadThemes = () => {
         listTheme().then((response) => {
             if (response?.data) {
@@ -29,6 +34,12 @@ export default function ListTheme(props) {
     }, []);
 
     return (
+        <>
+        {
+        !isEditTheme ?
+            <EditTheme/>
+
+        :
         <div className = "list-theme">
             <Grid className="list-theme">
                 <Grid.Row>
@@ -45,11 +56,12 @@ export default function ListTheme(props) {
                         <Table.Body>
                             {map(themes, (theme) => (
                                 <Theme
-                                    key={theme.id}
-                                    theme={theme}
-                                    setTheme={setTheme}
-                                    setReloadTable = { setReloadTable}
+                                    key = { theme.id }
+                                    theme = { theme }
+                                    setTheme = { setTheme }
+                                    setReloadTable = { setReloadTable }
                                     loadThemes = { loadThemes }
+                                    handlerIsEditTheme = { handlerIsEditTheme }
                                 />
                             ))}
                         </Table.Body>
@@ -58,8 +70,11 @@ export default function ListTheme(props) {
                 </Grid.Row>
             </Grid>
         </div>
+        }
+        </>
     );
 }
+
 
 function DeleteTheme( themeId, setReloadTable, loadThemes ){
 
@@ -75,9 +90,10 @@ function DeleteTheme( themeId, setReloadTable, loadThemes ){
         })
 }
 
+
 function Theme(props) {
 
-    const { theme, setTheme, setReloadTable, loadThemes } = props;
+    const { theme, setTheme, setReloadTable, loadThemes, handlerIsEditTheme } = props;
 
     const onTheme = () => {
         setTheme(theme);
@@ -88,13 +104,13 @@ function Theme(props) {
             <Table.Cell>{theme.name}</Table.Cell>
             <Table.Cell>{theme.description}</Table.Cell>
             <Table.Cell collapsing>
-                <Button icon>
+                <Button icon onClick={handlerIsEditTheme()}>
                     <Icon name="edit"></Icon>
                 </Button>
             </Table.Cell>
             <Table.Cell collapsing>
                 <Button icon onClick={() => DeleteTheme(theme.id, setReloadTable, loadThemes)}>
-                    <Icon name='trash' />
+                    <Icon name="trash" />
                 </Button>
             </Table.Cell>
         </Table.Row>

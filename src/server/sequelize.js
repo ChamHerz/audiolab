@@ -6,6 +6,7 @@ const SegmentModel = require("./models/segment.js");
 const ThemeModel = require("./models/theme");
 const CompanyModel = require("./models/company");
 const CourtModel = require("./models/court")
+const InterlocutorModel = require("./models/interlocutor.js");
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -19,6 +20,7 @@ const Theme = ThemeModel(sequelize, Sequelize);
 const Company = CompanyModel(sequelize, Sequelize);
 const Court = CourtModel(sequelize, Sequelize);
 const Segment = SegmentModel(sequelize, Sequelize);
+const Interlocutor = InterlocutorModel(sequelize, Sequelize);
 
 // ASSOCIATIONS
 Audio.belongsTo(Project, { foreignKey: "id_project" });
@@ -39,5 +41,6 @@ module.exports = {
   Segment,
   Theme,
   Company,
-  Court
+  Court,
+  Interlocutor
 };

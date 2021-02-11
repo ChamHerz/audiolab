@@ -5,6 +5,6 @@ const api = express.Router();
 
 api.post("/new-theme", ThemeController.newTheme);
 api.get("/list-theme", ThemeController.listTheme);
-api.post("/delete-theme", ThemeController.deleteTheme);
+api.put("/delete-theme", ThemeController.deleteTheme);
 
 module.exports = api;
