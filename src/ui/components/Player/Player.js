@@ -28,6 +28,11 @@ export default function Player(props) {
                 name="play circle outline"
               />
             )}
+            <Icon onClick={() => peaksInstance.zoom.zoomIn()} name="zoom-in" />
+            <Icon
+              onClick={() => peaksInstance.zoom.zoomOut()}
+              name="zoom-out"
+            />
           </div>
         </Grid.Column>
         <Grid.Column width={4} className="right">

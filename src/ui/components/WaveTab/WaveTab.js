@@ -195,6 +195,7 @@ export default function WaveTab(props) {
         keyboard: true,
         showPlayheadTime: true,
         emitCueEvents: true,
+        zoomLevels: [512, 1024, 2048, 4096, 8192, 16384],
         zoomWaveformColor: "rgba(0, 225, 20, 1)", //color de onda superior
         overviewWaveformColor: "rgba(0,0,0,0.5)", //color de onda inferior
         overviewHighlightColor: "white", //color rectangulo inferior (zoom)
