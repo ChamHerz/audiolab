@@ -11,15 +11,16 @@ export default function ListInterlocutor(props) {
     const {setSelectedForm, setInterlocutor} = props;
     const [interlocutors, setInterlocutors] = useState([]);
     const [reloadTable, setReloadTable] = useState(false);
-    const [ isEditInterlocutor, setIsEditInterlocutor ] = useState(false);
+    /*const [ isEditInterlocutor, setIsEditInterlocutor ] = useState(false);*/
 
-    const handlerIsEditInterlocutor = () => {
+/*    const handlerIsEditInterlocutor = () => {
         setIsEditInterlocutor(!isEditInterlocutor);
-    }
+    }*/
 
     const loadInterlocutors = () => {
 
         listInterlocutor().then((response) => {
+            console.log(response);
             if (response?.data) {
                 const arrayInterlocutors = [];
                 map(response?.data, (interlocutor) => {
@@ -55,12 +56,12 @@ export default function ListInterlocutor(props) {
                             <Table.Body>
                                 {map(interlocutors, (interlocutor) => (
                                     <Interlocutor
-                                        key = {interlocutor.id}
-                                        interlocutor = {interlocutor}
-                                        setInterlocutor = {setInterlocutor}
-                                        setReloadTable = {setReloadTable}
+                                        key = { interlocutor.id }
+                                        interlocutor = { interlocutor }
+                                        setInterlocutor = { setInterlocutor }
+                                        setReloadTable = { setReloadTable }
                                         loadInterlocutors = { loadInterlocutors }
-                                        handlerIsEditInterlocutor = { handlerIsEditInterlocutor }
+                                       /* handlerIsEditInterlocutor = { handlerIsEditInterlocutor }*/
                                     />
                                 ))}
                             </Table.Body>
@@ -101,7 +102,7 @@ function Interlocutor(props) {
             <Table.Cell>{interlocutor.alias}</Table.Cell>
             <Table.Cell>{interlocutor.picture}</Table.Cell>
             <Table.Cell collapsing>
-                <Button icon onClick={ handlerIsEditInterlocutor() }>
+                <Button icon>
                     <Icon name="edit"></Icon>
                 </Button>
             </Table.Cell>

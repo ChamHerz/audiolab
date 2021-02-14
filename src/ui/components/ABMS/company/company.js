@@ -42,9 +42,6 @@ export default function Company(props){
         }
     return(
     <>
-
-
-
             {isNewCompany ?
                 <Form className="ui-form" onSubmit={onSubmit}>
                     <h4 className="ui dividing header">Empresas</h4>
@@ -88,7 +85,7 @@ export default function Company(props){
                 <div className="ListCompany">
                     <ListCompany/>
                     <Grid>
-                        <Grid.Column textAlign="left">
+                        <Grid.Column textAlign="right">
                             <Button className="ui common button" onClick={handlerIsNewCompany}>Nueva Empresa</Button>
                         </Grid.Column>
                     </Grid>

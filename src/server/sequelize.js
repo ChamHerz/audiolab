@@ -37,9 +37,9 @@ Label.belongsTo(Audio, { foreignKey: "id_audio" });
 Audio.hasMany(Label, { foreignKey: "id_audio" });
 
 // COMENTAR ESTO PARA BORRAR LA BASE AL INICIAR
-sequelize.sync({ force: true }).then(() => {
+/*sequelize.sync({ force: true }).then(() => {
   console.log(`Database & tables created!`);
-});
+});*/
 
 module.exports = {
   User,
@@ -50,5 +50,5 @@ module.exports = {
   Company,
   Court,
   Interlocutor,
-    Label,
+  Label,
 };

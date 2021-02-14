@@ -2,7 +2,7 @@ import { basePath, apiVersion } from "./config";
 const axios = require("axios").default;
 
 export function newInterlocutor(data) {
-    return axios.post(`${basePath}/${apiVersion}/interlocutor/new-interlocutor`. data);
+    return axios.post(`${basePath}/${apiVersion}/interlocutor/new-interlocutor`, data);
 }
 
 export function listInterlocutor() {

@@ -3,7 +3,6 @@ let _ = require("lodash");
 
 function newInterlocutor( req, res ) {
     const interlocutor = new Interlocutor();
-
     const { name, lastname, dni, alias, picture } = req.body;
     interlocutor.name = name;
     interlocutor.lastname = lastname;
@@ -11,10 +10,11 @@ function newInterlocutor( req, res ) {
     interlocutor.alias = alias;
     interlocutor.picture = picture;
 
+
     if(!alias) {
         res.status(404).send( { message: "El alias del interlocutor es obligatorio."});
     } else {
-        Interlocutor.create( theme.dataValues)
+        Interlocutor.create( interlocutor.dataValues)
             .then((newInterlocutor) => res.status(200).send(newInterlocutor))
             .catch((err) => {
                 if(err.errors) {
@@ -31,7 +31,7 @@ function newInterlocutor( req, res ) {
 }
 
 function listInterlocutor( req, res ) {
-    Interlocutor.findAll( { attributes: ["id", "lastname", "dni", "alias", "picture", "isDeleted"], where: {isDeleted: 0} })
+    Interlocutor.findAll( { attributes: ["id", "name","lastname", "dni", "alias", "picture", "isDeleted"], where: {isDeleted: 0} })
         .then((interlocutor) => res.status(200).send(interlocutor))
         .catch((err) => {
             res.status(500).send({ message: "Error al cargar interlocutor."})

@@ -23,8 +23,8 @@ export default function Theme(props){
         } else {
             setIsLoading(true);
             newTheme({
-                name: formData.name,
-                description: formData.description
+                description: formData.description,
+                name: formData.name
             })
                 .then(() => {
                     toast.success("Tema creado correctamente.");

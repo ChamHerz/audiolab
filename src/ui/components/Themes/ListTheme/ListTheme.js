@@ -11,11 +11,11 @@ export default function ListTheme(props) {
     const { setSelectedForm, setTheme } = props;
     const [ themes, setThemes] = useState([]);
     const [ reloadTable, setReloadTable] = useState(false);
-    const [ isEditTheme, setIsEditTheme ] = useState(false);
+    /*const [ isEditTheme, setIsEditTheme ] = useState(false);*/
 
-    const handlerIsEditTheme = () => {
+    /*const handlerIsEditTheme = () => {
         setIsEditTheme(!isEditTheme);
-    }
+    }*/
     const loadThemes = () => {
         listTheme().then((response) => {
             if (response?.data) {
@@ -35,42 +35,37 @@ export default function ListTheme(props) {
 
     return (
         <>
-        {
-        !isEditTheme ?
-            <EditTheme/>
+            <div className = "list-theme">
+                <Grid className="list-theme">
+                    <Grid.Row>
+                        <Table inverted className="table-themes">
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>Nombre</Table.HeaderCell>
+                                    <Table.HeaderCell>Descripcion</Table.HeaderCell>
+                                    <Table.HeaderCell></Table.HeaderCell>
+                                    <Table.HeaderCell></Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
 
-        :
-        <div className = "list-theme">
-            <Grid className="list-theme">
-                <Grid.Row>
-                    <Table inverted className="table-themes">
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Nombre</Table.HeaderCell>
-                                <Table.HeaderCell>Descripcion</Table.HeaderCell>
-                                <Table.HeaderCell></Table.HeaderCell>
-                                <Table.HeaderCell></Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
+                            <Table.Body>
+                                {map(themes, (theme) => (
+                                    <Theme
+                                        key = { theme.id }
+                                        theme = { theme }
+                                        setTheme = { setTheme }
+                                        setReloadTable = { setReloadTable }
+                                        loadThemes = { loadThemes }
+                                        /*handlerIsEditTheme = { handlerIsEditTheme }*/
+                                    />
+                                ))}
+                            </Table.Body>
+                    </Table>
 
-                        <Table.Body>
-                            {map(themes, (theme) => (
-                                <Theme
-                                    key = { theme.id }
-                                    theme = { theme }
-                                    setTheme = { setTheme }
-                                    setReloadTable = { setReloadTable }
-                                    loadThemes = { loadThemes }
-                                    handlerIsEditTheme = { handlerIsEditTheme }
-                                />
-                            ))}
-                        </Table.Body>
-                </Table>
+                    </Grid.Row>
+                </Grid>
+            </div>
 
-                </Grid.Row>
-            </Grid>
-        </div>
-        }
         </>
     );
 }
@@ -93,7 +88,7 @@ function DeleteTheme( themeId, setReloadTable, loadThemes ){
 
 function Theme(props) {
 
-    const { theme, setTheme, setReloadTable, loadThemes, handlerIsEditTheme } = props;
+    const { theme, setTheme, setReloadTable, loadThemes/*, handlerIsEditTheme */} = props;
 
     const onTheme = () => {
         setTheme(theme);
@@ -104,7 +99,7 @@ function Theme(props) {
             <Table.Cell>{theme.name}</Table.Cell>
             <Table.Cell>{theme.description}</Table.Cell>
             <Table.Cell collapsing>
-                <Button icon onClick={handlerIsEditTheme()}>
+                <Button icon>
                     <Icon name="edit"></Icon>
                 </Button>
             </Table.Cell>

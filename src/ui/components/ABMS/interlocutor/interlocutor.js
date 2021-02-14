@@ -51,14 +51,14 @@ export default function Interlocutor(){
                     <Form.Field>
                         <Input
                             placeholder="Nombre"
-                            onChange={(e) => setFormData({...formData, nombre: e.target.value})}
+                            onChange={(e) => setFormData({...formData, name: e.target.value})}
                         />
                     </Form.Field>
 
                     <Form.Field>
                         <Input
                             placeholder="Apellido"
-                            onChange={(e) => setFormData({...formData, apellido: e.target.value})}
+                            onChange={(e) => setFormData({...formData, lastname: e.target.value})}
                         />
                     </Form.Field>
 
@@ -90,6 +90,7 @@ export default function Interlocutor(){
                     </Grid>
                 </Form> :
                 <div className="ListInterlocutor">
+                    <ListInterlocutor/>
                     <Grid>
                         <Grid.Column textAlign="right">
                             <Button className="ui common button" onClick={handlerIsNewInterlocutor}>Nuevo Interlocutor</Button>

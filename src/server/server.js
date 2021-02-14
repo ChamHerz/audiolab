@@ -12,7 +12,7 @@ const audioRoutes = require("./routers/audio.js");
 const themeRoutes = require("./routers/theme");
 const companyRoutes = require("./routers/company");
 const courtRoutes = require("./routers/court");
-const interlocutorRoutes = require("./routers/interlocutor.js");
+const interlocutorRoutes = require("./routers/interlocutor");
 const labelRoutes = require("./routers/label");
 
 server.use(bodyParser.urlencoded({ extended: false }));

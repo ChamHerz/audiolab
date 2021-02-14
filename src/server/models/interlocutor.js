@@ -5,6 +5,9 @@ module.exports = (sequelize, type) => {
             primaryKey: true,
             autoIncrement: true,
         },
+         alias: {
+            type: type.STRING,
+         },
 
         name: {
             type: type.STRING,
@@ -20,7 +23,7 @@ module.exports = (sequelize, type) => {
         },
 
         picture: {
-            type: type.BLOB,
+            type: type.STRING,
         },
 
         isDeleted: {
