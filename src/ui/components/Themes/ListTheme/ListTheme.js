@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Icon, Table } from "semantic-ui-react";
+import { Button, Grid, Icon, Modal, Table } from "semantic-ui-react";
 import { deleteTheme, listTheme } from "../../../api/theme";
 import { map } from "lodash";
 import { toast } from "react-toastify";
-import EditTheme from "../EditTheme";
+import NewTheme from "../../Themes/NewTheme";
 
 import "./ListTheme.scss";
 
@@ -11,11 +11,8 @@ export default function ListTheme(props) {
     const { setSelectedForm, setTheme } = props;
     const [ themes, setThemes] = useState([]);
     const [ reloadTable, setReloadTable] = useState(false);
-    /*const [ isEditTheme, setIsEditTheme ] = useState(false);*/
+    const [ open, setOpen ] = React.useState(false);
 
-    /*const handlerIsEditTheme = () => {
-        setIsEditTheme(!isEditTheme);
-    }*/
     const loadThemes = () => {
         listTheme().then((response) => {
             if (response?.data) {
@@ -56,7 +53,8 @@ export default function ListTheme(props) {
                                         setTheme = { setTheme }
                                         setReloadTable = { setReloadTable }
                                         loadThemes = { loadThemes }
-                                        /*handlerIsEditTheme = { handlerIsEditTheme }*/
+                                        setOpen = { setOpen }
+                                        open = { open }
                                     />
                                 ))}
                             </Table.Body>
@@ -88,7 +86,7 @@ function DeleteTheme( themeId, setReloadTable, loadThemes ){
 
 function Theme(props) {
 
-    const { theme, setTheme, setReloadTable, loadThemes/*, handlerIsEditTheme */} = props;
+    const { theme, setTheme, setReloadTable, loadThemes, setOpen, open } = props;
 
     const onTheme = () => {
         setTheme(theme);
@@ -98,11 +96,34 @@ function Theme(props) {
         <Table.Row>
             <Table.Cell>{theme.name}</Table.Cell>
             <Table.Cell>{theme.description}</Table.Cell>
+
             <Table.Cell collapsing>
-                <Button icon>
-                    <Icon name="edit"></Icon>
-                </Button>
+                <Modal
+                    onClose={() => setOpen(false)}
+                    onOpen={() => setOpen(true)}
+                    open={open}
+                    trigger={
+                        <Button icon>
+                            <Icon name="edit"></Icon>
+                        </Button>
+                    }
+                    >
+                    <Modal.Content>
+                        <NewTheme
+                            isInsert = { false }
+                            themeModel = { theme }
+                            themeId = { theme.id }
+                         />
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color="black" onClick={() => setOpen(false)}>
+                            Cerrar
+                        </Button>
+                    </Modal.Actions>
+
+                </Modal>
             </Table.Cell>
+
             <Table.Cell collapsing>
                 <Button icon onClick={() => DeleteTheme(theme.id, setReloadTable, loadThemes)}>
                     <Icon name="trash" />

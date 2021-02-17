@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Form, Icon, Input, Table, Loader, Button, Grid } from "semantic-ui-react";
+import { Form, Icon, Input, Table, Loader, Button, Grid, Modal } from "semantic-ui-react";
 import { newTheme }  from "../../../api/theme";
 import { toast } from "react-toastify";
 import ListTheme from "../../Themes/ListTheme";
+import NewTheme from "../../Themes/NewTheme";
 
-export default function Theme(props){
+export default function Theme(props) {
     const [formData, setFormData] = useState(initialValueForm());
     const [isLoading, setIsLoading] = useState(false);
     const [isNewTheme, setIsNewTheme] = useState(false);
+    const [open, setOpen] = React.useState(false);
 
     const handlerIsNewTheme = () => {
         setIsNewTheme(!isNewTheme);
@@ -18,7 +20,7 @@ export default function Theme(props){
     };
 
     const onSubmit = () => {
-        if(!formData.name) {
+        if (!formData.name) {
             toast.warning("Completar el nombre del tema");
         } else {
             setIsLoading(true);
@@ -32,49 +34,44 @@ export default function Theme(props){
                     setIsLoading(false);
                     handlerIsNewTheme();
                 })
-                .catch((error) =>{
+                .catch((error) => {
                     toast.error(error.response.data.message);
                     setIsLoading(false);
                 });
         }
     }
 
-    return(
+    return (
         <>
-            {isNewTheme ?
-                <Form className="ui-form" onSubmit={onSubmit}>
-                    <h4 className="ui dividing header">Temas</h4>
-                    <Form.Field>
-                        <Input
-                            placeholder="Nombre del tema"
-                            onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        />
-                    </Form.Field>
-
-                    <Form.Field>
-                        <Input
-                            placeholder="Descripcion"
-                            onChange={(e) =>
-                                setFormData({...formData, description: e.target.value})}
-                        />
-                    </Form.Field>
-                    <Grid>
-                        <Grid.Column textAlign="right">
-                            <Button type="submit" className="ui button" loading={isLoading} >Crear Tema</Button>
-                            <Button className="ui button" onClick={handlerIsNewTheme}>Cancelar</Button>
-                        </Grid.Column>
-                    </Grid>
-                </Form> :
                 <div className="listTheme">
 
                     <ListTheme/>
                     <Grid>
                         <Grid.Column textAlign="right">
-                            <Button className="ui common button" onClick={handlerIsNewTheme}>Nuevo Tema</Button>
+                            <Modal
+                                onClose={() => setOpen(false)}
+                                onOpen={() => setOpen(true)}
+                                open={open}
+                                trigger={
+                                    <Button className="ui common button" onClick={handlerIsNewTheme}>Nuevo Tema</Button>
+                                }
+                            >
+                                <Modal.Content>
+                                    <NewTheme
+                                     isInsert = { true }
+                                    />
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color="black" onClick={() => setOpen(false)}>
+                                        Cerrar
+                                    </Button>
+                                </Modal.Actions>
+                            </Modal>
+
+
                         </Grid.Column>
                     </Grid>
                 </div>
-            }
         </>)
 }
 

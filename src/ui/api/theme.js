@@ -12,3 +12,7 @@ export function listTheme() {
 export function deleteTheme(data) {
     return axios.put(`${basePath}/${apiVersion}/theme/delete-theme`, data);
 }
+
+export function updateTheme(data) {
+    return axios.put(`${basePath}/${apiVersion}/theme/update-theme`, data);
+}

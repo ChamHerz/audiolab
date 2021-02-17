@@ -22,7 +22,7 @@ export default function LabelModal(props) {
             time: peaks.player.getCurrentTime(),
             labelText: formData.labelText,
             editable: true,
-            color: "#FF0000",
+            color: "#ff0000",
           });
 
           onAddLabel(peaks.points.getPoint(newIdToAdd));

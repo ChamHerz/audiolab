@@ -53,8 +53,29 @@ function deleteTheme( req, res ) {
         })
 }
 
+
+function updateTheme( req, res ) {
+    const { id, name, description } = req.body;
+    Theme.findByPk(id).then((theme) => {
+        return theme
+            .update({
+                name: name,
+                description: description,
+            })
+            .then(() => {
+                res.status(200).send(theme);
+            })
+            .catch((err) => {
+                res.status(500).send({message: "Error al editar el tema"});
+            })
+
+    })
+
+}
+
 module.exports = {
     newTheme,
     listTheme,
     deleteTheme,
+    updateTheme
 }
