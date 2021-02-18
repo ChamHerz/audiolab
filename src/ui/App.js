@@ -23,7 +23,7 @@ function App() {
       {!project ? (
         <Project setProject={setProject} />
       ) : (
-        <HomeLayout project={project} />
+        <HomeLayout project={project} setProject={setProject} />
       )}
       <ToastContainer
         position="top-center"

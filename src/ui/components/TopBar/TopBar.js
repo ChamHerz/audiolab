@@ -1,18 +1,18 @@
 import React from "react";
-import {Menu, Dropdown, Grid, Icon, Table} from "semantic-ui-react";
+import { Menu, Dropdown, Grid, Icon, Table } from "semantic-ui-react";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
 import MultipleAbm from "../MultipleAbm";
 
 import "./TopBar.scss";
 
 export default function TopBar(props) {
+  const { setProject } = props;
   const [open, setOpen] = React.useState(false);
 
-  const options = [
-    { key: 1, text: "This is a super long item", value: 1 },
-    { key: 2, text: "Dropdown direction can help", value: 2 },
-    { key: 3, text: "Items are kept within view", value: 3 },
-  ];
+  const onClose = () => {
+    console.log("onClose");
+    setProject(null);
+  };
 
   return (
     <>
@@ -31,27 +31,23 @@ export default function TopBar(props) {
               className="dropdown-setting"
             >
               <Dropdown.Menu>
-                <Dropdown.Item>
-                  <Modal
-                    onClose={() => setOpen(false)}
-                    onOpen={() => setOpen(true)}
-                    open={open}
-                    trigger={
-                      <Button className="setting-button">Configuración</Button>
-                    }
-                  >
-                    <Modal.Content>
-                      <MultipleAbm />
-                    </Modal.Content>
-                    <Modal.Actions>
-                      <Button color="black" onClick={() => setOpen(false)}>
-                        Cerrar
-                      </Button>
-                    </Modal.Actions>
-                  </Modal>
-                </Dropdown.Item>
+                <Modal
+                  onClose={() => setOpen(false)}
+                  onOpen={() => setOpen(true)}
+                  open={open}
+                  trigger={<Dropdown.Item text="Configuración" />}
+                >
+                  <Modal.Content>
+                    <MultipleAbm />
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button color="black" onClick={() => setOpen(false)}>
+                      Cerrar
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
                 <Dropdown.Divider />
-                <Dropdown.Item text="Soporte" />
+                <Dropdown.Item text="Cerrar" onClick={() => onClose()} />
               </Dropdown.Menu>
             </Dropdown>
           </Menu.Menu>

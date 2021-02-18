@@ -24,7 +24,7 @@ let tab = {
 };
 
 export default function HomeLayout(props) {
-  const { project } = props;
+  const { project, setProject } = props;
   let deleteSegment;
   let deleteLabel;
   let dockLayout;
@@ -63,6 +63,7 @@ export default function HomeLayout(props) {
           updateSegment={updateSegment}
           updateLabel={updateLabel}
           onDoubleClickLabel={labelToUpdate}
+          project={project}
         />
       ),
     });
@@ -85,6 +86,7 @@ export default function HomeLayout(props) {
           updateSegment={updateSegment}
           updateLabel={updateLabel}
           onDoubleClickSegment={segmentToUpdate}
+          project={project}
         />
       ),
     });
@@ -109,6 +111,7 @@ export default function HomeLayout(props) {
             deleteSegment={deleteSegment}
             updateSegment={updateSegment}
             updateLabel={updateLabel}
+            project={project}
           />
         ),
       };
@@ -159,6 +162,7 @@ export default function HomeLayout(props) {
           onAddLabel={onAddLabel}
           onClose={onCloseAudio}
           deleteSegment={deleteSegment}
+          project={project}
         />
       ),
     });
@@ -177,6 +181,7 @@ export default function HomeLayout(props) {
           onAddLabel={onAddLabel}
           onClose={onCloseAudio}
           deleteLabel={deleteLabel}
+          project={project}
         />
       ),
     });
@@ -381,7 +386,7 @@ export default function HomeLayout(props) {
 
   return (
     <>
-      <TopBar></TopBar>
+      <TopBar setProject={setProject}></TopBar>
       <DockLayout
         ref={getRef}
         defaultLayout={defaultLayout}

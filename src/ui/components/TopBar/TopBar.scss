@@ -8,19 +8,6 @@
 .ui.menu.top-bar-general {
   background-color: $background-dark;
 
-  .ui.button.audio-lab-button {
-    color: $font-light;
-    background-color: $background-dark;
-
-    b:first-child {
-      color: $font-light;
-    }
-
-    b:last-child {
-      color: $font-turquoise;
-    }
-  }
-
   > .row {
     &:first-of-type {
       margin-top: 10px;

@@ -6,6 +6,10 @@ import "./Player.scss";
 export default function Player(props) {
   const { playing, peaksInstance, currentTime, duration } = props;
 
+  const onFilm = () => {
+    console.log("on film");
+  };
+
   return (
     <div className="player">
       <Grid>
@@ -36,7 +40,9 @@ export default function Player(props) {
           </div>
         </Grid.Column>
         <Grid.Column width={4} className="right">
-          left
+          <div className="controls">
+            <Icon onClick={() => onFilm()} name="film" />
+          </div>
         </Grid.Column>
       </Grid>
     </div>
