@@ -7,10 +7,10 @@ import Konva from "konva";
 import SegmentModal from "../../modals/SegmentModal";
 import Player from "../Player/Player";
 import { truncate2decimal } from "../../utils/truncate";
-
-import "./WaveTab.scss";
 import LabelModal from "../../modals/LabelModal";
 import { listLabelByAudio } from "../../api/label";
+
+import "./WaveTab.scss";
 
 export default function WaveTab(props) {
   const {
@@ -22,17 +22,35 @@ export default function WaveTab(props) {
     updateSegment,
     updateLabel,
     onAddLabel,
+    onDoubleClickSegment,
+    onDoubleClickLabel,
   } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
+  const [segmentToUpdate, setSegmentToUpdate] = useState(null);
   const [openLabelModal, setOpenLabelModal] = useState(false);
+  const [labelToUpdate, setLabelToUpdate] = useState(null);
   const [peaksInstance, setPeaksInstance] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  let zoomviewContainer = useRef(null);
+  let zoomviewContainer = React.createRef();
   let overviewContainer = useRef(null);
-  let audioContainer = useRef(null);
   let filename = "";
+
+  useEffect(() => {
+    if (onDoubleClickLabel) {
+      console.log("Mostrar modal etiqueta", onDoubleClickLabel);
+      setLabelToUpdate(onDoubleClickLabel);
+      setOpenLabelModal(true);
+    }
+  }, [onDoubleClickLabel]);
+
+  useEffect(() => {
+    if (onDoubleClickSegment) {
+      setSegmentToUpdate(onDoubleClickSegment);
+      setOpenSegmentModal(true);
+    }
+  }, [onDoubleClickSegment]);
 
   useEffect(() => {
     if (deleteSegment) {
@@ -175,7 +193,16 @@ export default function WaveTab(props) {
           arraybuffer: "data/" + filename + ".dat",
         },
         keyboard: true,
-        showPlayheadTime: false,
+        showPlayheadTime: true,
+        emitCueEvents: true,
+        zoomLevels: [512, 1024, 2048, 4096, 8192, 16384],
+        zoomWaveformColor: "rgba(0, 225, 20, 1)", //color de onda superior
+        overviewWaveformColor: "rgba(0,0,0,0.5)", //color de onda inferior
+        overviewHighlightColor: "white", //color rectangulo inferior (zoom)
+        playheadColor: "rgba(0, 0, 0, 1)", //color del play cabezal
+        playheadTextColor: "#fff", //texto en el cabeza
+        axisGridlineColor: "#fff", //color de la grilla
+        axisLabelColor: "#aaa", //numeros de la grilla
         createSegmentLabel: createSegmentLabel,
       };
 
@@ -233,6 +260,7 @@ export default function WaveTab(props) {
   };
 
   const addSegment = (currentTime) => {
+    setSegmentToUpdate(null);
     setOpenSegmentModal(true);
   };
 
@@ -246,6 +274,7 @@ export default function WaveTab(props) {
 
   const onContextMenu = (e) => {
     if (e.type === "contextmenu") {
+      setLabelToUpdate(null);
       setOpenLabelModal(true);
     }
   };
@@ -274,15 +303,19 @@ export default function WaveTab(props) {
           <>
             <SegmentModal
               openSegmentModal={openSegmentModal}
+              segmentToUpdate={segmentToUpdate}
               setOpenSegmentModal={setOpenSegmentModal}
               peaks={peaksInstance}
               onAddSegment={onAddSegment}
+              updateSegment={updateSegment}
             />
             <LabelModal
               openLabelModal={openLabelModal}
+              labelToUpdate={labelToUpdate}
               setOpenLabelModal={setOpenLabelModal}
               peaks={peaksInstance}
               onAddLabel={onAddLabel}
+              updateLabel={updateLabel}
             />
           </>
         ) : (

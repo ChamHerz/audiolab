@@ -21,6 +21,8 @@ export const runner = (oneAudio) => {
         { detached: true, stdio: ["ignore", "ignore", "ignore"] }
       );
 
+      console.log("creado de spawn", child);
+
       child.unref();
 
       child.stderr.on("data", function (data) {
