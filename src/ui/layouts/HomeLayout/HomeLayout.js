@@ -31,17 +31,19 @@ export default function HomeLayout(props) {
   let currentAudio;
 
   const onCloseAudio = () => {
-    dockLayout.updateTab("segmentTab", {
-      id: "segmentTab",
-      title: "Segmentos",
-      content: <SegmentTab onClose={true} />,
-    });
+    if (dockLayout) {
+      dockLayout.updateTab("segmentTab", {
+        id: "segmentTab",
+        title: "Segmentos",
+        content: <SegmentTab onClose={true} />,
+      });
 
-    dockLayout.updateTab("labelTab", {
-      id: "labelTab",
-      title: "Etiquetas",
-      content: <LabelTab onClose={true} />,
-    });
+      dockLayout.updateTab("labelTab", {
+        id: "labelTab",
+        title: "Etiquetas",
+        content: <LabelTab onClose={true} />,
+      });
+    }
   };
 
   const onDoubleClickLabel = (e, label) => {
