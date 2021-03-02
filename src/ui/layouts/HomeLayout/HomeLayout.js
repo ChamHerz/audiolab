@@ -24,28 +24,80 @@ let tab = {
 };
 
 export default function HomeLayout(props) {
-  const { project } = props;
+  const { project, setProject } = props;
   let deleteSegment;
   let deleteLabel;
   let dockLayout;
   let currentAudio;
 
   const onCloseAudio = () => {
-    dockLayout.updateTab("segmentTab", {
-      id: "segmentTab",
-      title: "Segmentos",
-      content: <SegmentTab onClose={true} />,
-    });
+    if (dockLayout) {
+      dockLayout.updateTab("segmentTab", {
+        id: "segmentTab",
+        title: "Segmentos",
+        content: <SegmentTab onClose={true} />,
+      });
 
-    dockLayout.updateTab("labelTab", {
-      id: "labelTab",
-      title: "Etiquetas",
-      content: <LabelTab onClose={true} />,
+      dockLayout.updateTab("labelTab", {
+        id: "labelTab",
+        title: "Etiquetas",
+        content: <LabelTab onClose={true} />,
+      });
+    }
+  };
+
+  const onDoubleClickLabel = (e, label) => {
+    console.log("Doble click, ", label);
+
+    const labelToUpdate = { ...label };
+
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
+          onClose={onCloseAudio}
+          deleteSegment={deleteSegment}
+          updateSegment={updateSegment}
+          updateLabel={updateLabel}
+          onDoubleClickLabel={labelToUpdate}
+          project={project}
+        />
+      ),
+    });
+  };
+
+  const onDoubleClickSegment = (e, segment) => {
+    const segmentToUpdate = { ...segment };
+
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
+          onClose={onCloseAudio}
+          deleteSegment={deleteSegment}
+          updateSegment={updateSegment}
+          updateLabel={updateLabel}
+          onDoubleClickSegment={segmentToUpdate}
+          project={project}
+        />
+      ),
     });
   };
 
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
+
+    currentAudio = oneAudio;
 
     const newTab = () => {
       return {
@@ -61,6 +113,7 @@ export default function HomeLayout(props) {
             deleteSegment={deleteSegment}
             updateSegment={updateSegment}
             updateLabel={updateLabel}
+            project={project}
           />
         ),
       };
@@ -71,8 +124,6 @@ export default function HomeLayout(props) {
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
     }
 
-    currentAudio = oneAudio;
-
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
       title: "Segmentos",
@@ -81,6 +132,7 @@ export default function HomeLayout(props) {
           onLoad={true}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
@@ -93,6 +145,7 @@ export default function HomeLayout(props) {
           onLoad={true}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
@@ -111,6 +164,7 @@ export default function HomeLayout(props) {
           onAddLabel={onAddLabel}
           onClose={onCloseAudio}
           deleteSegment={deleteSegment}
+          project={project}
         />
       ),
     });
@@ -129,6 +183,7 @@ export default function HomeLayout(props) {
           onAddLabel={onAddLabel}
           onClose={onCloseAudio}
           deleteLabel={deleteLabel}
+          project={project}
         />
       ),
     });
@@ -143,6 +198,7 @@ export default function HomeLayout(props) {
           newSegmentToAdd={segment}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
@@ -159,6 +215,7 @@ export default function HomeLayout(props) {
           newLabelToAdd={label}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
@@ -174,6 +231,7 @@ export default function HomeLayout(props) {
           segmentToUpdate={null}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
@@ -186,6 +244,7 @@ export default function HomeLayout(props) {
           segmentToUpdate={segment}
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
+          onDoubleClickSegment={onDoubleClickSegment}
         />
       ),
     });
@@ -201,6 +260,7 @@ export default function HomeLayout(props) {
           labelToUpdate={null}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
@@ -213,6 +273,7 @@ export default function HomeLayout(props) {
           labelToUpdate={label}
           currentAudio={currentAudio}
           onDeleteLabel={onDeleteLabel}
+          onDoubleClickLabel={onDoubleClickLabel}
         />
       ),
     });
@@ -327,7 +388,7 @@ export default function HomeLayout(props) {
 
   return (
     <>
-      <TopBar></TopBar>
+      <TopBar setProject={setProject}></TopBar>
       <DockLayout
         ref={getRef}
         defaultLayout={defaultLayout}

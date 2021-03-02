@@ -21,6 +21,7 @@ export default function SegmentTab(props) {
     onLoad,
     onDeleteSegment,
     segmentToUpdate,
+    onDoubleClickSegment,
   } = props;
   const [segments, setSegments] = useState([]);
 
@@ -130,6 +131,7 @@ export default function SegmentTab(props) {
               key={segment.id}
               segment={segment}
               onDeleteSegment={deleteSegment}
+              onDoubleClickSegment={onDoubleClickSegment}
             />
           ))}
         </Table.Body>
@@ -139,7 +141,7 @@ export default function SegmentTab(props) {
 }
 
 function SegmentRow(props) {
-  const { segment, onDeleteSegment } = props;
+  const { segment, onDeleteSegment, onDoubleClickSegment } = props;
   const [selected, setSelected] = useState(false);
 
   const onSegment = (e, segmentId) => {
@@ -149,10 +151,6 @@ function SegmentRow(props) {
     } else {
       console.log("solo click segment");
     }
-  };
-
-  const onDoubleClickSegment = (e, segment) => {
-    console.log("Doble click, ", segment);
   };
 
   return (
