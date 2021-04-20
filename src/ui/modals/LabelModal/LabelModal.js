@@ -46,7 +46,6 @@ export default function LabelModal(props) {
             });
 
             onAddLabel(peaks.points.getPoint(newIdToAdd));
-            console.log("agregar pount", peaks.points.getPoint(newIdToAdd));
             setOpenLabelModal(false);
           })
           .catch((err) => {
@@ -101,7 +100,7 @@ export default function LabelModal(props) {
                   onChange={(e) =>
                     setFormData({ ...formData, labelText: e.target.value })
                   }
-                  defaultValue={formData.labelText}
+                  defaultValue={labelToUpdate.labelText}
                 />
               </Form.Field>
             </Form>
