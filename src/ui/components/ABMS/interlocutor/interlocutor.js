@@ -1,22 +1,18 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Icon,
-  Input,
-  Table,
-  Loader,
-  Button,
-  Grid,
-} from "semantic-ui-react";
+import React, { useState, useCallback } from "react";
+import { Form, Input, Button, Grid, Image } from "semantic-ui-react";
 import { newInterlocutor } from "../../../api/interlocutor";
 import { toast } from "react-toastify";
 import ListInterlocutor from "../../Interlocutors/ListInterlocutor";
-import { newTheme } from "../../../api/theme";
+import { useDropzone } from "react-dropzone";
+import NoImage from "../../../assets/png/no-image.png";
+
+import "./interlocutor.scss";
 
 export default function Interlocutor() {
   const [formData, setFormData] = useState(initialValueForm());
   const [isLoading, setIsLoading] = useState(false);
   const [isNewInterlocutor, setIsNewInterlocutor] = useState(false);
+  const [interlocutorPicture, setInterlocutorPicture] = useState(null);
 
   const handlerIsNewInterlocutor = () => {
     setIsNewInterlocutor(!isNewInterlocutor);
@@ -51,35 +47,64 @@ export default function Interlocutor() {
     }
   };
 
+  const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    console.log("file", file);
+    /*setFile(file);
+    setAlbumImage(URL.createObjectURL(file));*/
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "image/jpeg, image/png",
+    noKeyboard: true,
+    onDrop,
+  });
+
   return (
     <>
       {isNewInterlocutor ? (
-        <Form className="ui-form" onSubmit={onSubmit}>
-          <Form.Field>
-            <Input
-              placeholder="Nombre"
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field>
-            <Input
-              placeholder="Apellido"
-              onChange={(e) =>
-                setFormData({ ...formData, lastname: e.target.value })
-              }
-            />
-          </Form.Field>
-          <Form.Field>
-            <Input
-              placeholder="Alias"
-              onChange={(e) =>
-                setFormData({ ...formData, alias: e.target.value })
-              }
-            />
-          </Form.Field>
-
+        <Form className="add-interlocutor-form" onSubmit={onSubmit}>
+          <Grid>
+            <Grid.Column width={4} className="left">
+              <Form.Field className="interlocutor-picture">
+                <div
+                  {...getRootProps()}
+                  className="picture"
+                  style={{
+                    backgroundImage: `url('${interlocutorPicture}`,
+                  }}
+                />
+                <input {...getInputProps()} />
+                {!interlocutorPicture && <Image src={NoImage} />}
+              </Form.Field>
+            </Grid.Column>
+            <Grid.Column width={12} className="right">
+              <Form.Field>
+                <Input
+                  placeholder="Nombre"
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
+              </Form.Field>
+              <Form.Field>
+                <Input
+                  placeholder="Apellido"
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastname: e.target.value })
+                  }
+                />
+              </Form.Field>
+              <Form.Field>
+                <Input
+                  placeholder="Alias"
+                  onChange={(e) =>
+                    setFormData({ ...formData, alias: e.target.value })
+                  }
+                />
+              </Form.Field>
+            </Grid.Column>
+          </Grid>
           <Form.Field>
             <Input
               placeholder="DNI"
@@ -88,7 +113,6 @@ export default function Interlocutor() {
               }
             />
           </Form.Field>
-
           <Form.Field>
             <Input
               placeholder="Picture"
