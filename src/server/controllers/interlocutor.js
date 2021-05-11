@@ -73,8 +73,31 @@ function deleteInterlocutor(req, res) {
     });
 }
 
+function updateInterlocutor(req, res) {
+  const { id, name, lastname, dni, alias, picture } = req.body;
+  const interlocutorId = parseInt(id);
+
+  Interlocutor.findByPk(interlocutorId).then((interlocutor) => {
+    return interlocutor
+      .update({
+        name: name,
+        lastname: lastname,
+        dni: dni,
+        alias: alias,
+        picture: picture,
+      })
+      .then(() => {
+        res.status(200).send(interlocutor);
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "Error al editar el interlocutor" });
+      });
+  });
+}
+
 module.exports = {
   newInterlocutor,
   listInterlocutor,
   deleteInterlocutor,
+  updateInterlocutor,
 };

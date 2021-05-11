@@ -1,53 +1,93 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Button, Form, Grid, Image, Input } from "semantic-ui-react";
-import NoImage from "../../../assets/png/no-image.png";
 import { toast } from "react-toastify";
-import { newInterlocutor } from "../../../api/interlocutor";
+import { newInterlocutor, updateInterlocutor } from "../../../api/interlocutor";
 import { useDropzone } from "react-dropzone";
+import { copyFile, openFile, readContent } from "../../../utils/files";
+import { v4 as uuidv4 } from "uuid";
 
+import NoImage from "../../../assets/png/no-image.png";
 import "./InterlocutorForm.scss";
 
 export default function InterlocutorForm(props) {
   const [formData, setFormData] = useState(initialValueForm());
   const [isLoading, setIsLoading] = useState(false);
   const [interlocutorPicture, setInterlocutorPicture] = useState(null);
+  const [file, setFile] = useState(null);
   const { setShowInterlocutorForm, interlocutorToEdit } = props;
+
+  useEffect(() => {
+    if (interlocutorToEdit) {
+      console.log("se cambio");
+      setFormData(interlocutorToEdit);
+      if (interlocutorToEdit.picture) {
+        setInterlocutorPicture("images/" + interlocutorToEdit.picture);
+      }
+    }
+  }, [interlocutorToEdit]);
 
   const resetForm = () => {
     setFormData(initialValueForm());
   };
 
   const onSubmit = () => {
+    let fileName = null;
+    if (file) {
+      fileName = uuidv4();
+      copyFile(file.path, fileName);
+    }
+
     if (!formData.alias) {
       toast.warning("Completar el alias del interlocutor|");
     } else {
       setIsLoading(true);
-      newInterlocutor({
-        name: formData.name,
-        lastname: formData.lastname,
-        dni: formData.dni,
-        alias: formData.alias,
-        picture: formData.picture,
-      })
-        .then(() => {
-          toast.success("Interlocutor creado correctamente.");
-          resetForm();
-          setIsLoading(false);
-          setShowInterlocutorForm(false);
+      if (interlocutorToEdit) {
+        console.log("edit", formData);
+        updateInterlocutor({
+          id: formData.id,
+          name: formData.name,
+          lastname: formData.lastname,
+          dni: formData.dni,
+          alias: formData.alias,
+          picture: file ? fileName : NoImage,
         })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-          setIsLoading(false);
-        });
+          .then(() => {
+            toast.success("Interlocutor modificado correctamente.");
+            resetForm();
+            setIsLoading(false);
+            setShowInterlocutorForm(false);
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+            setIsLoading(false);
+          });
+      } else {
+        newInterlocutor({
+          name: formData.name,
+          lastname: formData.lastname,
+          dni: formData.dni,
+          alias: formData.alias,
+          picture: formData.picture,
+        })
+          .then(() => {
+            toast.success("Interlocutor creado correctamente.");
+            resetForm();
+            setIsLoading(false);
+            setShowInterlocutorForm(false);
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+            setIsLoading(false);
+          });
+      }
     }
   };
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     console.log("file", file);
+    setFile(file);
     setInterlocutorPicture(URL.createObjectURL(file));
-    /*setFile(file);
-    setAlbumImage(URL.createObjectURL(file));*/
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -121,7 +161,7 @@ export default function InterlocutorForm(props) {
       <Grid>
         <Grid.Column textAlign="right">
           <Button type="submit" className="ui button" loading={isLoading}>
-            Crear Interlocutor
+            Editar Interlocutor
           </Button>
           <Button
             className="ui button"
