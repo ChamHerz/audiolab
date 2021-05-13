@@ -1,6 +1,10 @@
 @import "../../../scss/index";
 
 .ui.form.add-interlocutor-form {
+  .image-with-name {
+    margin-bottom: 2px;
+  }
+
   .interlocutor-picture {
     position: relative;
     background-color: $background-gray-light;

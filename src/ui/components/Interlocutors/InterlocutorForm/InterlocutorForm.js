@@ -98,7 +98,7 @@ export default function InterlocutorForm(props) {
 
   return interlocutorToEdit ? (
     <Form className="add-interlocutor-form" onSubmit={onSubmit}>
-      <Grid>
+      <Grid className="image-with-name">
         <Grid.Column width={4} className="left">
           <Form.Field className="interlocutor-picture">
             <div
@@ -174,7 +174,7 @@ export default function InterlocutorForm(props) {
     </Form>
   ) : (
     <Form className="add-interlocutor-form" onSubmit={onSubmit}>
-      <Grid>
+      <Grid className="image-with-name">
         <Grid.Column width={4} className="left">
           <Form.Field className="interlocutor-picture">
             <div

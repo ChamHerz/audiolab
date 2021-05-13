@@ -27,21 +27,14 @@ export default function ListProject(props) {
       <HeaderProject />
       <Grid className="list-project">
         <Grid.Row>
-          <Grid.Column width={3}>
-            <h2>Menu Left</h2>
+          <Grid.Column width={3} className="menu-left">
             <Button
-              className="new-project"
+              className="button-radius"
               onClick={() => setSelectedForm("new")}
             >
               Nuevo Proyecto
             </Button>
-            <hr/>
-            <div>
-              <button
-                className="multiple-abm"
-                onClick = {() => setSelectedForm("abm")}
-              >Ver ABM</button>
-            </div>
+            <hr />
           </Grid.Column>
           <Grid.Column className="content" width={13}>
             <Table inverted className="table-songs">
