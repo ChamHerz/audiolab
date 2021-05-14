@@ -14,6 +14,7 @@ const companyRoutes = require("./routers/company");
 const courtRoutes = require("./routers/court");
 const interlocutorRoutes = require("./routers/interlocutor");
 const labelRoutes = require("./routers/label");
+const ippRoutes = require("./routers/ipp");
 
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -31,5 +32,6 @@ server.use(`/api/${API_VERSION}/company`, companyRoutes);
 server.use(`/api/${API_VERSION}/court`, courtRoutes);
 server.use(`/api/${API_VERSION}/interlocutor`, interlocutorRoutes);
 server.use(`/api/${API_VERSION}/label`, labelRoutes);
+server.use(`/api/${API_VERSION}/ipp`, ippRoutes);
 
 module.exports = server;

@@ -393,7 +393,7 @@ export default function HomeLayout(props) {
         ref={getRef}
         defaultLayout={defaultLayout}
         style={{
-          "background-color": "#070707",
+          backgroundColor: "#070707",
           position: "absolute",
           left: 10,
           top: 60,

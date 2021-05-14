@@ -8,6 +8,7 @@ const CompanyModel = require("./models/company");
 const InterlocutorModel = require("./models/interlocutor.js");
 const CourtModel = require("./models/court");
 const LabelModel = require("./models/label.js");
+const IppModel = require("./models/ipp.js");
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -23,6 +24,7 @@ const Court = CourtModel(sequelize, Sequelize);
 const Segment = SegmentModel(sequelize, Sequelize);
 const Interlocutor = InterlocutorModel(sequelize, Sequelize);
 const Label = LabelModel(sequelize, Sequelize);
+const Ipp = IppModel(sequelize, Sequelize);
 
 // ASSOCIATIONS
 Audio.belongsTo(Project, { foreignKey: "id_project" });
@@ -49,4 +51,5 @@ module.exports = {
   Court,
   Interlocutor,
   Label,
+  Ipp,
 };
