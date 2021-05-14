@@ -3,7 +3,7 @@ import { Button, Form, Grid, Image, Input } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { newInterlocutor, updateInterlocutor } from "../../../api/interlocutor";
 import { useDropzone } from "react-dropzone";
-import { copyFile, openFile, readContent } from "../../../utils/files";
+import { copyFile } from "../../../utils/files";
 import { v4 as uuidv4 } from "uuid";
 
 import NoImage from "../../../assets/png/no-image.png";

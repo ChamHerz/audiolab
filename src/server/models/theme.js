@@ -14,6 +14,8 @@ module.exports = (sequelize, type) => {
     },
     isDeleted: {
       type: type.INTEGER,
+      allowNull: false,
+      default: false,
     },
   });
 };
