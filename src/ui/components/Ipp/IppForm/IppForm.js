@@ -43,7 +43,7 @@ export default function IppForm(props) {
     <Form className="ui-form" onSubmit={onSubmit}>
       <Form.Field>
         <Input
-          placeholder="Nombre del proceso"
+          placeholder="Número de proceso"
           onChange={(e) =>
             setFormData({ ...formData, processNumber: e.target.value })
           }
