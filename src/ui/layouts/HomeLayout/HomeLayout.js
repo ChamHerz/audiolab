@@ -7,6 +7,7 @@ import SegmentTab from "../../components/SegmentTab";
 import LabelTab from "../../components/LabelTab";
 
 import "./HomeLayout.scss";
+import IppTab from "../../components/Ipp/IppTab";
 
 let name = window.location.pathname.split("/").pop();
 name = name.substr(0, name.length - 5);
@@ -307,7 +308,13 @@ export default function HomeLayout(props) {
             },
             {
               tabs: [
-                { ...tab, id: "t1", title: "Tab 1" },
+                {
+                  ...tab,
+                  id: "ippTab",
+                  title: "Ipp",
+                  closable: false,
+                  content: <IppTab />,
+                },
                 { ...tab, id: "t2", title: "Tab 2" },
               ],
             },
