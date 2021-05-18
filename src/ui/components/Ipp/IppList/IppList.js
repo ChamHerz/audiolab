@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Table, Button, Icon } from "semantic-ui-react";
 import { map } from "lodash";
-import { listIpp } from "../../../api/ipp";
+import { deleteIpp, listIpp } from "../../../api/ipp";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 export default function IppList(props) {
+  const { onEditIpp } = props;
   const [ipps, setIpps] = useState([]);
 
   const loadIpps = () => {
@@ -23,6 +25,21 @@ export default function IppList(props) {
   useEffect(() => {
     loadIpps();
   }, []);
+
+  const onDeleteIpp = (ipp) => {
+    console.log("delete", ipp);
+    deleteIpp({
+      id: ipp.id,
+    })
+      .then(() => {
+        toast.success("Ipp borrada correctamente.");
+        loadIpps();
+      })
+      .catch((error) => {
+        console.log("error", error);
+        toast.error(error.response.data.message);
+      });
+  };
 
   return (
     <div className="ipp-list">
@@ -43,7 +60,12 @@ export default function IppList(props) {
 
             <Table.Body>
               {map(ipps, (ipp) => (
-                <Ipp key={ipp.id} ipp={ipp} />
+                <Ipp
+                  key={ipp.id}
+                  ipp={ipp}
+                  onDeleteIpp={onDeleteIpp}
+                  onEditIpp={onEditIpp}
+                />
               ))}
             </Table.Body>
           </Table>
@@ -54,15 +76,7 @@ export default function IppList(props) {
 }
 
 function Ipp(props) {
-  const { ipp } = props;
-
-  const onEditIpp = (ipp) => {
-    console.log("edit", ipp);
-  };
-
-  const onDeleteIpp = (ipp) => {
-    console.log("delete", ipp);
-  };
+  const { ipp, onDeleteIpp, onEditIpp } = props;
 
   return (
     <Table.Row>

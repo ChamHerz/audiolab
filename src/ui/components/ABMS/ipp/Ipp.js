@@ -5,18 +5,25 @@ import IppList from "../../Ipp/IppList";
 
 export default function Ipp(props) {
   const [showIppForm, setShowIppForm] = useState(false);
+  const [ippToEdit, setIppToEdit] = useState(null);
 
   const newIpp = () => {
+    setShowIppForm(true);
+  };
+
+  const onEditIpp = (ipp) => {
+    console.log("edit", ipp);
+    setIppToEdit(ipp);
     setShowIppForm(true);
   };
 
   return (
     <>
       {showIppForm ? (
-        <IppForm setShowIppForm={setShowIppForm} />
+        <IppForm setShowIppForm={setShowIppForm} ippToEdit={ippToEdit} />
       ) : (
         <div>
-          <IppList />
+          <IppList onEditIpp={onEditIpp} />
           <Grid>
             <Grid.Column textAlign="right">
               <Button className="ui common button" onClick={() => newIpp()}>
