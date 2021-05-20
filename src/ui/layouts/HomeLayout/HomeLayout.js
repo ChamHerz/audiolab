@@ -315,7 +315,6 @@ export default function HomeLayout(props) {
                   closable: false,
                   content: <IppTab />,
                 },
-                { ...tab, id: "t2", title: "Tab 2" },
               ],
             },
           ],

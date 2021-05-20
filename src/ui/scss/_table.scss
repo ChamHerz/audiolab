@@ -1,0 +1,24 @@
+@import "./_colors";
+
+.ui.table.select-table {
+  background-color: $background-dark;
+
+  th {
+    background-color: transparent;
+  }
+
+  .selected {
+    background-color: blanchedalmond;
+  }
+
+  tr {
+    &:hover {
+      cursor: pointer;
+      background-color: whitesmoke;
+    }
+
+    td {
+      color: $background-light-dark;
+    }
+  }
+}

@@ -1,12 +1,18 @@
 import React from "react";
+import { Button, Modal } from "semantic-ui-react";
+import IppSelectList from "../../components/Ipp/IppSelectList";
 
 import "./IppListModal.scss";
-import { Button, Modal } from "semantic-ui-react";
 
 export default function IppListModal(props) {
-  const { openIppListModal, setOpenIppListModal } = props;
+  const { openIppListModal, setOpenIppListModal, onIppSelect } = props;
+
   const onSubmit = () => {
     console.log("selected");
+  };
+
+  const onDoubleClickIpp = (e, ipp) => {
+    onIppSelect(ipp);
   };
 
   return (
@@ -17,7 +23,9 @@ export default function IppListModal(props) {
       open={openIppListModal}
     >
       <Modal.Header>Seleccionar una Ipp</Modal.Header>
-      <Modal.Content>Aqui va la lista</Modal.Content>
+      <Modal.Content>
+        <IppSelectList onDoubleClickIpp={onDoubleClickIpp} />
+      </Modal.Content>
       <Modal.Actions>
         <Button
           content="Seleccionar Ipp"

@@ -15,9 +15,6 @@ export default function IppForm(props) {
   useEffect(() => {
     if (ippToEdit) {
       setFormData(ippToEdit);
-      /*onChangeDate(null, {
-        value: ippToEdit.date,
-      });*/
     }
   }, [ippToEdit]);
 

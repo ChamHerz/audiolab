@@ -1,0 +1,17 @@
+@import "../../../scss/index";
+
+.ipp-selected {
+  .ipp-row {
+    margin-bottom: 10px;
+    width: 100%;
+
+    .label {
+      width: 45%;
+      max-width: 155px;
+    }
+
+    input {
+      text-align: right !important;
+    }
+  }
+}
