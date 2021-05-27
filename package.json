@@ -52,11 +52,13 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-semantic-ui-datepickers": "^2.13.1",
+    "react-slick": "^0.28.1",
     "react-toastify": "^6.0.8",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.1.1",
     "semantic-ui-react-context-menu": "^1.1.0",
     "sequelize": "^6.3.3",
+    "slick-carousel": "^1.8.1",
     "sqlite3": "^5.0.0",
     "tone": "^14.7.77",
     "uuid": "^8.3.2"

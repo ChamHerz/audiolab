@@ -67,7 +67,7 @@ export default function InterlocutorForm(props) {
           lastname: formData.lastname,
           dni: formData.dni,
           alias: formData.alias,
-          picture: formData.picture,
+          picture: file ? fileName : NoImage,
         })
           .then(() => {
             toast.success("Interlocutor creado correctamente.");

@@ -11,6 +11,7 @@ import LabelModal from "../../modals/LabelModal";
 import { listLabelByAudio } from "../../api/label";
 
 import "./WaveTab.scss";
+import InterlocutorWave from "../Interlocutors/InterlocutorWave/InterlocutorWave";
 
 export default function WaveTab(props) {
   const {
@@ -281,7 +282,7 @@ export default function WaveTab(props) {
 
   return audio ? (
     <div className="wave-tab">
-      <h1>{audio?.name}</h1>
+      <InterlocutorWave audio={audio} />
       <div id="peaks-container">
         <div
           id="zoomview-container"
