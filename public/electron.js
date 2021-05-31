@@ -41,6 +41,7 @@ function createWindow() {
     width: 1500,
     height: 1000,
     title: "AudioLab",
+    icon: __dirname + "/favicon.ico",
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,
