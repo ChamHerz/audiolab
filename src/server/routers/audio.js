@@ -11,5 +11,9 @@ api.get(
 );
 api.put("/delete-audio-by-id/:audioId", AudioController.deleteAudio);
 api.put("/create-data-audio-by-id/:audioId", AudioController.createDataAudio);
+api.put(
+  "/add-interlocutor-to-audio/:audioId",
+  AudioController.addInterlocutorToAudio
+);
 
 module.exports = api;

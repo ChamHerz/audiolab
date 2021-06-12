@@ -1,6 +1,8 @@
 const { Audio } = require("../sequelize");
+const { Interlocutor } = require("../sequelize");
 let _ = require("lodash");
 const { projectService } = require("../services/project");
+const { audioService } = require("../services/audio");
 
 async function newAudio(req, res) {
   const audio = new Audio();
@@ -99,10 +101,42 @@ function createDataAudio(req, res) {
     });
 }
 
+async function addInterlocutorToAudio(req, res) {
+  const { audioId } = req.params;
+
+  const audio = await audioService.findOne(audioId);
+
+  if (!audio) {
+    res.status(404).send({ message: "audioId no encontrado" });
+    return;
+  }
+
+  console.log("AUDIO ENCONTRADO", audio);
+
+  console.log("BODY", req.body);
+  const { id } = req.body;
+  const interlocutorId = parseInt(id);
+
+  Audio.findByPk(audioId).then((audio) => {
+    return Interlocutor.findByPk(interlocutorId).then((interlocutor) => {
+      if (!interlocutor) {
+        console.log("NO SE ENCONTRO");
+        res.status(404).send({ message: "No se encontro el interlocutor" });
+        return;
+      }
+
+      console.log("ENCONTRO!!!");
+      Audio.addInterlocutor(interlocutor);
+      res.status(200).send(audio);
+    });
+  });
+}
+
 module.exports = {
   newAudio,
   listAudio,
   listAudioByProjectId,
   deleteAudio,
   createDataAudio,
+  addInterlocutorToAudio,
 };

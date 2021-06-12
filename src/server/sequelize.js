@@ -36,6 +36,18 @@ Audio.hasMany(Segment, { foreignKey: "id_audio" });
 Label.belongsTo(Audio, { foreignKey: "id_audio" });
 Audio.hasMany(Label, { foreignKey: "id_audio" });
 
+//const User_Profile = Sequelize.define('User_Profile', {}, { timestamps: false });
+Interlocutor.belongsToMany(Audio, {
+  through: "interlocutors_audios",
+  as: "interlocutors",
+  foreignKey: "interlocutor_id",
+});
+Audio.belongsToMany(Interlocutor, {
+  through: "interlocutors_audios",
+  as: "audios",
+  foreignKey: "audio_id",
+});
+
 // COMENTAR ESTO PARA BORRAR LA BASE AL INICIAR
 /*sequelize.sync({ force: true }).then(() => {
   console.log(`Database & tables created!`);

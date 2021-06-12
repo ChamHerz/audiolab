@@ -4,8 +4,10 @@ import Slider from "react-slick";
 import "./InterlocutorWave.scss";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import InterlocutorListModal from "../../../modals/InterlocutorListModal/InterlocutorListModal";
+import { addInterlocutorToAudio } from "../../../api/audio";
 
 export default function InterlocutorWave(props) {
+  const { audio } = props;
   const [openInterlocutorListModal, setOpenInterlocutorListModal] = useState(
     false
   );
@@ -23,6 +25,21 @@ export default function InterlocutorWave(props) {
   const openModalInterlocutor = () => {
     setOpenInterlocutorListModal(true);
     console.log("open modal");
+  };
+
+  const onInterlocutor = (interlocutorSelected) => {
+    console.log("inter", interlocutorSelected);
+    setOpenInterlocutorListModal(false);
+
+    addInterlocutorToAudio(audio.id, interlocutorSelected)
+      .then((response) => {
+        if (response?.data) {
+          console.log("ok", response.data);
+        }
+      })
+      .catch((err) => {
+        console.log("error", err.data);
+      });
   };
 
   return (
@@ -54,6 +71,7 @@ export default function InterlocutorWave(props) {
       <InterlocutorListModal
         setOpenInterlocutorListModal={setOpenInterlocutorListModal}
         openInterlocutorListModal={openInterlocutorListModal}
+        onInterlocutor={onInterlocutor}
       />
     </>
   );
