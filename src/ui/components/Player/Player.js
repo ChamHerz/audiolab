@@ -1,5 +1,6 @@
 import React from "react";
 import { Icon, Grid } from "semantic-ui-react";
+import { setFullScreen } from "../../utils/screen";
 
 import "./Player.scss";
 
@@ -8,6 +9,7 @@ export default function Player(props) {
 
   const onFilm = () => {
     console.log("on film");
+    setFullScreen();
   };
 
   return (

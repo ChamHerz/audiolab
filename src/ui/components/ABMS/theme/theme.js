@@ -1,86 +1,44 @@
-import React, { useState } from 'react';
-import { Form, Icon, Input, Table, Loader, Button, Grid } from "semantic-ui-react";
-import { newTheme }  from "../../../api/theme";
-import { toast } from "react-toastify";
-import ListTheme from "../../Themes/ListTheme";
+import React, { useState } from "react";
+import { Button, Grid } from "semantic-ui-react";
+import ThemeList from "../../Themes/ThemeList";
+import ThemeForm from "../../Themes/ThemeForm";
 
-export default function Theme(props){
-    const [formData, setFormData] = useState(initialValueForm());
-    const [isLoading, setIsLoading] = useState(false);
-    const [isNewTheme, setIsNewTheme] = useState(false);
+import "./theme.scss";
 
-    const handlerIsNewTheme = () => {
-        setIsNewTheme(!isNewTheme);
-    }
+export default function Theme(props) {
+  const [showThemeForm, setShowThemeForm] = useState(false);
+  const [themeToEdit, setThemeToEdit] = useState(null);
 
-    const resetForm = () => {
-        setFormData(initialValueForm());
-    };
+  const newTheme = () => {
+    setThemeToEdit(null);
+    setShowThemeForm(true);
+  };
 
-    const onSubmit = () => {
-        if(!formData.name) {
-            toast.warning("Completar el nombre del tema");
-        } else {
-            setIsLoading(true);
-            newTheme({
-                description: formData.description,
-                name: formData.name
-            })
-                .then(() => {
-                    toast.success("Tema creado correctamente.");
-                    resetForm();
-                    setIsLoading(false);
-                    handlerIsNewTheme();
-                })
-                .catch((error) =>{
-                    toast.error(error.response.data.message);
-                    setIsLoading(false);
-                });
-        }
-    }
+  const onEditTheme = (theme) => {
+    console.log("edit theme:", theme);
+    setThemeToEdit(theme);
+    setShowThemeForm(true);
+  };
 
-    return(
-        <>
-            {isNewTheme ?
-                <Form className="ui-form" onSubmit={onSubmit}>
-                    <h4 className="ui dividing header">Temas</h4>
-                    <Form.Field>
-                        <Input
-                            placeholder="Nombre del tema"
-                            onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        />
-                    </Form.Field>
-
-                    <Form.Field>
-                        <Input
-                            placeholder="Descripcion"
-                            onChange={(e) =>
-                                setFormData({...formData, description: e.target.value})}
-                        />
-                    </Form.Field>
-                    <Grid>
-                        <Grid.Column textAlign="right">
-                            <Button type="submit" className="ui button" loading={isLoading} >Crear Tema</Button>
-                            <Button className="ui button" onClick={handlerIsNewTheme}>Cancelar</Button>
-                        </Grid.Column>
-                    </Grid>
-                </Form> :
-                <div className="listTheme">
-
-                    <ListTheme/>
-                    <Grid>
-                        <Grid.Column textAlign="right">
-                            <Button className="ui common button" onClick={handlerIsNewTheme}>Nuevo Tema</Button>
-                        </Grid.Column>
-                    </Grid>
-                </div>
-            }
-        </>)
-}
-
-function initialValueForm() {
-    return {
-        name: "",
-        description: ""
-    };
+  return (
+    <>
+      {showThemeForm ? (
+        <ThemeForm
+          setShowThemeForm={setShowThemeForm}
+          themeToEdit={themeToEdit}
+        />
+      ) : (
+        <div className="listTheme">
+          <ThemeList onEditTheme={onEditTheme} />
+          <Grid>
+            <Grid.Column textAlign="right">
+              <Button className="ui common button" onClick={() => newTheme()}>
+                Nuevo Tema
+              </Button>
+            </Grid.Column>
+          </Grid>
+        </div>
+      )}
+    </>
+  );
 }

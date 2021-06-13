@@ -26,3 +26,10 @@ export function createDataAudioById(audioId) {
     `${basePath}/${apiVersion}/audio/create-data-audio-by-id/${audioId}`
   );
 }
+
+export function addInterlocutorToAudio(audioId, interlocutor) {
+  return axios.put(
+    `${basePath}/${apiVersion}/audio/add-interlocutor-to-audio/${audioId}`,
+    interlocutor
+  );
+}

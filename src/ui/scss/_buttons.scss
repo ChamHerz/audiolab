@@ -1,0 +1,13 @@
+.ui.button.button-radius {
+  margin-left: 10px;
+  border-radius: 50px;
+  background-color: $background-dark;
+  border: $border-light-dark 2px solid;
+  color: $font-gray;
+  font-weight: bold;
+
+  &:hover {
+    background-color: $background-light-dark;
+    color: $font-dark;
+  }
+}

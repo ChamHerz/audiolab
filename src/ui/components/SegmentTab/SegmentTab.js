@@ -149,7 +149,7 @@ function SegmentRow(props) {
       segment.selected = !segment.selected;
       setSelected(segment.selected);
     } else {
-      console.log("solo click segment");
+      console.log("solo click segment", segmentId);
     }
   };
 

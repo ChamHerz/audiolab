@@ -8,7 +8,7 @@ const CompanyModel = require("./models/company");
 const InterlocutorModel = require("./models/interlocutor.js");
 const CourtModel = require("./models/court");
 const LabelModel = require("./models/label.js");
-
+const IppModel = require("./models/ipp.js");
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -24,7 +24,7 @@ const Court = CourtModel(sequelize, Sequelize);
 const Segment = SegmentModel(sequelize, Sequelize);
 const Interlocutor = InterlocutorModel(sequelize, Sequelize);
 const Label = LabelModel(sequelize, Sequelize);
-
+const Ipp = IppModel(sequelize, Sequelize);
 
 // ASSOCIATIONS
 Audio.belongsTo(Project, { foreignKey: "id_project" });
@@ -35,6 +35,18 @@ Audio.hasMany(Segment, { foreignKey: "id_audio" });
 
 Label.belongsTo(Audio, { foreignKey: "id_audio" });
 Audio.hasMany(Label, { foreignKey: "id_audio" });
+
+//const User_Profile = Sequelize.define('User_Profile', {}, { timestamps: false });
+Interlocutor.belongsToMany(Audio, {
+  through: "interlocutors_audios",
+  as: "interlocutors",
+  foreignKey: "interlocutor_id",
+});
+Audio.belongsToMany(Interlocutor, {
+  through: "interlocutors_audios",
+  as: "audios",
+  foreignKey: "audio_id",
+});
 
 // COMENTAR ESTO PARA BORRAR LA BASE AL INICIAR
 /*sequelize.sync({ force: true }).then(() => {
@@ -51,4 +63,5 @@ module.exports = {
   Court,
   Interlocutor,
   Label,
+  Ipp,
 };

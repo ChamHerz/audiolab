@@ -101,7 +101,7 @@ export default function SegmentModal(props) {
                   onChange={(e) =>
                     setFormData({ ...formData, labelText: e.target.value })
                   }
-                  defaultValue={formData.labelText}
+                  defaultValue={segmentToUpdate.labelText}
                 />
               </Form.Field>
             </Form>

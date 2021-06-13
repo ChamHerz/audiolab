@@ -38,14 +38,19 @@ function onCreateFileMenu() {}
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1500,
-    height: 1000,
+    // width: 1500,
+    // height: 1000,
+    show: false,
     title: "AudioLab",
+    icon: __dirname + "/favicon.ico",
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,
     },
   });
+
+  mainWindow.maximize();
+  mainWindow.show();
 
   /*const mainMenu = Menu.buildFromTemplate(menuTemplate);
   mainWindow.setMenu(mainMenu);*/

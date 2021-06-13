@@ -1,11 +1,35 @@
 @import "../../../scss/index";
 
-.header-project {
+.ui.grid.header-project {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background-color: $background-dark-light;
-  padding: 5px;
+  margin: 0px;
   border-radius: 10px 10px 0 0;
   text-align: center;
   img {
     width: 200px;
+  }
+
+  .ui.button {
+    border-radius: 50px;
+    background-color: $background-dark;
+    border: $border-light-dark 2px solid;
+    color: $font-gray;
+    font-weight: bold;
+
+    &:hover {
+      background-color: $background-light-dark;
+      color: $font-dark;
+    }
+  }
+
+  .right-column {
+    height: 100%;
+    align-items: center;
+    text-align: right;
+    display: block;
   }
 }

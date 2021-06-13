@@ -6,5 +6,6 @@ const api = express.Router();
 api.post("/new-interlocutor", InterlocutorController.newInterlocutor);
 api.get("/list-interlocutor", InterlocutorController.listInterlocutor);
 api.put("/delete-interlocutor", InterlocutorController.deleteInterlocutor);
+api.put("/update-interlocutor", InterlocutorController.updateInterlocutor);
 
 module.exports = api;
