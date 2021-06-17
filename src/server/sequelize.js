@@ -9,6 +9,7 @@ const InterlocutorModel = require("./models/interlocutor.js");
 const CourtModel = require("./models/court");
 const LabelModel = require("./models/label.js");
 const IppModel = require("./models/ipp.js");
+const InterlocutorAudioModel = require("./models/interlocutorAudio.js");
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -25,6 +26,7 @@ const Segment = SegmentModel(sequelize, Sequelize);
 const Interlocutor = InterlocutorModel(sequelize, Sequelize);
 const Label = LabelModel(sequelize, Sequelize);
 const Ipp = IppModel(sequelize, Sequelize);
+const InterlocutorAudio = InterlocutorAudioModel(sequelize, Sequelize);
 
 // ASSOCIATIONS
 Audio.belongsTo(Project, { foreignKey: "id_project" });
@@ -38,13 +40,11 @@ Audio.hasMany(Label, { foreignKey: "id_audio" });
 
 //const User_Profile = Sequelize.define('User_Profile', {}, { timestamps: false });
 Interlocutor.belongsToMany(Audio, {
-  through: "interlocutors_audios",
-  as: "interlocutors",
+  through: InterlocutorAudio,
   foreignKey: "interlocutor_id",
 });
 Audio.belongsToMany(Interlocutor, {
-  through: "interlocutors_audios",
-  as: "audios",
+  through: InterlocutorAudio,
   foreignKey: "audio_id",
 });
 
@@ -64,4 +64,5 @@ module.exports = {
   Interlocutor,
   Label,
   Ipp,
+  InterlocutorAudio,
 };
