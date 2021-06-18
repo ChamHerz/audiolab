@@ -40,6 +40,7 @@ function listIpp(req, res) {
       "functionalUnit",
       "court",
       "crime",
+      "id_project",
     ],
     where: {
       isDeleted: 0,
@@ -101,9 +102,28 @@ function updateIpp(req, res) {
   });
 }
 
+function updateProjectIpp(req, res) {
+  const { id_project } = req.body;
+  const ippId = parseInt(id);
+
+  Ipp.findByPk(ippId).then((ipp) => {
+    return ipp
+      .update({
+        id_project: id_project
+      })
+      .then(() => {
+        res.status(200).send(ipp)
+      })
+      .catch((err) => {
+         res.status(500).send({ message: "Error al asignar proyecto a la IPP"})
+      });
+  });
+}
+
 module.exports = {
   newIpp,
   listIpp,
   deleteIpp,
   updateIpp,
+  updateProjectIpp
 };

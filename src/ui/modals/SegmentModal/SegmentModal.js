@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input } from "semantic-ui-react";
+import {Button, Modal, Form, Input, Dropdown} from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { getMaxId } from "../../api/segment";
 
@@ -15,6 +15,13 @@ export default function SegmentModal(props) {
     updateSegment,
   } = props;
   const [formData, setFormData] = useState(initialValueForm());
+
+  const countryOptions = [
+    { key: 'at', value: 'at', flag: 'at', text: 'Austria' },
+    { key: 'az', value: 'az', flag: 'az', text: 'Azerbaijan' },
+    { key: 'bs', value: 'bs', flag: 'bs', text: 'Bahamas' },
+    { key: 'bh', value: 'bh', flag: 'bh', text: 'Bahrain' },
+  ]
 
   useEffect(() => {
     if (segmentToUpdate) {
@@ -71,10 +78,19 @@ export default function SegmentModal(props) {
           <Modal.Content>
             <Form className="add-segment-form" onSubmit={onSubmit}>
               <Form.Field className="labelText" control={Input}>
-                <Input
+                {/*<Input
                   autoFocus
                   placeholder="Nombre del segmento"
                   onChange={(e) => setFormData({ labelText: e.target.value })}
+                />*/}
+                <Dropdown
+                    placeholder='Seleccione un Tema'
+                    autoFocus
+                    fluid
+                    search
+                    selection
+                    onChange={(e) => setFormData({ labelText: e.target.value })}
+                    options={countryOptions}
                 />
               </Form.Field>
             </Form>

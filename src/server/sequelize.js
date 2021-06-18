@@ -36,6 +36,9 @@ Audio.hasMany(Segment, { foreignKey: "id_audio" });
 Label.belongsTo(Audio, { foreignKey: "id_audio" });
 Audio.hasMany(Label, { foreignKey: "id_audio" });
 
+Ipp.belongsTo(Project, { foreignKey: "id_project"});
+Project.hasMany(Ipp, { foreignKey: "id_project"});
+
 // COMENTAR ESTO PARA BORRAR LA BASE AL INICIAR
 /*sequelize.sync({ force: true }).then(() => {
   console.log(`Database & tables created!`);

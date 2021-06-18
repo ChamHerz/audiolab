@@ -16,3 +16,7 @@ export function deleteIpp(ipp) {
 export function updateIpp(ipp) {
   return axios.put(`${basePath}/${apiVersion}/ipp/update-ipp`, ipp);
 }
+
+export function updateProjectIpp(ipp) {
+  return axios.put(`${basePath}/${apiVersion}/ipp/update-project-ipp`, ipp);
+}
