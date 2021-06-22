@@ -1,4 +1,5 @@
 const { Interlocutor } = require("../sequelize");
+const { Audio } = require("../sequelize");
 let _ = require("lodash");
 
 function newInterlocutor(req, res) {
@@ -31,6 +32,22 @@ function newInterlocutor(req, res) {
         }
       });
   }
+}
+
+function listInterlocutorByAudioId(req, res) {
+  console.log("listInterlocutorByAudioId");
+
+  const { audioId } = req.params;
+  Audio.findAll({
+    where: { id: audioId },
+    include: [{ model: Interlocutor, as: "interlocutors" }],
+  })
+    .then((audios) => {
+      res.status(200).send(audios[0].interlocutors);
+    })
+    .catch((err) => {
+      console.log("error", err);
+    });
 }
 
 function listInterlocutor(req, res) {
@@ -100,4 +117,5 @@ module.exports = {
   listInterlocutor,
   deleteInterlocutor,
   updateInterlocutor,
+  listInterlocutorByAudioId,
 };
