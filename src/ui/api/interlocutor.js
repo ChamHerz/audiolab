@@ -12,6 +12,12 @@ export function listInterlocutor() {
   return axios.get(`${basePath}/${apiVersion}/interlocutor/list-interlocutor`);
 }
 
+export function listInterlocutorByAudio(audioId) {
+  return axios.get(
+    `${basePath}/${apiVersion}/interlocutor/list-interlocutor-by-audio/${audioId}`
+  );
+}
+
 export function deleteInterlocutor(data) {
   return axios.put(
     `${basePath}/${apiVersion}/interlocutor/delete-interlocutor`,

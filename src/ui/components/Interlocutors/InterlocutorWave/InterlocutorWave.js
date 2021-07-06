@@ -1,16 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-
-import "./InterlocutorWave.scss";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Button, Card, Grid, Icon, Image } from "semantic-ui-react";
 import InterlocutorListModal from "../../../modals/InterlocutorListModal/InterlocutorListModal";
 import { addInterlocutorToAudio } from "../../../api/audio";
+import { listInterlocutorByAudio } from "../../../api/interlocutor";
+import { map } from "lodash";
+import "./InterlocutorWave.scss";
 
 export default function InterlocutorWave(props) {
   const { audio } = props;
   const [openInterlocutorListModal, setOpenInterlocutorListModal] = useState(
     false
   );
+  const [interlocutors, setInterlocutors] = useState([]);
+
+  const loadInterlocutors = () => {
+    listInterlocutorByAudio(audio.id)
+      .then((response) => {
+        if (response?.data) {
+          setInterlocutors(response.data);
+        }
+        console.log("response", response);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+
+  useEffect(() => {
+    loadInterlocutors();
+  }, []);
 
   const settings = {
     dots: false,
@@ -42,20 +61,16 @@ export default function InterlocutorWave(props) {
       });
   };
 
+  console.log("interlocutors", interlocutors);
+
   return (
     <>
       <Grid className="interlocutor-wave">
         <Grid.Column width={13} className="left">
           <Slider {...settings}>
-            <div>
-              <h3>1</h3>
-            </div>
-            <div>
-              <h3>2</h3>
-            </div>
-            <div>
-              <h3>3</h3>
-            </div>
+            {map(interlocutors, (interlocutor) => (
+              <Interlocutor key={interlocutor.id} interlocutor={interlocutor} />
+            ))}
           </Slider>
         </Grid.Column>
         <Grid.Column width={3} className="right">
@@ -75,4 +90,16 @@ export default function InterlocutorWave(props) {
       />
     </>
   );
+}
+
+function Interlocutor(props) {
+  const { interlocutor } = props;
+
+  return (
+    <div className="interlocutor-card">
+      <Image floted="left" size="mini" src={"images/" + interlocutor.picture} />
+      <label>{interlocutor.name}</label>
+    </div>
+  );
+  //return <div>{interlocutor.id}</div>;
 }

@@ -313,7 +313,7 @@ export default function HomeLayout(props) {
                   id: "ippTab",
                   title: "Ipp",
                   closable: false,
-                  content: <IppTab />,
+                  content: <IppTab project={project} />,
                 },
               ],
             },

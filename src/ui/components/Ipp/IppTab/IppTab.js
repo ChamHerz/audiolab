@@ -4,8 +4,10 @@ import { Button } from "semantic-ui-react";
 import "./IppTab.scss";
 import IppListModal from "../../../modals/IppListModal";
 import IppSelected from "../IppSelected";
+import { addIppToProject } from "../../../api/project";
 
 export default function IppTab(props) {
+  const { project } = props;
   const [openIppListModal, setOpenIppListModal] = useState(false);
   const [showIppForm, setShowIppForm] = useState(false);
   const [ippSelected, setIppSelected] = useState(null);
@@ -16,9 +18,18 @@ export default function IppTab(props) {
 
   const onIppSelect = (ipp) => {
     console.log("ipp", ipp);
-    setIppSelected(ipp);
-    setOpenIppListModal(false);
-    setShowIppForm(true);
+    console.log("project", project);
+
+    addIppToProject(ipp, project.id)
+      .then((response) => {
+        console.log("addIppToProject", response);
+        setIppSelected(ipp);
+        setOpenIppListModal(false);
+        setShowIppForm(true);
+      })
+      .catch((err) => {
+        console.log("error addIppToProject", err);
+      });
   };
 
   return showIppForm ? (
