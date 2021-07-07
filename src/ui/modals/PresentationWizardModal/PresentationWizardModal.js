@@ -1,24 +1,15 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Dropdown,
-  Icon,
-  Modal,
-  Segment,
-  Step,
-} from "semantic-ui-react";
+import { Button, Dropdown, Modal } from "semantic-ui-react";
 
 import "./PresentationWizardModal.scss";
+import FirstStep from "../../components/Presentation/FirstStep/FirstStep";
+import { toast } from "react-toastify";
+import SecondStep from "../../components/Presentation/SecondStep/SecondStep";
 
 export default function PresentationWizardModal(props) {
   const { openPresentationModal, setOpenPresentationModal } = props;
+  const [ippFinalSelected, setIppFinalSelected] = useState(null);
 
-  const firstComponent = () => {
-    return <div>First Component</div>;
-  };
-  const secondComponent = () => {
-    return <div>Second Component</div>;
-  };
   const thirdComponent = () => {
     return <div>Third Component</div>;
   };
@@ -31,13 +22,15 @@ export default function PresentationWizardModal(props) {
       key: "firstStep",
       label: "Seleccionar IPP",
       isDone: true,
-      component: firstComponent,
+      component: (ippFinalSelected) => (
+        <FirstStep setIppFinalSelected={setIppFinalSelected} />
+      ),
     },
     {
       key: "secondStep",
       label: "Seleccionar proyeto",
       isDone: false,
-      component: secondComponent,
+      component: (ipp) => <SecondStep ippFinalSelected={ipp} />,
     },
     {
       key: "thirdStep",
@@ -58,6 +51,13 @@ export default function PresentationWizardModal(props) {
     if (steps[steps.length - 1].key === activeStep.key) {
       alert("You have completed all steps.");
       return;
+    }
+
+    if (activeStep.key === "firstStep") {
+      if (!ippFinalSelected) {
+        toast.error("Seleccione una Ipp");
+        return;
+      }
     }
 
     const index = steps.findIndex((x) => x.key === activeStep.key);
@@ -112,19 +112,21 @@ export default function PresentationWizardModal(props) {
               })}
             </ul>
           </div>
-          <div className="step-component">{activeStep.component()}</div>
+          <div className="step-component">
+            {activeStep.component(ippFinalSelected)}
+          </div>
           <div className="btn-component">
             <Button
               className="button-radius"
               onClick={() => handleBack()}
               disabled={steps[0].key === activeStep.key}
             >
-              Back
+              Atras
             </Button>
             <Button className="button-radius" onClick={() => handleNext()}>
               {steps[steps.length - 1].key !== activeStep.key
-                ? "Next"
-                : "Submit"}
+                ? "Siguiente"
+                : "Terminar"}
             </Button>
           </div>
         </div>
