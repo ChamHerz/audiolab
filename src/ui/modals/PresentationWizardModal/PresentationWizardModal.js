@@ -5,10 +5,12 @@ import "./PresentationWizardModal.scss";
 import FirstStep from "../../components/Presentation/FirstStep/FirstStep";
 import { toast } from "react-toastify";
 import SecondStep from "../../components/Presentation/SecondStep/SecondStep";
+import ThirdStep from "../../components/Presentation/ThirdStep/ThirdStep";
 
 export default function PresentationWizardModal(props) {
   const { openPresentationModal, setOpenPresentationModal } = props;
   const [ippFinalSelected, setIppFinalSelected] = useState(null);
+  const [projectFinalSelected, setProjectFinalSelected] = useState(null);
 
   const thirdComponent = () => {
     return <div>Third Component</div>;
@@ -22,21 +24,24 @@ export default function PresentationWizardModal(props) {
       key: "firstStep",
       label: "Seleccionar IPP",
       isDone: true,
-      component: (ippFinalSelected) => (
-        <FirstStep setIppFinalSelected={setIppFinalSelected} />
-      ),
+      component: (_) => <FirstStep setIppFinalSelected={setIppFinalSelected} />,
     },
     {
       key: "secondStep",
       label: "Seleccionar proyeto",
       isDone: false,
-      component: (ipp) => <SecondStep ippFinalSelected={ipp} />,
+      component: (ipp) => (
+        <SecondStep
+          ippFinalSelected={ipp}
+          setProjectFinalSelected={setProjectFinalSelected}
+        />
+      ),
     },
     {
       key: "thirdStep",
       label: "Seleccionar segmentos",
       isDone: false,
-      component: thirdComponent,
+      component: (_, project) => <ThirdStep projectFinalSelected={project} />,
     },
     {
       key: "finalStep",
@@ -56,6 +61,13 @@ export default function PresentationWizardModal(props) {
     if (activeStep.key === "firstStep") {
       if (!ippFinalSelected) {
         toast.error("Seleccione una Ipp");
+        return;
+      }
+    }
+
+    if (activeStep.key === "secondStep") {
+      if (!projectFinalSelected) {
+        toast.error("Seleccione un proyecto");
         return;
       }
     }
@@ -113,7 +125,7 @@ export default function PresentationWizardModal(props) {
             </ul>
           </div>
           <div className="step-component">
-            {activeStep.component(ippFinalSelected)}
+            {activeStep.component(ippFinalSelected, projectFinalSelected)}
           </div>
           <div className="btn-component">
             <Button

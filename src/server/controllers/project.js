@@ -78,8 +78,24 @@ async function addIppToProject(req, res) {
   res.status(200).send(saveProjectIpp);
 }
 
+async function findAllByIpp(req, res) {
+  const { id } = req.params;
+  const ippId = parseInt(id);
+
+  const ipp = await ippService.findOneComplete(ippId);
+  console.log("ipp encontrada", ipp);
+
+  if (!ipp) {
+    res.status(404).send({ message: "ippId no encontrado" });
+    return;
+  }
+
+  res.status(200).send(ipp);
+}
+
 module.exports = {
   newProject,
   listProject,
   addIppToProject,
+  findAllByIpp,
 };

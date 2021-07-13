@@ -1,5 +1,4 @@
 const { Audio } = require("../sequelize");
-const { Interlocutor } = require("../sequelize");
 const { InterlocutorAudio } = require("../sequelize");
 let _ = require("lodash");
 const { projectService } = require("../services/project");
@@ -55,18 +54,17 @@ function listAudio(req, res) {
     });
 }
 
-function listAudioByProjectId(req, res) {
+async function listAudioByProjectId(req, res) {
   const { projectId } = req.params;
-  Audio.findAll({
-    where: {
-      id_project: projectId,
-      deleted: false,
-    },
-  })
-    .then((audios) => res.status(200).send(audios))
-    .catch((err) => {
-      res.status(500).send({ message: "Error al cargar audios" });
-    });
+  const id = parseInt(projectId);
+
+  const audioArray = await audioService.findAllByProject(id);
+
+  if (!audioArray) {
+    res.status(500).send({ message: "Error al cargar audios" });
+    return;
+  }
+  res.status(200).send(audioArray);
 }
 
 function deleteAudio(req, res) {

@@ -55,18 +55,17 @@ async function getMaxId(req, res) {
   }
 }
 
-function listSegmentByAudioId(req, res) {
+async function listSegmentByAudioId(req, res) {
   const { audioId } = req.params;
-  Segment.findAll({
-    where: {
-      id_audio: audioId,
-      deleted: false,
-    },
-  })
-    .then((segments) => res.status(200).send(segments))
-    .catch((err) => {
-      res.status(500).send({ message: "Error al cargar segmentos" });
-    });
+  const id = parseInt(audioId);
+
+  const segments = await segmentService.findAllByAudio(id);
+
+  if (!segments) {
+    res.status(500).send({ message: "Error al cargar segmentos" });
+    return;
+  }
+  res.status(200).send(segments);
 }
 
 function deleteSegment(req, res) {
@@ -105,10 +104,24 @@ function updateSegment(req, res) {
   });
 }
 
+async function findAllByProject(req, res) {
+  const { id } = req.params;
+  const projectId = parseInt(id);
+
+  const segments = await segmentService.findAllByProject(projectId);
+
+  if (!segments) {
+    res.status(500).send({ message: "Error al obtener segmentos" });
+    return;
+  }
+  res.status(200).send(segments);
+}
+
 module.exports = {
   newSegment,
   getMaxId,
   listSegmentByAudioId,
   deleteSegment,
   updateSegment,
+  findAllByProject,
 };
