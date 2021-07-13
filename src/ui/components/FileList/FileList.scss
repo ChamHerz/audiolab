@@ -1,0 +1,39 @@
+@import "../../scss/index";
+
+.ui.table.inverted.file-list {
+  background-color: $background-dark;
+
+  th {
+    background-color: transparent;
+  }
+
+  .selected {
+    background-color: blanchedalmond;
+  }
+
+  tr {
+    &:hover {
+      cursor: pointer;
+      background-color: whitesmoke;
+    }
+
+    td {
+      color: $background-light-dark;
+    }
+  }
+
+  /*padding-left: 10px;
+  .audio-card {
+    max-width: 185px !important;
+    .audio-file {
+      min-height: 147px !important;
+    }
+    .noSelected {
+      background-color: indianred;
+    }
+
+    .selected {
+      background-color: yellow;
+    }
+  }*/
+}

@@ -1,0 +1,36 @@
+@import "../../../scss/index.scss";
+
+.list-project {
+  .ui.table.inverted.table-songs {
+    background-color: transparent;
+    padding: 10px;
+
+    th {
+      background-color: transparent;
+    }
+
+    tr {
+      &:hover {
+        cursor: pointer;
+
+        td {
+          color: $background-light-dark;
+        }
+      }
+    }
+  }
+
+  .ui.button {
+    margin-left: 10px;
+    border-radius: 50px;
+    background-color: $background-dark;
+    border: $border-light-dark 2px solid;
+    color: $font-gray;
+    font-weight: bold;
+
+    &:hover {
+      background-color: $background-light-dark;
+      color: $font-dark;
+    }
+  }
+}

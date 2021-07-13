@@ -1,0 +1,30 @@
+@import "../../../scss/index";
+
+.ui.form.add-interlocutor-form {
+  .image-with-name {
+    margin-bottom: 2px;
+  }
+
+  .interlocutor-picture {
+    position: relative;
+    background-color: $background-gray-light;
+    height: 150px;
+    width: 100%;
+    padding: 0 !important;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+
+    .picture {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+  }
+}

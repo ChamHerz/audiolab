@@ -1,3 +1,11 @@
+# Images Files
+images
+
+# Audio Files
+*.dat
+*.mp3
+*.wav
+
 # Ide
 .idea
 

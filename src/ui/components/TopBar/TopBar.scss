@@ -1,0 +1,52 @@
+@import "../../scss/index";
+
+.top-bar-container {
+  background-color: $background-dark-gray;
+  padding: 10px 5px 5px 5px;
+}
+
+.ui.menu.top-bar-general {
+  background-color: $background-dark;
+
+  .ui.button.audio-lab-button {
+    color: $font-light;
+    background-color: $background-dark;
+
+    b:first-child {
+      color: $font-light;
+    }
+
+    b:last-child {
+      color: $font-turquoise;
+    }
+  }
+
+  > .row {
+    &:first-of-type {
+      margin-top: 10px;
+      color: $font-dark;
+    }
+  }
+
+  .dropdown-setting {
+    margin: 0;
+    padding: 0;
+    i:first-child {
+      font-size: x-large;
+      color: $font-light;
+    }
+  }
+
+  .setting-icon:hover {
+    cursor: pointer;
+  }
+
+  .setting-button {
+    background-color: $background-dark;
+    color: $font-light;
+    margin-bottom: 30px;
+    border-radius: 50px;
+    padding: 20px 0;
+    font-size: 17px;
+  }
+}
