@@ -15,6 +15,12 @@ export function listSegmentByAudio(audioId) {
   );
 }
 
+export function findAllSegmentByProject(projectId) {
+  return axios.get(
+    `${basePath}/${apiVersion}/segment/find-all-by-project/${projectId}`
+  );
+}
+
 export function deleteSegmentById(segmentId) {
   return axios.put(
     `${basePath}/${apiVersion}/segment/delete-segment-by-id/${segmentId}`

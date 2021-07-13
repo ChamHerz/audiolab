@@ -1,4 +1,5 @@
 const { Ipp } = require("../sequelize");
+const { projectService } = require("../services/project");
 
 function newIpp(req, res) {
   const ipp = new Ipp();
@@ -101,9 +102,25 @@ function updateIpp(req, res) {
   });
 }
 
+async function findIppByProject(req, res) {
+  const { projectId } = req.params;
+  const projectIdInt = parseInt(projectId);
+
+  const project = await projectService.findOneComplete(projectIdInt);
+
+  if (!project) {
+    res.status(404).send({ message: "projectId no encontrado" });
+    return;
+  }
+
+  console.log("project", project);
+  res.status(200).send(project.ipps);
+}
+
 module.exports = {
   newIpp,
   listIpp,
   deleteIpp,
   updateIpp,
+  findIppByProject,
 };

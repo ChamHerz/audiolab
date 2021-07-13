@@ -1,13 +1,14 @@
-import React from "react";
-import { Menu, Dropdown, Grid, Icon, Table } from "semantic-ui-react";
-import { Button, Header, Image, Modal } from "semantic-ui-react";
-import MultipleAbm from "../MultipleAbm";
-
+import React, { useState } from "react";
+import { Menu, Dropdown } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import "./TopBar.scss";
+import SettingModal from "../../modals/SettingModal/SettingModal";
+import PresentationWizardModal from "../../modals/PresentationWizardModal/PresentationWizardModal";
 
 export default function TopBar(props) {
   const { setProject } = props;
-  const [open, setOpen] = React.useState(false);
+  const [openSettingModal, setOpenSettingModal] = useState(false);
+  const [openPresentationModal, setOpenPresentationModal] = useState(false);
 
   const onClose = () => {
     console.log("onClose");
@@ -22,6 +23,7 @@ export default function TopBar(props) {
             <b>AUDIO</b>
             <b>LAB</b>
           </Button>
+          <Menu.Menu position="right"></Menu.Menu>
           <Menu.Menu position="right">
             <Dropdown
               item
@@ -31,21 +33,14 @@ export default function TopBar(props) {
               className="dropdown-setting"
             >
               <Dropdown.Menu>
-                <Modal
-                  onClose={() => setOpen(false)}
-                  onOpen={() => setOpen(true)}
-                  open={open}
-                  trigger={<Dropdown.Item text="Configuración" />}
-                >
-                  <Modal.Content>
-                    <MultipleAbm />
-                  </Modal.Content>
-                  <Modal.Actions>
-                    <Button color="black" onClick={() => setOpen(false)}>
-                      Cerrar
-                    </Button>
-                  </Modal.Actions>
-                </Modal>
+                <PresentationWizardModal
+                  openPresentationModal={openPresentationModal}
+                  setOpenPresentationModal={setOpenPresentationModal}
+                />
+                <SettingModal
+                  openSettingModal={openSettingModal}
+                  setOpenSettingModal={setOpenSettingModal}
+                />
                 <Dropdown.Divider />
                 <Dropdown.Item text="Cerrar" onClick={() => onClose()} />
               </Dropdown.Menu>

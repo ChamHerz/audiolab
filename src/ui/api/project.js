@@ -8,3 +8,16 @@ export function newProject(data) {
 export function listProject() {
   return axios.get(`${basePath}/${apiVersion}/project/list-project`);
 }
+
+export function findAllByIpp(ippId) {
+  return axios.get(
+    `${basePath}/${apiVersion}/project/find-all-by-ipp/${ippId}`
+  );
+}
+
+export function addIppToProject(ipp, projectId) {
+  return axios.post(
+    `${basePath}/${apiVersion}/project/add-ipp-to-project/${projectId}`,
+    ipp
+  );
+}
