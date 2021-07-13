@@ -61,8 +61,6 @@ export default function InterlocutorWave(props) {
       });
   };
 
-  console.log("interlocutors", interlocutors);
-
   return (
     <>
       <Grid className="interlocutor-wave">

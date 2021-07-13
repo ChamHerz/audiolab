@@ -25,14 +25,14 @@ export const runner = (oneAudio) => {
 
       child.unref();
 
-      child.stderr.on("data", function (data) {
+      /*child.stderr.on("data", function (data) {
         console.log(`stderr: ${data}`);
-      });
+      });*/
 
-      child.on("close", function (data) {
+      /*child.on("close", function (data) {
         console.log(`Terminado: ${data}`);
         resolve(oneAudio);
-      });
+      });*/
     } catch (error) {
       console.log("Se produjo un error");
       console.log(error);
