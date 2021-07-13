@@ -36,6 +36,9 @@ const menuTemplate = [
 function onCreateFileMenu() {}
 
 function createWindow() {
+  //servidor
+  const server = require("../src/server");
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     // width: 1500,
@@ -93,8 +96,7 @@ function createWindow() {
   }
   // Open the DevTools.
   mainWindow.webContents.once("dom-ready", () => {
-    const server = require("../src/server");
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
   });
 }
 

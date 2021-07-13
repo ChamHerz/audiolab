@@ -78,10 +78,8 @@
   "build": {
     "appId": "AudioLab",
     "files": [
-      "audio/**/*",
       "build/**/*",
       "src/server/**/*",
-      "src/ui/utils/**/*",
       "node_modules/**/*"
     ],
     "directories": {
@@ -89,7 +87,8 @@
       "output": "audiolab"
     },
     "extraFiles": [
-      "audio"
+      "audio",
+      "data"
     ],
     "win": {
       "icon": "build/favicon.ico"

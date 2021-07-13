@@ -183,6 +183,8 @@ export default function WaveTab(props) {
         },
       };
 
+      console.log("filename", filename);
+
       const options = {
         containers: {
           zoomview: zoomviewContainer.current,
@@ -190,8 +192,9 @@ export default function WaveTab(props) {
         },
         /*mediaElement: audioContainer.current,*/
         player: player,
+        //ESTA ES EL PATH PARA PRODUCCION
         dataUri: {
-          arraybuffer: "data/" + filename + ".dat",
+          arraybuffer: "../../../data/" + filename + ".dat",
         },
         keyboard: true,
         showPlayheadTime: true,

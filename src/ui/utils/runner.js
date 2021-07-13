@@ -10,14 +10,7 @@ export const runner = (oneAudio) => {
 
       let child = spawn(
         "audio\\audiowaveform.exe",
-        [
-          "-i",
-          oneAudio.path,
-          "-o",
-          "public\\data\\" + filename + ".dat",
-          "-b",
-          "8",
-        ],
+        ["-i", oneAudio.path, "-o", ".\\data\\" + filename + ".dat", "-b", "8"],
         { detached: true, stdio: ["ignore", "ignore", "ignore"] }
       );
 
