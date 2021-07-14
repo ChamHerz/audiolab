@@ -184,8 +184,6 @@ export default function WaveTab(props) {
         },
       };
 
-      console.log("filename", filename);
-
       const options = {
         containers: {
           zoomview: zoomviewContainer.current,
@@ -198,7 +196,10 @@ export default function WaveTab(props) {
           arraybuffer: "../../../data/" + filename + ".dat",
         },*/
         dataUri: {
-          arraybuffer: "D:\\audiolab\\data\\" + filename + ".dat",
+          arraybuffer: `file://${path.join(
+            __dirname,
+            "/data/" + filename + ".dat"
+          )}`,
         },
         keyboard: true,
         showPlayheadTime: true,
