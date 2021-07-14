@@ -96,7 +96,9 @@ function createWindow() {
   }
   // Open the DevTools.
   mainWindow.webContents.once("dom-ready", () => {
-    //mainWindow.webContents.openDevTools();
+    if (isDev) {
+      mainWindow.webContents.openDevTools();
+    }
   });
 }
 

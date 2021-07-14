@@ -9,6 +9,7 @@ import Player from "../Player/Player";
 import { truncate2decimal } from "../../utils/truncate";
 import LabelModal from "../../modals/LabelModal";
 import { listLabelByAudio } from "../../api/label";
+import path from "path";
 
 import "./WaveTab.scss";
 import InterlocutorWave from "../Interlocutors/InterlocutorWave/InterlocutorWave";
@@ -193,8 +194,11 @@ export default function WaveTab(props) {
         /*mediaElement: audioContainer.current,*/
         player: player,
         //ESTA ES EL PATH PARA PRODUCCION
-        dataUri: {
+        /*dataUri: {
           arraybuffer: "../../../data/" + filename + ".dat",
+        },*/
+        dataUri: {
+          arraybuffer: "D:\\audiolab\\data\\" + filename + ".dat",
         },
         keyboard: true,
         showPlayheadTime: true,
