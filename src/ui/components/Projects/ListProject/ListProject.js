@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Icon, Table } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Table } from "semantic-ui-react";
 import HeaderProject from "../HeaderProject";
 import { listProject } from "../../../api/project";
-import { map } from "lodash";
+import { filter, map } from "lodash";
 
 import "./ListProject.scss";
 
 export default function ListProject(props) {
   const { setSelectedForm, setProject } = props;
   const [projects, setProjects] = useState([]);
+  const [projectsFilter, setProjectsFilter] = useState([]);
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     listProject().then((response) => {
@@ -18,9 +20,31 @@ export default function ListProject(props) {
           arrayProjects.push(project);
         });
         setProjects(response.data);
+        setProjectsFilter(response.data);
       }
     });
   }, []);
+
+  const onSearch = (e) => {
+    if (e.key === "Enter") {
+      console.log("on enter", e.target.value);
+      applyFilter(e.target.value);
+    }
+  };
+
+  const onChangeFilter = (e) => {
+    console.log("on change", e.target.value);
+    applyFilter(e.target.value);
+  };
+
+  const applyFilter = (text) => {
+    let projectsFilter = [];
+    projectsFilter = filter(projects, (project) => {
+      if (project.name.includes(text)) return true;
+      return !!(project.description && project.description.includes(text));
+    });
+    setProjectsFilter(projectsFilter);
+  };
 
   return (
     <div className="list-project">
@@ -37,6 +61,17 @@ export default function ListProject(props) {
             <hr />
           </Grid.Column>
           <Grid.Column className="content" width={13}>
+            <div className="filter">
+              <Input
+                transparent
+                onKeyPress={(e) => onSearch(e)}
+                onChange={(e) => onChangeFilter(e)}
+                iconPosition="left"
+                icon="filter"
+                placeholder="ingrese texto"
+                loading={searching}
+              />
+            </div>
             <Table inverted className="table-songs">
               <Table.Header>
                 <Table.Row>
@@ -45,7 +80,7 @@ export default function ListProject(props) {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {map(projects, (project) => (
+                {map(projectsFilter, (project) => (
                   <Project
                     key={project.id}
                     project={project}

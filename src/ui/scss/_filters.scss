@@ -1,0 +1,21 @@
+@import "./_colors.scss";
+
+.filter {
+  margin-right: 5vh;
+  text-align: right;
+  color: $font-gray;
+  .ui.input {
+    border-bottom: 0.1vh solid $background-light-dark;
+    input {
+      color: $font-gray;
+      font-style: italic !important;
+    }
+    input:hover {
+      color: $font-light;
+    }
+  }
+  .ui.input:focus-within {
+    border-bottom: 0.1vh solid white;
+    transition: border-bottom-color 1000ms linear;
+  }
+}
