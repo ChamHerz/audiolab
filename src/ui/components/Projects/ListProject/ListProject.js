@@ -38,10 +38,13 @@ export default function ListProject(props) {
   };
 
   const applyFilter = (text) => {
+    text = text.toLowerCase();
     let projectsFilter = [];
     projectsFilter = filter(projects, (project) => {
-      if (project.name.includes(text)) return true;
-      return !!(project.description && project.description.includes(text));
+      if (project.name.toLowerCase().includes(text)) return true;
+      return !!(
+        project.description && project.description.toLowerCase().includes(text)
+      );
     });
     setProjectsFilter(projectsFilter);
   };
@@ -72,23 +75,32 @@ export default function ListProject(props) {
                 loading={searching}
               />
             </div>
-            <Table inverted className="table-songs">
+            <Table inverted fixed className="table-heads">
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell />
-                  <Table.HeaderCell>Título</Table.HeaderCell>
+                  <Table.HeaderCell style={{ width: "1vh" }} />
+                  <Table.HeaderCell style={{ width: "15vh" }}>
+                    Título
+                  </Table.HeaderCell>
+                  <Table.HeaderCell style={{ width: "15vh" }}>
+                    Descripción
+                  </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
-              <Table.Body>
-                {map(projectsFilter, (project) => (
-                  <Project
-                    key={project.id}
-                    project={project}
-                    setProject={setProject}
-                  />
-                ))}
-              </Table.Body>
             </Table>
+            <div className="table-projects">
+              <Table inverted fixed className="table-songs">
+                <Table.Body>
+                  {map(projectsFilter, (project) => (
+                    <Project
+                      key={project.id}
+                      project={project}
+                      setProject={setProject}
+                    />
+                  ))}
+                </Table.Body>
+              </Table>
+            </div>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -105,10 +117,11 @@ function Project(props) {
 
   return (
     <Table.Row onClick={onProject}>
-      <Table.Cell collapsing>
+      <Table.Cell style={{ width: "1vh" }}>
         <Icon name="play circle outline" />
       </Table.Cell>
-      <Table.Cell>{project.name}</Table.Cell>
+      <Table.Cell style={{ width: "15vh" }}>{project.name}</Table.Cell>
+      <Table.Cell style={{ width: "15vh" }}>{project.description}</Table.Cell>
     </Table.Row>
   );
 }

@@ -1,6 +1,30 @@
 @import "../../../scss/index.scss";
 
 .list-project {
+  height: 50vh;
+
+  .filter {
+    margin-right: 5vh;
+    text-align: right;
+    color: $font-gray;
+    .ui.input {
+      border-bottom: 0.1vh solid $background-light-dark;
+      input {
+        color: $font-gray;
+        font-style: italic !important;
+      }
+    }
+  }
+
+  .table-projects {
+    height: 25vh;
+    overflow-y: scroll;
+  }
+
+  .ui.table.inverted.table-heads {
+    background-color: transparent;
+  }
+
   .ui.table.inverted.table-songs {
     background-color: transparent;
     padding: 10px;
