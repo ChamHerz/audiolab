@@ -33,10 +33,15 @@
       background-color: transparent;
     }
 
-    tr {
+    .project-name-cell, .project-delete-cell {
       &:hover {
         cursor: pointer;
+        text-decoration: underline;
+      }
+    }
 
+    tr {
+      &:hover {
         td {
           color: $background-light-dark;
         }
