@@ -2,6 +2,9 @@
 audiolab
 data
 
+# Images Files
+images
+
 # Audio Files
 *.dat
 *.mp3
