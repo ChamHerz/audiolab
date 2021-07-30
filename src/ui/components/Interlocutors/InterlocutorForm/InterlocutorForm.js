@@ -191,14 +191,17 @@ export default function InterlocutorForm(props) {
         <Grid.Column width={12} className="right">
           <Form.Field>
             <Input
+              tabIndex="1"
               placeholder="Nombre"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
+              autoFocus
             />
           </Form.Field>
           <Form.Field>
             <Input
+              tabIndex="2"
               placeholder="Apellido"
               onChange={(e) =>
                 setFormData({ ...formData, lastname: e.target.value })
@@ -207,6 +210,7 @@ export default function InterlocutorForm(props) {
           </Form.Field>
           <Form.Field>
             <Input
+              tabIndex="3"
               placeholder="Alias"
               onChange={(e) =>
                 setFormData({ ...formData, alias: e.target.value })
@@ -217,12 +221,14 @@ export default function InterlocutorForm(props) {
       </Grid>
       <Form.Field>
         <Input
+          tabIndex="4"
           placeholder="DNI"
           onChange={(e) => setFormData({ ...formData, dni: e.target.value })}
         />
       </Form.Field>
       <Form.Field>
         <Input
+          tabIndex="5"
           placeholder="Picture"
           onChange={(e) =>
             setFormData({ ...formData, picture: e.target.value })
@@ -231,10 +237,16 @@ export default function InterlocutorForm(props) {
       </Form.Field>
       <Grid>
         <Grid.Column textAlign="right">
-          <Button type="submit" className="ui button" loading={isLoading}>
+          <Button
+            tabIndex="6"
+            type="submit"
+            className="ui button"
+            loading={isLoading}
+          >
             Crear Interlocutor
           </Button>
           <Button
+            tabIndex="7"
             className="ui button"
             onClick={() => setShowInterlocutorForm(false)}
           >
@@ -248,8 +260,8 @@ export default function InterlocutorForm(props) {
 
 function initialValueForm() {
   return {
-    nombre: "",
-    apellido: "",
+    name: "",
+    lastname: "",
     dni: "",
     alias: "",
     picture: "",

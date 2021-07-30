@@ -10,7 +10,6 @@ export default function SettingModal(props) {
       onClose={() => setOpenSettingModal(false)}
       onOpen={() => setOpenSettingModal(true)}
       open={openSettingModal}
-      trigger={<Dropdown.Item text="Configuración" />}
     >
       <Modal.Content>
         <MultipleAbm />

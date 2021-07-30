@@ -174,7 +174,7 @@ function Project(props) {
         onClick={() => onDeleteProject(project)}
         style={{ width: "1vh" }}
       >
-        <Icon name="play trash alternate outline" />
+        <Icon name="trash alternate outline" />
       </Table.Cell>
     </Table.Row>
   );
