@@ -6,6 +6,7 @@ import { addInterlocutorToAudio } from "../../../api/audio";
 import { listInterlocutorByAudio } from "../../../api/interlocutor";
 import { map } from "lodash";
 import "./InterlocutorWave.scss";
+import path from "path";
 
 export default function InterlocutorWave(props) {
   const { audio } = props;
@@ -35,7 +36,7 @@ export default function InterlocutorWave(props) {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 2,
     slidesToScroll: 1,
     centerMode: false,
     className: "interlocutor-wave__list",
@@ -52,6 +53,7 @@ export default function InterlocutorWave(props) {
 
     addInterlocutorToAudio(audio.id, interlocutorSelected)
       .then((response) => {
+        console.log("response", response);
         if (response?.data) {
           console.log("ok", response.data);
         }
@@ -95,7 +97,12 @@ function Interlocutor(props) {
 
   return (
     <div className="interlocutor-card">
-      <Image floted="left" size="mini" src={"images/" + interlocutor.picture} />
+      <Image
+        src={`file://${path.join(
+          __dirname,
+          "/images/" + interlocutor.picture
+        )}`}
+      />
       <label>{interlocutor.name}</label>
     </div>
   );
