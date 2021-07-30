@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import NoImage from "../../../assets/png/no-image.png";
 import "./InterlocutorForm.scss";
+import path from "path";
 
 export default function InterlocutorForm(props) {
   const [formData, setFormData] = useState(initialValueForm());
@@ -21,7 +22,12 @@ export default function InterlocutorForm(props) {
       console.log("se cambio");
       setFormData(interlocutorToEdit);
       if (interlocutorToEdit.picture) {
-        setInterlocutorPicture("images/" + interlocutorToEdit.picture);
+        setInterlocutorPicture(
+          `file://${path.join(
+            __dirname,
+            "/images/" + interlocutorToEdit.picture
+          )}`
+        );
       }
     }
   }, [interlocutorToEdit]);
