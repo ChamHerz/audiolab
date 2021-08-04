@@ -7,10 +7,6 @@ import "./IppListModal.scss";
 export default function IppListModal(props) {
   const { openIppListModal, setOpenIppListModal, onIppSelect } = props;
 
-  const onSubmit = () => {
-    console.log("selected");
-  };
-
   const onDoubleClickIpp = (e, ipp) => {
     onIppSelect(ipp);
   };
@@ -26,15 +22,6 @@ export default function IppListModal(props) {
       <Modal.Content>
         <IppSelectList onDoubleClickIpp={onDoubleClickIpp} />
       </Modal.Content>
-      <Modal.Actions>
-        <Button
-          content="Seleccionar Ipp"
-          labelPosition="right"
-          icon="checkmark"
-          onClick={() => onSubmit()}
-          positive
-        />
-      </Modal.Actions>
     </Modal>
   );
 }
