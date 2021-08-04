@@ -26,6 +26,7 @@ export default function WaveTab(props) {
     onAddLabel,
     onDoubleClickSegment,
     onDoubleClickLabel,
+    playSegment,
   } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [segmentToUpdate, setSegmentToUpdate] = useState(null);
@@ -60,6 +61,14 @@ export default function WaveTab(props) {
       peaksInstance.segments.removeById(segmentToDelete.id);
     }
   }, [deleteSegment]);
+
+  useEffect(() => {
+    if (playSegment) {
+      const segmentToPlay = playSegment.selected;
+      const peakSegment = peaksInstance.segments.getSegment(playSegment.id);
+      peaksInstance.player.playSegment(segmentToPlay);
+    }
+  }, [playSegment]);
 
   useEffect(() => {
     if (deleteLabel) {

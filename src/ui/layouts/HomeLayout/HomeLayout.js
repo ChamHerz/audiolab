@@ -30,6 +30,7 @@ export default function HomeLayout(props) {
   let deleteLabel;
   let dockLayout;
   let currentAudio;
+  let playSegment;
 
   const onCloseAudio = () => {
     if (dockLayout) {
@@ -134,6 +135,7 @@ export default function HomeLayout(props) {
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
           onDoubleClickSegment={onDoubleClickSegment}
+          onPlaySegment={onPlaySegment}
         />
       ),
     });
@@ -190,6 +192,26 @@ export default function HomeLayout(props) {
     });
   };
 
+  const onPlaySegment = (e, segment) => {
+    playSegment = segment;
+    dockLayout.updateTab(`${currentAudio.name}`, {
+      id: `${currentAudio.name}`,
+      title: `${currentAudio.name}`,
+      closable: true,
+      content: (
+        <WaveTab
+          audio={currentAudio}
+          onAddSegment={onAddSegment}
+          onAddLabel={onAddLabel}
+          onClose={onCloseAudio}
+          deleteLabel={deleteLabel}
+          project={project}
+          playSegment={playSegment}
+        />
+      ),
+    });
+  };
+
   const onAddSegment = (segment) => {
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
@@ -200,6 +222,7 @@ export default function HomeLayout(props) {
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
           onDoubleClickSegment={onDoubleClickSegment}
+          onPlaySegment={onPlaySegment}
         />
       ),
     });
@@ -233,6 +256,7 @@ export default function HomeLayout(props) {
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
           onDoubleClickSegment={onDoubleClickSegment}
+          onPlaySegment={onPlaySegment}
         />
       ),
     });
@@ -246,6 +270,7 @@ export default function HomeLayout(props) {
           currentAudio={currentAudio}
           onDeleteSegment={onDeleteSegment}
           onDoubleClickSegment={onDoubleClickSegment}
+          onPlaySegment={onPlaySegment}
         />
       ),
     });
