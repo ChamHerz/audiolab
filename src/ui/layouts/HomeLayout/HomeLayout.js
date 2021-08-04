@@ -56,7 +56,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: true,
+      closable: false,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -79,7 +79,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: true,
+      closable: false,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -99,13 +99,13 @@ export default function HomeLayout(props) {
   const onDoubleClickAudioFile = (e, oneAudio) => {
     e.preventDefault();
 
-    currentAudio = oneAudio;
+    console.log("current Audio", currentAudio);
 
-    const newTab = () => {
-      return {
+    if (currentAudio) {
+      dockLayout.updateTab(`${currentAudio.name}`, {
         id: `${oneAudio.name}`,
         title: `${oneAudio.name}`,
-        closable: true,
+        closable: false,
         content: (
           <WaveTab
             audio={oneAudio}
@@ -118,13 +118,40 @@ export default function HomeLayout(props) {
             project={project}
           />
         ),
-      };
-    };
+      });
 
-    if (!dockLayout.find(`${oneAudio.name}`)) {
-      //El audio no esta abierto
+      currentAudio = oneAudio;
+    } else {
+      //CREO EL TAB
+      currentAudio = oneAudio;
+
+      const newTab = () => {
+        return {
+          id: `${oneAudio.name}`,
+          title: `${oneAudio.name}`,
+          closable: false,
+          content: (
+            <WaveTab
+              audio={oneAudio}
+              onAddSegment={onAddSegment}
+              onAddLabel={onAddLabel}
+              onClose={onCloseAudio}
+              deleteSegment={deleteSegment}
+              updateSegment={updateSegment}
+              updateLabel={updateLabel}
+              project={project}
+            />
+          ),
+        };
+      };
+
       dockLayout.dockMove(newTab(), "wavePanel", "middle");
     }
+
+    /*if (!dockLayout.find(`${oneAudio.name}`)) {
+      //El audio no esta abierto
+      dockLayout.dockMove(newTab(), "wavePanel", "middle");
+    }*/
 
     dockLayout.updateTab("segmentTab", {
       id: "segmentTab",
@@ -159,7 +186,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: true,
+      closable: false,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -178,7 +205,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: true,
+      closable: false,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -197,7 +224,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: true,
+      closable: false,
       content: (
         <WaveTab
           audio={currentAudio}
