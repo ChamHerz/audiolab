@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Icon, Segment, Table, TableBody } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 import {
   newSegment,
   listSegmentByAudio,
@@ -99,6 +99,8 @@ export default function SegmentTab(props) {
   }, [onLoad]);
 
   const deleteSegment = (e, segment) => {
+    console.log("icon delete segment", segment);
+
     const segmentToDelete = segment.selected;
 
     deleteSegmentById(segmentToDelete.id)
@@ -173,7 +175,10 @@ function SegmentRow(props) {
           <Table.Cell collapsing>
             <Icon name="play circle outline" />
           </Table.Cell>
-          <Table.Cell collapsing>
+          <Table.Cell
+            onClick={(e) => onDeleteSegment(e, { selected: segment })}
+            collapsing
+          >
             <Icon name="trash alternate outline" />
           </Table.Cell>
         </Table.Row>
