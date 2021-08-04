@@ -39,6 +39,7 @@ export default function WaveTab(props) {
   let zoomviewContainer = React.createRef();
   let overviewContainer = useRef(null);
   let filename = "";
+  let player = null;
 
   useEffect(() => {
     if (onDoubleClickLabel) {
@@ -78,6 +79,8 @@ export default function WaveTab(props) {
   }, [deleteLabel]);
 
   useEffect(() => {
+    console.log("ce cerror");
+    console.log("peaksInstance", peaksInstance);
     return () => {
       onClose();
     };
@@ -126,7 +129,7 @@ export default function WaveTab(props) {
     if (audio?.name) {
       filename = audio.name.split(".").slice(0, -1).join(".");
 
-      const player = {
+      player = {
         externalPlayer: new Tone.Player({
           url: audio.path,
         }).toDestination(),
@@ -157,6 +160,8 @@ export default function WaveTab(props) {
           this.eventEmitter = null;
         },
         play: function () {
+          console.log("reproduciendo");
+          console.log(Tone.Transport);
           setPlaying(true);
           Tone.Transport.start(Tone.now(), this.getCurrentTime());
           this.eventEmitter.emit("player.play", this.getCurrentTime());
