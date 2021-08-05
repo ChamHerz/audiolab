@@ -1,7 +1,22 @@
 @import "../../../scss/index";
 
 .interlocutor-wave {
+  .interlocutor-wave__list {
+    //background-color: yellow;
+    .slick-slide {
+      //width: 10vh !important;
+    }
+  }
+
+  height: 20vh;
   .interlocutor-card {
-    background-color: #23c0fa;
+    //background-color: #23c0fa;
+    width: 20vh !important;
+    color: $font-light;
+    img {
+      display: inline-block !important;
+      height: 10vh !important;
+      width: 10vh !important;
+    }
   }
 }

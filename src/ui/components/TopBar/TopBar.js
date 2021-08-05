@@ -15,17 +15,27 @@ export default function TopBar(props) {
     setProject(null);
   };
 
+  const onSetting = () => {
+    console.log("onSetting");
+    setOpenSettingModal(true);
+  };
+
+  const onPresentation = () => {
+    console.log("onPresentation");
+    setOpenPresentationModal(true);
+  };
+
   return (
     <>
       <div className="top-bar-container">
         <Menu className="top-bar-general">
-          <Button className="audio-lab-button">
+          <Button tabIndex="-1" className="audio-lab-button">
             <b>AUDIO</b>
             <b>LAB</b>
           </Button>
-          <Menu.Menu position="right"></Menu.Menu>
           <Menu.Menu position="right">
             <Dropdown
+              tabIndex="-1"
               item
               simple
               icon="setting"
@@ -33,13 +43,13 @@ export default function TopBar(props) {
               className="dropdown-setting"
             >
               <Dropdown.Menu>
-                <PresentationWizardModal
-                  openPresentationModal={openPresentationModal}
-                  setOpenPresentationModal={setOpenPresentationModal}
+                <Dropdown.Item
+                  text="Presentación"
+                  onClick={() => onPresentation()}
                 />
-                <SettingModal
-                  openSettingModal={openSettingModal}
-                  setOpenSettingModal={setOpenSettingModal}
+                <Dropdown.Item
+                  text="Configuración"
+                  onClick={() => onSetting()}
                 />
                 <Dropdown.Divider />
                 <Dropdown.Item text="Cerrar" onClick={() => onClose()} />
@@ -48,6 +58,14 @@ export default function TopBar(props) {
           </Menu.Menu>
         </Menu>
       </div>
+      <SettingModal
+        openSettingModal={openSettingModal}
+        setOpenSettingModal={setOpenSettingModal}
+      />
+      <PresentationWizardModal
+        openPresentationModal={openPresentationModal}
+        setOpenPresentationModal={setOpenPresentationModal}
+      />
     </>
   );
 }

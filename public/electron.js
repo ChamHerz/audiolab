@@ -6,6 +6,9 @@ const isDev = require("electron-is-dev");
 const isMac = process.platform === "darwin";
 let mainWindow;
 
+//servidor
+let server = null;
+
 const menuTemplate = [
   {
     label: "Archivo",
@@ -36,8 +39,9 @@ const menuTemplate = [
 function onCreateFileMenu() {}
 
 function createWindow() {
-  //servidor
-  const server = require("../src/server");
+  if (server === null) {
+    server = require("../src/server");
+  }
 
   // Create the browser window.
   mainWindow = new BrowserWindow({

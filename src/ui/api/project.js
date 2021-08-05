@@ -21,3 +21,9 @@ export function addIppToProject(ipp, projectId) {
     ipp
   );
 }
+
+export function deleteProject(projectId) {
+  return axios.delete(
+    `${basePath}/${apiVersion}/project/delete-project/${projectId}`
+  );
+}

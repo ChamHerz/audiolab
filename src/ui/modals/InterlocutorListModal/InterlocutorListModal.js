@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Icon, Modal } from "semantic-ui-react";
 import { listInterlocutor } from "../../api/interlocutor";
 import { map } from "lodash";
-
 import noImage from "./../../assets/png/no-image.png";
 import "./InterlocutorListModal.scss";
+import path from "path";
 
 export default function InterlocutorListModal(props) {
   const {
@@ -52,8 +52,6 @@ export default function InterlocutorListModal(props) {
               onInterlocutor={onInterlocutor}
             />
           ))}
-          <Card color="red" image={noImage} />
-          <Card color="orange" image={noImage} />
         </Card.Group>
       </Modal.Content>
       <Modal.Actions>
@@ -74,7 +72,10 @@ function Interlocutor(props) {
 
   return (
     <Card
-      image={"images/" + interlocutor.picture}
+      image={`file://${path.join(
+        __dirname,
+        "/images/" + interlocutor.picture
+      )}`}
       header={interlocutor.alias}
       meta={`${interlocutor.name} ${interlocutor.lastname}`}
       extra={

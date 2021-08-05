@@ -100,7 +100,6 @@ export default function PresentationWizardModal(props) {
       onClose={() => setOpenPresentationModal(false)}
       onOpen={() => setOpenPresentationModal(true)}
       open={openPresentationModal}
-      trigger={<Dropdown.Item text="Presentación" />}
     >
       <Modal.Content>
         <div className="box">
