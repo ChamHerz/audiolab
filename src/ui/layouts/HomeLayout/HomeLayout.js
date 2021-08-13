@@ -26,6 +26,7 @@ let tab = {
 
 export default function HomeLayout(props) {
   const { project, setProject } = props;
+  const [peaksInstance, setPeaksInstance] = useState(null);
   let deleteSegment;
   let deleteLabel;
   let dockLayout;
@@ -56,7 +57,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: false,
+      closable: true,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -79,7 +80,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: false,
+      closable: true,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -102,10 +103,12 @@ export default function HomeLayout(props) {
     console.log("current Audio", currentAudio);
 
     if (currentAudio) {
+      console.log("dock", dockLayout);
+
       dockLayout.updateTab(`${currentAudio.name}`, {
         id: `${oneAudio.name}`,
         title: `${oneAudio.name}`,
-        closable: false,
+        closable: true,
         content: (
           <WaveTab
             audio={oneAudio}
@@ -116,20 +119,18 @@ export default function HomeLayout(props) {
             updateSegment={updateSegment}
             updateLabel={updateLabel}
             project={project}
+            removeAudio={oneAudio}
+            peaksInstance={peaksInstance}
+            setPeaksInstance={setPeaksInstance}
           />
         ),
       });
 
-      currentAudio = oneAudio;
-    } else {
-      //CREO EL TAB
-      currentAudio = oneAudio;
-
-      const newTab = () => {
-        return {
+      /*setTimeout(() => {
+        dockLayout.updateTab(`${currentAudio.name}`, {
           id: `${oneAudio.name}`,
           title: `${oneAudio.name}`,
-          closable: false,
+          closable: true,
           content: (
             <WaveTab
               audio={oneAudio}
@@ -140,6 +141,34 @@ export default function HomeLayout(props) {
               updateSegment={updateSegment}
               updateLabel={updateLabel}
               project={project}
+            />
+          ),
+        });
+      }, 5000);*/
+
+      currentAudio = oneAudio;
+    } else {
+      //CREO EL TAB
+      currentAudio = oneAudio;
+
+      const newTab = () => {
+        return {
+          id: `${oneAudio.name}`,
+          title: `${oneAudio.name}`,
+          destroyInactiveTabPane: true,
+          closable: true,
+          content: (
+            <WaveTab
+              audio={oneAudio}
+              onAddSegment={onAddSegment}
+              onAddLabel={onAddLabel}
+              onClose={onCloseAudio}
+              deleteSegment={deleteSegment}
+              updateSegment={updateSegment}
+              updateLabel={updateLabel}
+              project={project}
+              peaksInstance={peaksInstance}
+              setPeaksInstance={setPeaksInstance}
             />
           ),
         };
@@ -186,7 +215,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: false,
+      closable: true,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -205,7 +234,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: false,
+      closable: true,
       content: (
         <WaveTab
           audio={currentAudio}
@@ -224,7 +253,7 @@ export default function HomeLayout(props) {
     dockLayout.updateTab(`${currentAudio.name}`, {
       id: `${currentAudio.name}`,
       title: `${currentAudio.name}`,
-      closable: false,
+      closable: true,
       content: (
         <WaveTab
           audio={currentAudio}

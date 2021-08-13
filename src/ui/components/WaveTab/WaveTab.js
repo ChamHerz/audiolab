@@ -13,6 +13,7 @@ import path from "path";
 
 import "./WaveTab.scss";
 import InterlocutorWave from "../Interlocutors/InterlocutorWave/InterlocutorWave";
+import { Button } from "semantic-ui-react";
 
 export default function WaveTab(props) {
   const {
@@ -27,19 +28,34 @@ export default function WaveTab(props) {
     onDoubleClickSegment,
     onDoubleClickLabel,
     playSegment,
+    removeAudio,
+    peaksInstance,
+    setPeaksInstance,
   } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [segmentToUpdate, setSegmentToUpdate] = useState(null);
   const [openLabelModal, setOpenLabelModal] = useState(false);
   const [labelToUpdate, setLabelToUpdate] = useState(null);
-  const [peaksInstance, setPeaksInstance] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [currentPeaks, setCurrentPeaks] = useState(null);
   let zoomviewContainer = React.createRef();
   let overviewContainer = useRef(null);
   let filename = "";
   let player = null;
+  let p;
+
+  useEffect(() => {
+    if (removeAudio) {
+      console.log("tengo que remover el audio");
+      console.log("peajgs", peaksInstance);
+      //player.destroy();
+      //peaksInstance.destroy();
+      //p.destroy();
+      //p = null;
+    }
+  }, [removeAudio]);
 
   useEffect(() => {
     if (onDoubleClickLabel) {
@@ -79,9 +95,14 @@ export default function WaveTab(props) {
   }, [deleteLabel]);
 
   useEffect(() => {
-    console.log("ce cerror");
-    console.log("peaksInstance", peaksInstance);
     return () => {
+      console.log("se cerro  v  1");
+
+      console.log("peaks", peaksInstance);
+
+      //player.destroy();
+      //setCurrentTime(0);
+      //console.log("peak", peaksInstance);
       onClose();
     };
   }, []);
@@ -129,6 +150,8 @@ export default function WaveTab(props) {
     if (audio?.name) {
       filename = audio.name.split(".").slice(0, -1).join(".");
 
+      //console.log("tone, ", Tone.context.dispose());
+
       player = {
         externalPlayer: new Tone.Player({
           url: audio.path,
@@ -141,7 +164,7 @@ export default function WaveTab(props) {
           this.externalPlayer.sync();
           this.externalPlayer.start();
 
-          Tone.connectSeries(this.externalPlayer, Tone.Master);
+          //Tone.connectSeries(this.externalPlayer);
 
           eventEmitter.emit("player.canplay");
 
@@ -158,6 +181,7 @@ export default function WaveTab(props) {
           Tone.context.dispose();
           this.externalPlayer = null;
           this.eventEmitter = null;
+          console.log("disponsesssss");
         },
         play: function () {
           console.log("reproduciendo");
@@ -229,29 +253,46 @@ export default function WaveTab(props) {
         createSegmentLabel: createSegmentLabel,
       };
 
-      Peaks.init(options, function (err, peaks) {
-        if (err) {
-          console.error(err.message);
-        }
+      console.log("peaks en p", p);
 
-        //peaksInstance = peaks;
-        setPeaksInstance(peaks);
+      if (!peaksInstance) {
+        p = Peaks.init(options, function (err, peaks) {
+          if (err) {
+            console.error(err.message);
+          }
 
-        peaks.on("zoomview.dblclick", addSegment);
-        peaks.on("segments.dragend", dragEndSegment);
-        peaks.on("points.dragend", dragEndPoint);
-        peaks.on("player.seeked", playerSeeked);
+          //peaksInstance = peaks;
+          //setPeaksInstance(peaks);
 
-        // evento que se ejecuta al finalizar el drag
-        //peaks.on("segments.dragstart", dragStartSegment);
-        // evento que se ejecuta constantemente
-        //peaks.on("segments.dragged", draggedSegment);
+          peaks.on("zoomview.dblclick", addSegment);
+          peaks.on("segments.dragend", dragEndSegment);
+          peaks.on("points.dragend", dragEndPoint);
+          peaks.on("player.seeked", playerSeeked);
 
-        loadSegments(peaks);
-        loadLabels(peaks);
-      });
+          peaks.player.seek(0);
+
+          // evento que se ejecuta al finalizar el drag
+          //peaks.on("segments.dragstart", dragStartSegment);
+          // evento que se ejecuta constantemente
+          //peaks.on("segments.dragged", draggedSegment);
+
+          loadSegments(peaks);
+          loadLabels(peaks);
+        });
+      }
     }
+    console.log("ppppp", p);
+    setPeaksInstance(p);
+    setCurrentPeaks(p);
   }, [audio]);
+
+  const onDestroy = () => {
+    console.log(" aqui testa el peaks", currentPeaks);
+    //peaksInstance.destroy();
+    currentPeaks.destroy();
+    //p.destroy();
+    //setPeaksInstance(null);
+  };
 
   const loadSegments = (peaks) => {
     listSegmentByAudio(audio?.id).then((response) => {
@@ -315,20 +356,22 @@ export default function WaveTab(props) {
         <div id="overview-container" ref={overviewContainer}></div>
       </div>
 
+      <Button onClick={() => onDestroy()}>Destruir</Button>
+
       <div id="demo-controls">
-        <Player
-          playing={playing}
-          currentTime={currentTime}
-          duration={duration}
-          peaksInstance={peaksInstance}
-        />
-        {peaksInstance ? (
+        {currentPeaks ? (
           <>
+            <Player
+              playing={playing}
+              currentTime={currentTime}
+              duration={duration}
+              peaksInstance={currentPeaks}
+            />
             <SegmentModal
               openSegmentModal={openSegmentModal}
               segmentToUpdate={segmentToUpdate}
               setOpenSegmentModal={setOpenSegmentModal}
-              peaks={peaksInstance}
+              peaks={currentPeaks}
               onAddSegment={onAddSegment}
               updateSegment={updateSegment}
             />
@@ -336,7 +379,7 @@ export default function WaveTab(props) {
               openLabelModal={openLabelModal}
               labelToUpdate={labelToUpdate}
               setOpenLabelModal={setOpenLabelModal}
-              peaks={peaksInstance}
+              peaks={currentPeaks}
               onAddLabel={onAddLabel}
               updateLabel={updateLabel}
             />
