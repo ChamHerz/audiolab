@@ -1,9 +1,9 @@
 {
-  "name": "electron-quick-start",
+  "name": "audiolab",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Etiquetador y presentador de audios",
   "main": "public/electron.js",
-  "author": "Denis Adriel Chambi",
+  "author": "Denis Adriel Chambi && Fernando German Lopez Fricker",
   "homepage": "./",
   "scripts": {
     "server-dev-start": "nodemon src/server/index.js",
@@ -76,14 +76,23 @@
     ]
   },
   "build": {
-    "appId": "com.electron",
+    "appId": "AudioLab",
     "files": [
       "build/**/*",
       "src/server/**/*",
       "node_modules/**/*"
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": "assets",
+      "output": "audiolab"
+    },
+    "extraFiles": [
+      "audio",
+      "data",
+      "images"
+    ],
+    "win": {
+      "icon": "build/favicon.ico"
     }
   }
 }

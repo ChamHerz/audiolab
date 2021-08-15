@@ -166,7 +166,10 @@ function LabelRow(props) {
           <Table.Cell collapsing>
             <Icon name="play circle outline" />
           </Table.Cell>
-          <Table.Cell collapsing>
+          <Table.Cell
+            onClick={(e) => onDeleteLabel(e, { selected: label })}
+            collapsing
+          >
             <Icon name="trash alternate outline" />
           </Table.Cell>
         </Table.Row>

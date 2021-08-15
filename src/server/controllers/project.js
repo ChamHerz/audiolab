@@ -9,6 +9,7 @@ function newProject(req, res) {
   const { name, description } = req.body;
   project.name = name;
   project.description = description;
+  project.deleted = false;
 
   if (!name) {
     res.status(404).send({ message: "El nombre es obligatorio" });
@@ -30,12 +31,14 @@ function newProject(req, res) {
 }
 
 function listProject(req, res) {
-  Project.findAll({ attributes: ["id", "name", "description"] })
+  Project.findAll({
+    attributes: ["id", "name", "description"],
+    where: {
+      deleted: false,
+    },
+  })
     .then((projects) => res.status(200).send(projects))
     .catch((err) => {
-      // TIRA ERROR AL NO ECONTRAR LA TABLA, ESTO NO VA A PASAR CUANDO YA NO SE AUTOCREE LA BASE
-      //console.log("Error al cargar proyectos");
-      //console.log(err);
       res.status(500).send({ message: "Error al cargar proyectos" });
     });
 }
@@ -93,9 +96,34 @@ async function findAllByIpp(req, res) {
   res.status(200).send(ipp);
 }
 
+async function deleteProject(req, res) {
+  const { projectId } = req.params;
+  const projectIdInt = parseInt(projectId);
+
+  const projectToDelete = await projectService.findOne(projectIdInt);
+  if (!projectToDelete) {
+    res.status(404).send({ message: "Proyecto no encontrado" });
+    return;
+  }
+
+  Project.update(
+    {
+      deleted: true,
+    },
+    {
+      where: { id: projectIdInt },
+    }
+  )
+    .then((project) => res.status(200).send(project))
+    .catch((err) => {
+      res.status(500).send({ message: "Erro al borra el proyecto" });
+    });
+}
+
 module.exports = {
   newProject,
   listProject,
   addIppToProject,
   findAllByIpp,
+  deleteProject,
 };

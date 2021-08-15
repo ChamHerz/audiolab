@@ -9,6 +9,7 @@ import Player from "../Player/Player";
 import { truncate2decimal } from "../../utils/truncate";
 import LabelModal from "../../modals/LabelModal";
 import { listLabelByAudio } from "../../api/label";
+import path from "path";
 
 import "./WaveTab.scss";
 import InterlocutorWave from "../Interlocutors/InterlocutorWave/InterlocutorWave";
@@ -25,6 +26,7 @@ export default function WaveTab(props) {
     onAddLabel,
     onDoubleClickSegment,
     onDoubleClickLabel,
+    playSegment,
   } = props;
   const [openSegmentModal, setOpenSegmentModal] = useState(false);
   const [segmentToUpdate, setSegmentToUpdate] = useState(null);
@@ -37,6 +39,7 @@ export default function WaveTab(props) {
   let zoomviewContainer = React.createRef();
   let overviewContainer = useRef(null);
   let filename = "";
+  let player = null;
 
   useEffect(() => {
     if (onDoubleClickLabel) {
@@ -61,6 +64,14 @@ export default function WaveTab(props) {
   }, [deleteSegment]);
 
   useEffect(() => {
+    if (playSegment) {
+      const segmentToPlay = playSegment.selected;
+      const peakSegment = peaksInstance.segments.getSegment(playSegment.id);
+      peaksInstance.player.playSegment(segmentToPlay);
+    }
+  }, [playSegment]);
+
+  useEffect(() => {
     if (deleteLabel) {
       const labelToDelete = deleteLabel.selected;
       peaksInstance.points.removeById(labelToDelete.id);
@@ -68,6 +79,8 @@ export default function WaveTab(props) {
   }, [deleteLabel]);
 
   useEffect(() => {
+    console.log("ce cerror");
+    console.log("peaksInstance", peaksInstance);
     return () => {
       onClose();
     };
@@ -116,7 +129,7 @@ export default function WaveTab(props) {
     if (audio?.name) {
       filename = audio.name.split(".").slice(0, -1).join(".");
 
-      const player = {
+      player = {
         externalPlayer: new Tone.Player({
           url: audio.path,
         }).toDestination(),
@@ -147,6 +160,8 @@ export default function WaveTab(props) {
           this.eventEmitter = null;
         },
         play: function () {
+          console.log("reproduciendo");
+          console.log(Tone.Transport);
           setPlaying(true);
           Tone.Transport.start(Tone.now(), this.getCurrentTime());
           this.eventEmitter.emit("player.play", this.getCurrentTime());
@@ -190,8 +205,15 @@ export default function WaveTab(props) {
         },
         /*mediaElement: audioContainer.current,*/
         player: player,
+        //ESTA ES EL PATH PARA PRODUCCION
+        /*dataUri: {
+          arraybuffer: "../../../data/" + filename + ".dat",
+        },*/
         dataUri: {
-          arraybuffer: "data/" + filename + ".dat",
+          arraybuffer: `file://${path.join(
+            __dirname,
+            "/data/" + filename + ".dat"
+          )}`,
         },
         keyboard: true,
         showPlayheadTime: true,

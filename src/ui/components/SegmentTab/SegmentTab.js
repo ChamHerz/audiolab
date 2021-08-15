@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Icon, Segment, Table, TableBody } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 import {
   newSegment,
   listSegmentByAudio,
@@ -22,6 +22,7 @@ export default function SegmentTab(props) {
     onDeleteSegment,
     segmentToUpdate,
     onDoubleClickSegment,
+    onPlaySegment,
   } = props;
   const [segments, setSegments] = useState([]);
 
@@ -98,18 +99,26 @@ export default function SegmentTab(props) {
     }
   }, [onLoad]);
 
-  const deleteSegment = (e, segment) => {
-    const segmentToDelete = segment.selected;
+  const actionSegment = (e, segment) => {
+    if (segment.content === "Borrar") {
+      const segmentToDelete = segment.selected;
 
-    deleteSegmentById(segmentToDelete.id)
-      .then((response) => {
-        toast.success(`El segmento ${segmentToDelete.labelText} fue borrado`);
-        loadSegments();
-        onDeleteSegment(e, segment); //envia señal al waveTab
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+      deleteSegmentById(segmentToDelete.id)
+        .then((response) => {
+          toast.success(`El segmento ${segmentToDelete.labelText} fue borrado`);
+          loadSegments();
+          onDeleteSegment(e, segment); //envia señal al waveTab
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    }
+
+    if (segment.content === "Reproducir") {
+      const segmentToPlay = segment.selected;
+
+      onPlaySegment(e, segment);
+    }
   };
 
   return (
@@ -130,7 +139,7 @@ export default function SegmentTab(props) {
             <SegmentRow
               key={segment.id}
               segment={segment}
-              onDeleteSegment={deleteSegment}
+              actionSegment={actionSegment}
               onDoubleClickSegment={onDoubleClickSegment}
             />
           ))}
@@ -141,7 +150,7 @@ export default function SegmentTab(props) {
 }
 
 function SegmentRow(props) {
-  const { segment, onDeleteSegment, onDoubleClickSegment } = props;
+  const { segment, actionSegment, onDoubleClickSegment } = props;
   const [selected, setSelected] = useState(false);
 
   const onSegment = (e, segmentId) => {
@@ -170,18 +179,33 @@ function SegmentRow(props) {
           <Table.Cell textAlign="right">
             {truncate2decimal(segment.endTime)}
           </Table.Cell>
-          <Table.Cell collapsing>
+          <Table.Cell
+            onClick={(e) =>
+              actionSegment(e, { content: "Reproducir", selected: segment })
+            }
+            collapsing
+          >
             <Icon name="play circle outline" />
           </Table.Cell>
-          <Table.Cell collapsing>
+          <Table.Cell
+            onClick={(e) =>
+              actionSegment(e, { content: "Borrar", selected: segment })
+            }
+            collapsing
+          >
             <Icon name="trash alternate outline" />
           </Table.Cell>
         </Table.Row>
       }
       items={[
+        {
+          key: "btnPlay" + segment.id,
+          content: "Reproducir",
+          selected: segment,
+        },
         { key: "btnDelete" + segment.id, content: "Borrar", selected: segment },
       ]}
-      onClick={onDeleteSegment}
+      onClick={actionSegment}
     />
   );
 }

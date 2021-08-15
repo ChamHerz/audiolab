@@ -10,14 +10,7 @@ export const runner = (oneAudio) => {
 
       let child = spawn(
         "audio\\audiowaveform.exe",
-        [
-          "-i",
-          oneAudio.path,
-          "-o",
-          "public\\data\\" + filename + ".dat",
-          "-b",
-          "8",
-        ],
+        ["-i", oneAudio.path, "-o", ".\\data\\" + filename + ".dat", "-b", "8"],
         { detached: true, stdio: ["ignore", "ignore", "ignore"] }
       );
 
@@ -25,14 +18,14 @@ export const runner = (oneAudio) => {
 
       child.unref();
 
-      child.stderr.on("data", function (data) {
+      /*child.stderr.on("data", function (data) {
         console.log(`stderr: ${data}`);
-      });
+      });*/
 
-      child.on("close", function (data) {
+      /*child.on("close", function (data) {
         console.log(`Terminado: ${data}`);
         resolve(oneAudio);
-      });
+      });*/
     } catch (error) {
       console.log("Se produjo un error");
       console.log(error);

@@ -48,6 +48,7 @@ export default function AddProjectForm(props) {
           <Input
             placeholder="Nombre del proyecto"
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            autoFocus
           />
         </Form.Field>
         <Form.Field className="description-project">

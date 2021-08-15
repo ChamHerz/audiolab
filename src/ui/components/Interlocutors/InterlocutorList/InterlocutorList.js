@@ -17,7 +17,6 @@ export default function InterlocutorList(props) {
 
   const loadInterlocutors = () => {
     listInterlocutor().then((response) => {
-      console.log(response);
       if (response?.data) {
         const arrayInterlocutors = [];
         map(response?.data, (interlocutor) => {

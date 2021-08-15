@@ -1,0 +1,1 @@
+En esta carpeta se guardan las ondas de audio
