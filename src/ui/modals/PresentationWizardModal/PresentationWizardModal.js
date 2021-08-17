@@ -13,6 +13,7 @@ export default function PresentationWizardModal(props) {
   const [ippFinalSelected, setIppFinalSelected] = useState(null);
   const [projectFinalSelected, setProjectFinalSelected] = useState(null);
   const [presentationModal, setPresentationModal] = useState(false);
+  const [showWave, setShowWave] = useState(false);
 
   const thirdComponent = () => {
     return <div>Third Component</div>;
@@ -59,6 +60,7 @@ export default function PresentationWizardModal(props) {
       //alert("You have completed all steps.");
       console.log("mostrar presentacion");
       setPresentationModal(true);
+      setShowWave(true);
       return;
     }
 
@@ -156,6 +158,7 @@ export default function PresentationWizardModal(props) {
       <PresentationModal
         setPresentationModal={setPresentationModal}
         presentationModal={presentationModal}
+        showWave={showWave}
       />
     </>
   );
