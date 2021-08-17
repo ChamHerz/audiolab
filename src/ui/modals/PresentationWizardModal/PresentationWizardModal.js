@@ -6,11 +6,13 @@ import FirstStep from "../../components/Presentation/FirstStep/FirstStep";
 import { toast } from "react-toastify";
 import SecondStep from "../../components/Presentation/SecondStep/SecondStep";
 import ThirdStep from "../../components/Presentation/ThirdStep/ThirdStep";
+import PresentationModal from "../PresentationModal";
 
 export default function PresentationWizardModal(props) {
   const { openPresentationModal, setOpenPresentationModal } = props;
   const [ippFinalSelected, setIppFinalSelected] = useState(null);
   const [projectFinalSelected, setProjectFinalSelected] = useState(null);
+  const [presentationModal, setPresentationModal] = useState(false);
 
   const thirdComponent = () => {
     return <div>Third Component</div>;
@@ -54,7 +56,9 @@ export default function PresentationWizardModal(props) {
 
   const handleNext = () => {
     if (steps[steps.length - 1].key === activeStep.key) {
-      alert("You have completed all steps.");
+      //alert("You have completed all steps.");
+      console.log("mostrar presentacion");
+      setPresentationModal(true);
       return;
     }
 
@@ -96,57 +100,63 @@ export default function PresentationWizardModal(props) {
   };
 
   return (
-    <Modal
-      onClose={() => setOpenPresentationModal(false)}
-      onOpen={() => setOpenPresentationModal(true)}
-      open={openPresentationModal}
-    >
-      <Modal.Content>
-        <div className="box">
-          <div className="steps">
-            <ul className="nav">
-              {steps.map((step, i) => {
-                return (
-                  <li
-                    key={i}
-                    className={`${
-                      activeStep.key === step.key ? "active" : ""
-                    } ${step.isDone ? "done" : ""}`}
-                  >
-                    <div>
-                      Paso {i + 1}
-                      <br />
-                      <span>{step.label}</span>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+    <>
+      <Modal
+        onClose={() => setOpenPresentationModal(false)}
+        onOpen={() => setOpenPresentationModal(true)}
+        open={openPresentationModal}
+      >
+        <Modal.Content>
+          <div className="box">
+            <div className="steps">
+              <ul className="nav">
+                {steps.map((step, i) => {
+                  return (
+                    <li
+                      key={i}
+                      className={`${
+                        activeStep.key === step.key ? "active" : ""
+                      } ${step.isDone ? "done" : ""}`}
+                    >
+                      <div>
+                        Paso {i + 1}
+                        <br />
+                        <span>{step.label}</span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div className="step-component">
+              {activeStep.component(ippFinalSelected, projectFinalSelected)}
+            </div>
+            <div className="btn-component">
+              <Button
+                className="button-radius"
+                onClick={() => handleBack()}
+                disabled={steps[0].key === activeStep.key}
+              >
+                Atras
+              </Button>
+              <Button className="button-radius" onClick={() => handleNext()}>
+                {steps[steps.length - 1].key !== activeStep.key
+                  ? "Siguiente"
+                  : "Terminar"}
+              </Button>
+            </div>
           </div>
-          <div className="step-component">
-            {activeStep.component(ippFinalSelected, projectFinalSelected)}
-          </div>
-          <div className="btn-component">
-            <Button
-              className="button-radius"
-              onClick={() => handleBack()}
-              disabled={steps[0].key === activeStep.key}
-            >
-              Atras
-            </Button>
-            <Button className="button-radius" onClick={() => handleNext()}>
-              {steps[steps.length - 1].key !== activeStep.key
-                ? "Siguiente"
-                : "Terminar"}
-            </Button>
-          </div>
-        </div>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button color="black" onClick={() => setOpenPresentationModal(false)}>
-          Cerrar
-        </Button>
-      </Modal.Actions>
-    </Modal>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="black" onClick={() => setOpenPresentationModal(false)}>
+            Cerrar
+          </Button>
+        </Modal.Actions>
+      </Modal>
+      <PresentationModal
+        setPresentationModal={setPresentationModal}
+        presentationModal={presentationModal}
+      />
+    </>
   );
 }

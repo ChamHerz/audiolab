@@ -11,7 +11,7 @@ export default function ExplorerTab(props) {
     <Grid className="explorer-tab" stretched>
       <Grid.Row className="top-bar">
         <Grid.Column width={16}>
-          <div>MenuUp f</div>
+          <div></div>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row className="middle-bar">
