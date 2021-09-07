@@ -1,6 +1,6 @@
 {
   "name": "audiolab",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Etiquetador y presentador de audios",
   "main": "public/electron.js",
   "author": "Denis Adriel Chambi && Fernando German Lopez Fricker",
@@ -12,7 +12,7 @@
     "dev-start": "concurrently --kill-others \"yarn server-dev-start\" \"yarn react-dev-start\" \"yarn electron-dev-start\"",
     "dev-react-start": "concurrently --kill-others \"yarn react-dev-start\" \"yarn electron-dev-start\"",
     "build": "react-scripts build",
-    "electron-pack": "electron-builder -c.extraMetadata.main=build/electron.js",
+    "electron-pack": "electron-builder -c.extraMetadata.main=build/electron.js --win",
     "preelectron-pack": "yarn build"
   },
   "repository": "https://github.com/electron/electron-quick-start",

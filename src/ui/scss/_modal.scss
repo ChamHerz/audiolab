@@ -1,5 +1,22 @@
 @import "_colors.scss";
 
+.ui.modal.fullscreen-modal {
+  background-color: $background-dark-light;
+  height: 100vh;
+
+  .header {
+    text-align: center;
+    color: $font-light;
+    background-color: transparent;
+  }
+
+  .content {
+    color: $font-light;
+    border-top: $background-dark-light 1px solid;
+    background-color: transparent;
+  }
+}
+
 .ui.modal.basic-modal {
   background-color: $background-dark-gray;
 

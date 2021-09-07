@@ -36,6 +36,7 @@ export default function FileList(props) {
   }, []);
 
   const onDrop = useCallback((acceptedFile) => {
+    let showOnlyMessage = true;
     map(acceptedFile, (audioFile) => {
       const file = audioFile;
       // setFile(file);
@@ -57,8 +58,10 @@ export default function FileList(props) {
                 console.log("error en boolear el data", error);
               });
           });
-
-          toast.success("Audio agregado correctamente.");
+          if (showOnlyMessage) {
+            toast.success("Audio agregado correctamente.");
+            showOnlyMessage = false;
+          }
           loadAudios();
         })
         .catch((error) => {
