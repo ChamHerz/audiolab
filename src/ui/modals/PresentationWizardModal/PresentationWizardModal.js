@@ -19,7 +19,43 @@ export default function PresentationWizardModal(props) {
     return <div>Third Component</div>;
   };
   const finalComponent = () => {
-    return <div>Final Component</div>;
+    return (
+      <div>
+        <br />
+        <div>
+          Ipp: <strong>PP-08-00-019764-17/00</strong>
+        </div>
+        <div>
+          Proyecto: <strong>Nuevo Proyecto</strong>
+        </div>
+        <div>Segmentos:</div>
+        <div>
+          <ul>
+            <li>
+              <strong>Droga</strong> 5.888 11.072
+            </li>
+            <li>
+              <strong>Venta</strong> 22.912 27.2
+            </li>
+            <li>
+              <strong>Narcotico</strong> 29.952 34.496
+            </li>
+            <li>
+              <strong>Trata</strong> 37.184 39.104
+            </li>
+            <li>
+              <strong>Secuestro</strong> 53.248 58.248
+            </li>
+            <li>
+              <strong>Venta</strong> 61.632 66.632
+            </li>
+            <li>
+              <strong>Persona</strong> 71.296 76.296
+            </li>
+          </ul>
+        </div>
+      </div>
+    );
   };
 
   const [steps, setSteps] = useState([

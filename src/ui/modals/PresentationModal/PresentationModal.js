@@ -406,7 +406,7 @@ export default function PresentationModal(props) {
       onOpen={() => setPresentationModal(true)}
       open={presentationModal}
     >
-      <Modal.Header>Presentacion de evidencia</Modal.Header>
+      <Modal.Header>Presentación de Prueba</Modal.Header>
       <Modal.Content>
         <Grid>
           <Grid.Row>
