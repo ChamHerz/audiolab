@@ -6,6 +6,9 @@ const isDev = require("electron-is-dev");
 const isMac = process.platform === "darwin";
 let mainWindow;
 
+//servidor
+let server = null;
+
 const menuTemplate = [
   {
     label: "Archivo",
@@ -36,8 +39,9 @@ const menuTemplate = [
 function onCreateFileMenu() {}
 
 function createWindow() {
-  //servidor
-  const server = require("../src/server");
+  if (server === null) {
+    server = require("../src/server");
+  }
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -55,10 +59,10 @@ function createWindow() {
   mainWindow.maximize();
   mainWindow.show();
 
-  /*const mainMenu = Menu.buildFromTemplate(menuTemplate);
-  mainWindow.setMenu(mainMenu);*/
+  const mainMenu = Menu.buildFromTemplate(menuTemplate);
+  mainWindow.setMenu(mainMenu);
 
-  /*const contextMenu = new Menu();
+  const contextMenu = new Menu();
   contextMenu.append(
     new MenuItem({
       label: "Hola",
@@ -66,11 +70,11 @@ function createWindow() {
         console.log("context menu");
       },
     })
-  );*/
+  );
 
-  /*mainWindow.webContents.on("context-menu", function (e, params) {
+  mainWindow.webContents.on("context-menu", function (e, params) {
     contextMenu.popup(mainWindow, params.x, params.y);
-  });*/
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(

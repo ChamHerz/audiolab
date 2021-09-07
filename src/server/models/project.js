@@ -12,5 +12,10 @@ module.exports = (sequelize, type) => {
     description: {
       type: type.STRING,
     },
+    deleted: {
+      type: type.BOOLEAN,
+      allowNull: false,
+      default: false,
+    },
   });
 };

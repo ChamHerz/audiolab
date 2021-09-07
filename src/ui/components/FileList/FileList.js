@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Form, Icon, Input, Table, Loader } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { map, filter, union } from "lodash";
 import {
@@ -16,9 +16,7 @@ import "./FileList.scss";
 
 export default function FileList(props) {
   const { project, onDoubleClickAudioFile } = props;
-  const [file, setFile] = useState(null);
   const [audios, setAudios] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const loadAudios = () => {
     listAudioByProject(project.id).then((response) => {
@@ -38,6 +36,7 @@ export default function FileList(props) {
   }, []);
 
   const onDrop = useCallback((acceptedFile) => {
+    let showOnlyMessage = true;
     map(acceptedFile, (audioFile) => {
       const file = audioFile;
       // setFile(file);
@@ -59,8 +58,10 @@ export default function FileList(props) {
                 console.log("error en boolear el data", error);
               });
           });
-
-          toast.success("Audio agregado correctamente.");
+          if (showOnlyMessage) {
+            toast.success("Audio agregado correctamente.");
+            showOnlyMessage = false;
+          }
           loadAudios();
         })
         .catch((error) => {

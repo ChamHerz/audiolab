@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { findAllSegmentByProject } from "../../../api/segment";
-import { Table } from "semantic-ui-react";
+import { Checkbox, Table } from "semantic-ui-react";
 import { map } from "lodash";
+
+import "./ThirdStep.scss";
 
 export default function ThirdStep(props) {
   const { projectFinalSelected } = props;
@@ -23,7 +25,7 @@ export default function ThirdStep(props) {
   }, [projectFinalSelected]);
 
   return (
-    <Table celled compact definition inverted>
+    <Table celled compact definition inverted className="third-step">
       <Table.Header fullWidth>
         <Table.Row>
           <Table.HeaderCell />
@@ -44,11 +46,19 @@ export default function ThirdStep(props) {
 }
 
 function Segment(props) {
+  const [state, setState] = useState(false);
   const { segment } = props;
+
+  const onChange = () => {
+    console.log("cambiar");
+    setState(!state);
+  };
 
   return (
     <Table.Row>
-      <Table.Cell collapsing>textBox</Table.Cell>
+      <Table.Cell collapsing>
+        <Checkbox onChange={() => onChange()} checked={state} />
+      </Table.Cell>
       <Table.Cell>{segment.audio.name}</Table.Cell>
       <Table.Cell>{segment.segment.labelText}</Table.Cell>
       <Table.Cell>{segment.segment.startTime}</Table.Cell>
