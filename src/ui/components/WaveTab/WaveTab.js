@@ -38,6 +38,7 @@ export default function WaveTab(props) {
   const [duration, setDuration] = useState(0);
   let zoomviewContainer = React.createRef();
   let overviewContainer = useRef(null);
+  let audioContainer = useRef(null);
   let filename = "";
   let player = null;
 
@@ -203,8 +204,9 @@ export default function WaveTab(props) {
           zoomview: zoomviewContainer.current,
           overview: overviewContainer.current,
         },
+        mediaElement: audioContainer.current,
         /*mediaElement: audioContainer.current,*/
-        player: player,
+        /*player: player,*/
         //ESTA ES EL PATH PARA PRODUCCION
         /*dataUri: {
           arraybuffer: "../../../data/" + filename + ".dat",
@@ -316,12 +318,15 @@ export default function WaveTab(props) {
       </div>
 
       <div id="demo-controls">
-        <Player
+        <audio id="audio" controls="controls" ref={audioContainer}>
+          <source src={audio.path} type="audio/mpeg" />
+        </audio>
+        {/*<Player
           playing={playing}
           currentTime={currentTime}
           duration={duration}
           peaksInstance={peaksInstance}
-        />
+        />*/}
         {peaksInstance ? (
           <>
             <SegmentModal
